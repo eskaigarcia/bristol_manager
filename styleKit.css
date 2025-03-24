@@ -17,6 +17,7 @@
   --font-display: Montserrat, system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   --font-body: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 
+  --font-size-lg: 1rem;
   --font-size-md: 0.875rem;
 
 
@@ -72,4 +73,7 @@
 
 main{
   background-color: var(--color-primary-lightest);
+
+  padding: 2rem 1rem;
+
 }
