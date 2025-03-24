@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root{
+
+  /* Colors  */
+  --color-primary-lightest: #ebf1fc;
+  --color-primary: #124495;
+  --color-primary-dark: #042c5f;
+  --color-primary-darkest: #01132f;
+
+  --color-neutral-white: #f6f9ff;
+
+  --color-accent: #9C0111;
+
+
+  /* Fonts */
+  --font-display: Montserrat, system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font-body: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+  --font-size-md: 0.875rem;
+
+
+  /* Transitions */
+  --transition-hover-basic: background-color 0.1s linear, color 0.1s linear;
+
+}
+
+#navView{
+  background-color: var(--color-primary-darkest);
+  color: var(--color-neutral-white);
+
+  img.logo{
+    width: 80%;
+    margin: 10%;
+  }
+
+  button{
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    img {
+      width: 28px; height: 28px;
+    }
+    
+    background-color: transparent;
+    border: none;
+    
+    font-size: var(--font-size-md);
+    font-family: var(--font-display);
+    font-weight: 500;
+    text-align: left;
+    text-transform: uppercase;
+    color: var(--color-neutral-white);
+
+    cursor: pointer;
+    transition: var(--transition-hover-basic);
+
+    &:hover {
+      background-color: var(--color-primary) !important;
+    }
+
+    &.active {
+      background-color: var(--color-primary-dark);
+      font-weight: 750;
+    }
+  }
+}
+
+main{
+  background-color: var(--color-primary-lightest);
+}

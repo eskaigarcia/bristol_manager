@@ -1,0 +1,22 @@
+body{
+  margin: 0;
+}
+
+#app {
+  width: 100dvw;
+  height: 100dvh;
+
+  display: grid; 
+  grid-template-columns: 260px 1fr; 
+  grid-template-rows: 1fr; 
+  grid-template-areas: 
+    "navView main"; 
+}
+
+#navView {
+  grid-area: navView;
+}
+
+main {
+  grid-area: main;
+}
