@@ -4,11 +4,13 @@
 
   /* Colors  */
   --color-primary-lightest: #ebf1fc;
+  --color-primary-lighter: #b2cdf8;
   --color-primary: #124495;
   --color-primary-dark: #042c5f;
   --color-primary-darkest: #01132f;
 
-  --color-neutral-white: #f6f9ff;
+  --color-neutral-white: #ffffff;
+  --color-neutral-lightest: #f6f9ff;
 
   --color-accent: #9C0111;
 
@@ -16,19 +18,52 @@
   /* Fonts */
   --font-display: Montserrat, system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   --font-body: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-
+  
+  --font-size-4xl: 4rem;
+  --font-size-3xl: 2.5rem;
+  --font-size-2xl: 1.75rem;
+  --font-size-xl: 1.5rem;
   --font-size-lg: 1rem;
   --font-size-md: 0.875rem;
 
 
+  /* Decorations */
+
+  --radius-lg: 8px;
+  --radius-md: 4px;
+  --radius-sm: 2px;
+
+
   /* Transitions */
-  --transition-hover-basic: background-color 0.1s linear, color 0.1s linear;
+  --transition-hover-basic: background-color 0.05s linear, color 0.05s linear;
 
 }
 
+html{
+  font-family: var(--font-body);
+}
+
+/* Main text styles */
+
+h1{
+  font-family: var(--font-body);
+  font-size: 2.5rem;
+  font-weight: 750;
+  margin: 0.25rem 0;
+}
+
+h2{
+  font-family: var(--font-body);
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin: 0.25rem 0;
+}
+
+
+
 #navView{
   background-color: var(--color-primary-darkest);
-  color: var(--color-neutral-white);
+  color: var(--color-neutral-lightest);
 
   img.logo{
     width: 80%;
@@ -55,7 +90,7 @@
     font-weight: 500;
     text-align: left;
     text-transform: uppercase;
-    color: var(--color-neutral-white);
+    color: var(--color-neutral-lightest);
 
     cursor: pointer;
     transition: var(--transition-hover-basic);
@@ -73,7 +108,5 @@
 
 main{
   background-color: var(--color-primary-lightest);
-
-  padding: 2rem 1rem;
 
 }
