@@ -17,7 +17,7 @@
                 <button>Ir a pagos pendientes</button>
             </div>
 
-            <div class="card double shoertcuts">
+            <div class="card double">
                 <h2>Accesos rápidos</h2>
                 <hr>
                 <button class="cardLink"><img src="img/personaAdd-onlight.png" alt="">Nuevo alumno</button>

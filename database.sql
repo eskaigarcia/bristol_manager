@@ -38,7 +38,7 @@ CREATE TABLE `alumnos` (
   `cp` varchar(5) NOT NULL,
   `localidad` varchar(30) NOT NULL,
   `iban` varchar(35) DEFAULT NULL,
-  `fechaInclusion` date NOT NULL DEFAULT current_timestamp(),
+  `fechaInclusion` date NOT NULL,
   `esAdulto` tinyint(1) NOT NULL DEFAULT 1,
   `esAmonestado` tinyint(1) NOT NULL DEFAULT 0,
   `comentariosMedicos` text DEFAULT NULL
@@ -54,7 +54,7 @@ CREATE TABLE `alumnosgrupos` (
   `id_alumnoGrupo` int(11) NOT NULL,
   `id_alumno` int(11) NOT NULL,
   `id_grupo` int(11) NOT NULL,
-  `fechaInicio` date NOT NULL DEFAULT current_timestamp(),
+  `fechaInicio` date NOT NULL,
   `fechaFin` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -71,7 +71,7 @@ CREATE TABLE `bonos` (
   `esTransferido` tinyint(1) NOT NULL DEFAULT 0,
   `caducidad` date NOT NULL,
   `precioTotal` int(11) NOT NULL COMMENT 'En cts.',
-  `fechaPago` datetime NOT NULL DEFAULT current_timestamp(),
+  `fechaPago` datetime NOT NULL,
   `metodoPago` enum('bizum','transferencia','efectivo','otro') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -117,7 +117,7 @@ CREATE TABLE `grupos` (
   `asignatura` varchar(60) NOT NULL,
   `modalidad` enum('presencial','online','hibrido') NOT NULL,
   `horasSemanales` tinyint(4) NOT NULL COMMENT 'En medias horas.',
-  `creacion` date NOT NULL DEFAULT current_timestamp(),
+  `creacion` date NOT NULL,
   `esActivo` tinyint(1) NOT NULL DEFAULT 1,
   `esIntensivo` tinyint(1) NOT NULL DEFAULT 0,
   `precio` int(11) NOT NULL COMMENT 'En cts,',
@@ -149,7 +149,7 @@ CREATE TABLE `pagos` (
   `id_pago` int(11) NOT NULL,
   `id_alumno` int(11) NOT NULL,
   `id_mensuallidad` int(11) NOT NULL,
-  `fechaPago` datetime NOT NULL DEFAULT current_timestamp(),
+  `fechaPago` datetime NOT NULL,
   `metodoPago` enum('bizum','transferencia','efectivo','otro') NOT NULL,
   `precioTotal` int(11) NOT NULL COMMENT 'En cts.',
   `descuentoCalculado` int(11) DEFAULT NULL COMMENT 'En cts.',
@@ -190,7 +190,7 @@ CREATE TABLE `relaciones` (
   `id_relacion` int(11) NOT NULL,
   `id_alumno1` int(11) NOT NULL,
   `id_alumno2` int(11) NOT NULL,
-  `fechaInicio` date NOT NULL DEFAULT current_timestamp(),
+  `fechaInicio` date NOT NULL,
   `tipoRelacion` enum('familiar','amigo') NOT NULL,
   `esActivo` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

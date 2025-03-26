@@ -7,18 +7,37 @@
     <div id="app">
         <?php include './components/navView.php'; ?>
         <main>
-            <!-- Barra de búsqueda -->
-            <form action="" id="searchBar">
-                <p>Buscar:</p>
-                <input type="text" placeholder="Nombre">
-                <p>en:</p>
-                <select>
-                    <option value="alumnos">Alumnos</option>
-                    <option value="grupos">Grupos</option>
-                    <option value="clases">Clases</option>
-                </select>
-                <button type="submit"><img src="img/search.png" alt=""></button>
-            </form>
+            <header>
+                <h1>Alumnos</h1>
+            </header>
+
+            <!-- Caja de búsqueda -->
+            <div class="card full">
+                <h2>Buscar alumnos</h2>
+                <form action="" id="searchBar">
+                    <label for="a_nombre">Nombre:</label>
+                    <input type="text" id="a_nombre" name="a_nombre">
+                    <label for="a_apellidos">Apellidos:</label>
+                    <input type="text" id="a_apellidos" name="a_apellidos">
+                    <label for="a_mail">Email:</label>
+                    <input type="text" id="a_mail" name="a_mail">
+                    <div class="full subGrid">
+                        <label for="a_dni">DNI:</label>
+                        <input type="text" id="a_dni" name="a_dni">
+                        <label for="a_tel">Teléfono:</label>
+                        <input type="text" id="a_tel" name="a_tel">
+                    </div>
+                    <div class="full center">
+                        <button type="submit" class="cta">
+                            <?php include './img/search.svg' ?>
+                            Buscar
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tabla de alumnos con resultados -->
+            
         </main>
     </div>
 </body>

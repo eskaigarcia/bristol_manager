@@ -43,6 +43,10 @@ html{
   font-family: var(--font-body);
 }
 
+button, input, label{
+  font-family: var(--font-body);
+}
+
 /* Main text styles */
 
 h1{
