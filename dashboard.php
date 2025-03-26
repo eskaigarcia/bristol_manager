@@ -20,10 +20,10 @@
             <div class="card double">
                 <h2>Accesos rápidos</h2>
                 <hr>
-                <button class="cardLink"><img src="img/personaAdd-onlight.png" alt="">Nuevo alumno</button>
-                <button class="cardLink"><img src="img/money-onlight.png" alt="">Nuevo cobro</button>
-                <button class="cardLink"><img src="img/groupAdd-onlight.png" alt="">Añadir alumno a grupo</button>
-                <button class="cardLink"><img src="img/groupRemove-onlight.png" alt="">Eliminar alumno de grupo</button>
+                <button class="cardLink align_left"><img src="img/personaAdd-onlight.png" alt="">Nuevo alumno</button>
+                <button class="cardLink align_left"><img src="img/money-onlight.png" alt="">Nuevo cobro</button>
+                <button class="cardLink align_left"><img src="img/groupAdd-onlight.png" alt="">Añadir alumno a grupo</button>
+                <button class="cardLink align_left"><img src="img/groupRemove-onlight.png" alt="">Eliminar alumno de grupo</button>
             </div>
         </main>
     </div>

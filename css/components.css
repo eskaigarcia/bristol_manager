@@ -20,6 +20,15 @@ button{
 
   svg{
     transition: inherit;
+    width: 28px;
+    height: 28px;
+    margin-right: 8px;
+  }
+
+  img{
+    width: 28px;
+    height: 28px;
+    margin-right: 8px;
   }
 
   &:hover{
@@ -47,12 +56,6 @@ button{
 
     background-color: transparent;
     border: none;
-
-    img{
-      width: 28px;
-      height: 28px;
-      margin-right: 8px;
-    }
 
     &:hover{
       border-left: var(--color-primary-darkest) 5px solid;
@@ -113,6 +116,10 @@ button{
 /* Header */
 header{
   grid-column-end: span 4;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 /* Search bar */
@@ -157,5 +164,16 @@ header{
 
   button{
     width: 15rem;
+  }
+}
+
+/* Student Search Table */
+#studentSearch{
+  width: 100%;
+  border: 1px black solid;
+  border-collapse: collapse;
+
+  td{
+    border: 1px black solid;
   }
 }

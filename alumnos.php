@@ -9,6 +9,10 @@
         <main>
             <header>
                 <h1>Alumnos</h1>
+                <button class="cta">
+                    <?php include './img/addStudent.svg'; ?>
+                    Nuevo alumno
+                </button>
             </header>
 
             <!-- Caja de búsqueda -->
@@ -36,7 +40,10 @@
                 </form>
             </div>
 
-            <!-- Tabla de alumnos con resultados -->
+            <!-- Tabla de resultados -->
+            <div class="card full">
+                <?php include './resources/studentSearch.php' ?>
+            </div>
             
         </main>
     </div>

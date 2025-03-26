@@ -8,12 +8,7 @@
 <body>
     
     <?php
-
-        // Database connection
-        $db_host = 'localhost';
-        $db_name = 'bristol_alumnos';
-        $db_user = 'root';
-        $db_pass = '';
+        require './resources/dbConnect.php';
 
         $connection = mysqli_connect(hostname: $db_host, username: $db_user, password: $db_pass);
 
@@ -30,10 +25,19 @@
         // Query performing
         $result = mysqli_query(mysql: $connection, query: "SELECT nombre, apellidos FROM alumnos");
 
-        // Output
-        while ($fila = mysqli_fetch_row(result: $result)) {
-            echo "$fila[0] $fila[1] <br>";
+        // Output row by row
+        // echo '<table>';
+        // while ($fila = mysqli_fetch_row(result: $result)) {
+        //     echo "<tr><td>$fila[0]</td><td>$fila[1]</td></tr>";
+        // }
+        // echo '</table>';
+
+        // Output using array
+        echo '<table>';
+        while ($fila = mysqli_fetch_array(result: $result, mode: MYSQLI_ASSOC)) {
+            echo "<tr><td>$fila[nombre]</td><td>$fila[apellidos]</td></tr>";
         }
+        echo '</table>';
 
         // Close connection
         mysqli_close(mysql: $connection);
