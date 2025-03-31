@@ -8,3 +8,7 @@
 
     $ico_emailTrue = '<img src="./img/mailEnabled.png" alt="Email">';
     $ico_emailFalse = '<img src="./img/mailDisabled.png" alt="Ningun email">';
+
+    $ico_minor = '<img src="./img/minor.png" alt="Menor de edad">';
+    $ico_amonestado = '<img src="./img/amonestado.png" alt="Estudiante amonestado">';
+    $ico_healthSafety = '<img src="./img/health_safety.png" alt="Comentarios médicos">';

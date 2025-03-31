@@ -170,25 +170,43 @@ header{
 /* Student Search Table */
 #studentSearch{
   width: 100%;
-  border: 1px black solid;
   border-collapse: collapse;
+
+  tr.head{
+    font-weight: 700;
+    text-align: center;
+  }
 
   td{
     border: 1px black solid;
-    vertical-align: middle;
+    text-align: center;
+
+    &:first-child{
+      text-align: left;
+      padding: 4px;
+    }
+  }
+
+  img{
+    width: 30px;
+    padding: 2px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    margin-top: 2px;
+
+    &.action{
+      cursor: pointer;
+
+      &:hover{
+        border-color: var(--color-primary-darkest);
+        background-color: var(--color-primary-lighter);
+      }
+    }
   }
 
   p.tooltip {
     display: inline;
     padding: 4px;
-
-    img{
-      width: 30px;
-      padding: 2px;
-      border: 1px solid transparent;
-      border-radius: 2px;
-      margin-top: 2px;
-    }
 
     span {
       visibility: hidden;
