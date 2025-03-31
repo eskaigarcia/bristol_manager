@@ -18,7 +18,7 @@
             <!-- Caja de búsqueda -->
             <div class="card full">
                 <h2>Buscar alumnos</h2>
-                <form action="" id="searchBar">
+                <form action='<?php echo $_SERVER["PHP_SELF"]?>' method="get" id="searchBar">
                     <label for="a_nombre">Nombre:</label>
                     <input type="text" id="a_nombre" name="a_nombre">
                     <label for="a_apellidos">Apellidos:</label>

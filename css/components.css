@@ -171,6 +171,7 @@ header{
 #studentSearch{
   width: 100%;
   border-collapse: collapse;
+  font-size: 1.125rem;
 
   tr.head{
     font-weight: 700;
@@ -180,10 +181,12 @@ header{
   td{
     border: 1px black solid;
     text-align: center;
+    width: 160px;
 
     &:first-child{
       text-align: left;
-      padding: 4px;
+      padding: 8px;
+      width: auto;
     }
   }
 
@@ -216,11 +219,13 @@ header{
       color: var(--color-neutral-black);
       padding: 0.5rem;
       border-radius: var(--radius-sm);
+      border: 1px solid var(--color-primary-dark);
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       white-space: nowrap;
       z-index: 10;
-      transform: translateY(-100%);
-      transition: opacity 0.2s ease-in-out;
+      transform: translate(-60%, 100%);
+      transform-origin: center;
+      transition: opacity 0.1s ease-in-out;
     }
 
     &:hover {
