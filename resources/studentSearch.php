@@ -24,17 +24,10 @@
     while ($row = mysqli_fetch_array(result: $result, mode: MYSQLI_ASSOC)) {
 
         // Evaluate booleans
-        if($row['telefono'] != NULL) {
-            $row_tel = $ico_telTrue;
-            $row_tel_data = $row['telefono'];
-        } else {
-            $row_tel = $ico_telFalse;
-            $row_tel_data = 'No tiene número de teléfono';
-        }
-
-        if($row['dni'] != NULL) echo 'Hola';
-
-        if($row['email'] != NULL) echo 'Hola';
+        $row_tel = ($row['telefono'] != NULL) ? "<p class='tooltip'>$ico_telTrue<span>Teléfono: $row[telefono]</span></p>" : "<p class='tooltip'>$ico_telFalse<span>No hay número de teléfono registrado</span></p>";
+        $row_dni = ($row['dni'] != NULL) ? "<p class='tooltip'>$ico_dniTrue<span>DNI: $row[dni]</span></p>" : "<p class='tooltip'>$ico_dniFalse<span>No hay DNI registrado</span></p>";
+        $row_email = ($row['email'] != NULL) ? "<p class='tooltip'>$ico_emailTrue<span>Enail: $row[email]</span></p>" : "<p class='tooltip'>$ico_emailFalse<span>No hay dirección email registrada</span></p>";
+        
 
         if($row['esAdulto'] == 0) echo 'ALERTA';
 
@@ -46,10 +39,10 @@
         // Print results
         echo "<tr>
                 <td>$row[apellidos], $row[nombre]</td>
-                <td>$row[telefono] - $row[dni] - $row[email]</td>
+                <td>$row_tel $row_dni $row_email</td>
                 <td>$row[esAdulto] - $row[esAmonestado]</td>
                 <td>$row[comentariosMedicos]</td>
-                <td>'+info'</td>
+                <td>+info</td>
             </tr>";
     }
     echo '</table>';

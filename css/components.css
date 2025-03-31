@@ -175,5 +175,46 @@ header{
 
   td{
     border: 1px black solid;
+    vertical-align: middle;
+  }
+
+  p.tooltip {
+    display: inline;
+    padding: 4px;
+
+    img{
+      width: 30px;
+      padding: 2px;
+      border: 1px solid transparent;
+      border-radius: 2px;
+      margin-top: 2px;
+    }
+
+    span {
+      visibility: hidden;
+      opacity: 0;
+      position: absolute;
+      background-color: var(--color-primary-lightest);
+      color: var(--color-neutral-black);
+      padding: 0.5rem;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      white-space: nowrap;
+      z-index: 10;
+      transform: translateY(-100%);
+      transition: opacity 0.2s ease-in-out;
+    }
+
+    &:hover {
+      span {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      img{
+        border-color: var(--color-primary-darkest);
+        background-color: var(--color-primary-lighter);
+      }
+    }
   }
 }
