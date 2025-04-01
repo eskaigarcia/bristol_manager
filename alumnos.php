@@ -44,6 +44,8 @@
             <div class="card full">
                 <?php include './resources/studentSearch.php' ?>
             </div>
+
+            <script src="./resources/getStudentDetails.js"></script>
             
         </main>
     </div>
