@@ -41,7 +41,7 @@ function doSearch(): void {
                 <td>Nombre completo</td>
                 <td>Datos</td>
                 <td>Avisos</td>
-                <td>Acciones</td>
+                <td>Info</td>
             </tr>";
 
     require 'studentSearchGraphics.php';
@@ -64,7 +64,6 @@ function doSearch(): void {
                 <td>$row_minor $row_warn $row_safety</td>
                 <td>
                     <p class='tooltip'><img class='action' onclick='getStudentDetails($row[id_alumno])' src='./img/info.png'><span>Detalles</span></p>
-                    <p class='tooltip'><img class='action' onclick='' src='./img/edit.png'><span>Editar</span></p>
                 </td>
             </tr>";
     }

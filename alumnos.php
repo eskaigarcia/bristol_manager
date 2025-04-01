@@ -45,7 +45,7 @@
                 <?php include './resources/studentSearch.php' ?>
             </div>
 
-            <div class="modal studentData">
+            <div class="modal studentData" id="studentDataModal">
                 <div>
                     <div class="header">
                         <div>
@@ -53,14 +53,14 @@
                             <h2>Eskai García Alcántara  </h2>
                             <p><span>Mayor de edad</span> <span>Amonestado</span> <span>Comentarios médicos</span></p>
                         </div>
-                        <p>[X]</p>
+                        <p onclick="deleteDetailsModal()">[X]</p>
                     </div>
 
                     <div class="body">
-                        <div class="tabs">
+                        <div class="tabs vertical">
                             <button>
-                                <img src="./img/contactInfo.png" alt="Información de contacto">
-                                <span>Información</span>
+                                <img src="./img/contactInfo.png" alt="Información y datos del alumno">
+                                <span>Datos</span>
                             </button>
                             <button>
                                 <img src="./img/education.png" alt="Cursos y bonos">
@@ -80,13 +80,153 @@
                             </button>
                         </div>
                         <div id="studentDataView">
-
+                            <div id="SDVData">
+                                <h3>Datos</h3>
+                                <div class="flex">
+                                    <table class="camo">
+                                        <tr>
+                                            <td>DNI:</td>
+                                            <td>12345678A</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Teléfono:</td>
+                                            <td>644 26 53 64</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email:</td>
+                                            <td>hola@eskai.es</td>
+                                        </tr>
+                                    </table>
+                                    <table class="camo">
+                                        <tr>
+                                            <td>Dirección:</td>
+                                            <td>Calle Periodista Francisco de Paula Terrón nº5 4ºD</td>
+                                        </tr>
+                                        <tr>
+                                            <td>CP:</td>
+                                            <td>18001</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Localidad:</td>
+                                            <td>Granada, Esoaña</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="revealField">
+                                    <p><b>IBAN:</b></p>
+                                    <input type="password" id="IBANField" value="ES12 7586 9453 4953 2934" readonly>
+                                    <button id="IBANButton" class="mini" onclick="toggleIBAN()">Mostrar</button>
+                                </div>
+                                <p><b>Comentarios médicos:</b></p>
+                                <p id="comentariosMedicos">Este alumno no tiene anotaciones médicas.</p>
+                            </div>
+                            <div id="SDVCourses">
+                                <h3>Cursos y bonos</h3>
+                                <table class="styledData">
+                                    <thead>    
+                                        <tr>
+                                            <td>Cursos en los que está inscrito</td>
+                                            <td>Horario</td>
+                                        </tr>
+                                    </thead>
+                                    <tr>
+                                        <td>Intensivo de inglés</td>
+                                        <td>L 9:15, M 9:15</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div id="SDVPayments">
+                                <h3>Pagos</h3>
+                                <table class="styledData">
+                                    <thead>    
+                                        <tr>
+                                            <td>Curso asociado</td>
+                                            <td>Fecha</td>
+                                            <td>Cantidad</td>
+                                        </tr>
+                                    </thead>
+                                    <tr>
+                                        <td>Intensivo de inglés</td>
+                                        <td>02/2025</td>
+                                        <td>65.00€</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Intensivo de inglés</td>
+                                        <td>03/2025</td>
+                                        <td>65.00€</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div id="SDVEmergencies">
+                                <h3>Contactos de emergencia</h3>
+                                <table class="styledData">
+                                    <thead>    
+                                        <tr>
+                                            <td>Nombre</td>
+                                            <td>Relación</td>
+                                            <td>Teléfono</td>
+                                        </tr>
+                                    </thead>
+                                    <tr>
+                                        <td>Carmen Ramírez</td>
+                                        <td>Hermana</td>
+                                        <td>645 24 35 46</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Carmen Ramírez</td>
+                                        <td>Hermana</td>
+                                        <td>645 24 35 46</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div id="SDVGuardian">
+                                <h3>Responsable legal</h3>
+                                <div class="flex">
+                                    <table class="camo">
+                                        <tr>
+                                            <td>Nombre:</td>
+                                            <td>Joaquín González Sánchez de Diego</td>
+                                        </tr>
+                                        <tr>
+                                            <td>DNI:</td>
+                                            <td>12345678A</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Teléfono:</td>
+                                            <td>644 26 53 64</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email:</td>
+                                            <td>hola@eskai.es</td>
+                                        </tr>
+                                    </table>
+                                    <table class="camo">
+                                        <tr>
+                                            <td>Dirección:</td>
+                                            <td>Calle Periodista Francisco de Paula Terrón nº5 4ºD</td>
+                                        </tr>
+                                        <tr>
+                                            <td>CP:</td>
+                                            <td>18001</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Localidad:</td>
+                                            <td>Granada, Esoaña</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="revealField">
+                                    <p><b>IBAN:</b></p>
+                                    <input type="password" id="IBANField" value="ES12 7586 9453 4953 2934" readonly>
+                                    <button id="IBANButton" class="mini" onclick="toggleIBAN()">Mostrar</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <script src="./resources/getStudentDetails.js"></script>
+            <script src="./resources/studentDetails.js"></script>
             
         </main>
     </div>
