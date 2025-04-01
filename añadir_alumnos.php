@@ -6,7 +6,7 @@
     <title>Document</title>
     <?php include './components/htmlHead.php'; ?>
 </head>
-<body>
+<body class="insalumfondo">
     <?php
     require "resources/dbConnect.php";
     $conectar=mysqli_connect($db_host,$db_user,$db_pass,$db_name);
