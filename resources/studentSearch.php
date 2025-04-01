@@ -20,24 +20,13 @@ function parseQuery(): array {
 
     $theQuery = "SELECT id_alumno, apellidos, nombre, telefono, dni, email, esAdulto, esAmonestado, comentariosMedicos FROM alumnos WHERE $theCondition LIMIT 100";
 
-    $theCounter = "SELECT COUNT(id) FROM alumnos WHERE $theCondition LIMIT 100";
+    $theCounter = "SELECT COUNT(id_alumno) FROM alumnos WHERE $theCondition LIMIT 100";
 
     return [$theQuery, $theCounter];
 }
 function doSearch(): void {
 
     require './resources/dbConnect.php';
-    $connection = mysqli_connect(hostname: $db_host, username: $db_user, password: $db_pass);
-
-    // Error handling
-    if(mysqli_connect_errno()) {
-        echo "Error connecting to database.";
-        exit();
-    }
-
-    // Connection configuration
-    mysqli_select_db(mysql: $connection, database: $db_name) or die ('Base de datos no encontrada.');
-    mysqli_set_charset(mysql: $connection, charset: 'utf8');
 
     // Query performing
     $query = parseQuery();
@@ -74,7 +63,7 @@ function doSearch(): void {
                 <td>$row_tel $row_dni $row_email</td>
                 <td>$row_minor $row_warn $row_safety</td>
                 <td>
-                    <p class='tooltip'><img class='action' onclick='' src='./img/info.png'><span>Detalles</span></p>
+                    <p class='tooltip'><img class='action' onclick='getStudentDetails($row[id_alumno])' src='./img/info.png'><span>Detalles</span></p>
                     <p class='tooltip'><img class='action' onclick='' src='./img/edit.png'><span>Editar</span></p>
                 </td>
             </tr>";
