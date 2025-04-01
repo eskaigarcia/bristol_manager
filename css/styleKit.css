@@ -124,11 +124,23 @@ main{
 }
 .insalum{
   font-family: var(--font-display);
-  color: white;
+  color:var(--color-neutral);
   text-align: left;
-  margin-left: 00px;
+  margin-top: 1%;
+  
+  
   
 }
 .insalumatras{
-  background-color: var(--color-primary-darkest);
+  background-color: white;
+  border-radius: 15px;
+  margin-right:70%;
 }
+.insalum td {
+  padding: 7px;
+  
+}
+.insalumfondo{
+  background-color: var(--color-primary-lightest);
+}
+
