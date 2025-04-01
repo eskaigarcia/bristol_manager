@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="./css/layout.css">
 <link rel="stylesheet" href="./css/styleKit.css">
 <link rel="stylesheet" href="./css/components.css">
+<!-- Archivos importados: Santiago --> <link rel="stylesheet" href="./css/temp_santiago.css">
 
 <!-- Favicon -->
 <link rel="icon" type="image/png" href="./favicon/favicon-96x96.png" sizes="96x96" />
