@@ -114,3 +114,13 @@ main{
   background-color: var(--color-primary-lightest);
 
 }
+.insalum{
+  font-family: var(--font-display);
+  color: white;
+  text-align: left;
+  margin-left: 00px;
+  
+}
+.insalumatras{
+  background-color: var(--color-primary-darkest);
+}

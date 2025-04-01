@@ -20,7 +20,9 @@
             <div class="card double">
                 <h2>Accesos rápidos</h2>
                 <hr>
-                <button class="cardLink align_left"><img src="img/personaAdd-onlight.png" alt="">Nuevo alumno</button>
+                <form method="post" action="añadir_alumnos.php">
+                <button type="submit" class="cardLink align_left"><img src="img/personaAdd-onlight.png" alt="">Nuevo alumno</button>
+                </form>
                 <button class="cardLink align_left"><img src="img/money-onlight.png" alt="">Nuevo cobro</button>
                 <button class="cardLink align_left"><img src="img/groupAdd-onlight.png" alt="">Añadir alumno a grupo</button>
                 <button class="cardLink align_left"><img src="img/groupRemove-onlight.png" alt="">Eliminar alumno de grupo</button>
