@@ -122,6 +122,89 @@ header{
   justify-content: space-between;
 }
 
+/* Modal */
+.modal{
+  position: fixed;
+
+  &.studentData{
+    width: 100dvw;
+    height: 100dvh;
+    top: 0;
+    left: 0;
+    background-color: var(--color-primary-scrim);
+
+    > div{
+      opacity: 1;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60dvw;
+      height: 80dvh;
+
+      display: flex;
+      flex-direction: column;
+
+      background-color: var(--color-primary-lightest);
+      padding: 2rem;
+      padding-bottom: 0;
+      border-radius: var(--radius-lg);
+
+      h2{
+        font-size: 3rem;
+      }
+    }
+  }
+
+  .header{
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.modal.studentData .body{
+  background-color: var(--color-neutral-white);
+  border: 1px solid var(--color-primary);
+  border-bottom: none;
+  margin-top: 1rem;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+
+  display: flex;
+
+  .tabs{
+    width: 8rem;
+    height: 100%;
+    border-right: 1px solid var(--color-primary);
+    padding-top: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    button{
+      background-color: transparent;
+      border: none;
+      flex-direction: column;
+      text-align: center;
+      align-items: center;
+      
+      width: 7rem;
+      margin: 2px 0;
+
+      &:hover, &:active{
+        background-color: var(--color-primary-lighter);
+        color: inherit;
+      }
+    }
+  }
+
+  .studentDataView{
+
+  }
+}
+
 /* Search bar */
 #searchBar {
   padding: 1rem 1rem 0; 

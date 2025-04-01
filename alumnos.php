@@ -45,6 +45,47 @@
                 <?php include './resources/studentSearch.php' ?>
             </div>
 
+            <div class="modal studentData">
+                <div>
+                    <div class="header">
+                        <div>
+                            <p>Alumno 001 - Inscrito el 13/04/2025</p>
+                            <h2>Eskai García Alcántara  </h2>
+                            <p><span>Mayor de edad</span> <span>Amonestado</span> <span>Comentarios médicos</span></p>
+                        </div>
+                        <p>[X]</p>
+                    </div>
+
+                    <div class="body">
+                        <div class="tabs">
+                            <button>
+                                <img src="./img/contactInfo.png" alt="Información de contacto">
+                                <span>Información</span>
+                            </button>
+                            <button>
+                                <img src="./img/education.png" alt="Cursos y bonos">
+                                <span>Cursos y bonos</span>
+                            </button>
+                            <button>
+                                <img src="./img/payments.png" alt="Pagos">
+                                <span>Pagos</span>
+                            </button>
+                            <button>
+                                <img src="./img/emergencyContact.png" alt="Contactos de emergencia">
+                                <span>Emergencias</span>
+                            </button>
+                            <button>
+                                <img src="./img/minor.png" alt="Responsable legal">
+                                <span>Responsable legal</span>
+                            </button>
+                        </div>
+                        <div id="studentDataView">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <script src="./resources/getStudentDetails.js"></script>
             
         </main>

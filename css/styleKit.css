@@ -5,14 +5,17 @@
   /* Colors  */
   --color-primary-lightest: #ebf1fc;
   --color-primary-lighter: #b2cdf8;
+  --color-primary-light: #588de1;
   --color-primary: #124495;
   --color-primary-dark: #042c5f;
   --color-primary-darkest: #01132f;
+  --color-primary-scrim: #01132f53;
 
   --color-neutral-white: #ffffff;
   --color-neutral-lightest: #f6f9ff;
   --color-light: #A2A5AB;
 
+  --color-accent-lighter: #f3c1c6;
   --color-accent: #9C0111;
 
 
@@ -42,6 +45,7 @@
 
 html{
   font-family: var(--font-body);
+  overflow-x: hidden;
 }
 
 button, input, label{
@@ -64,6 +68,9 @@ h2{
   margin: 0.25rem 0;
 }
 
+p{
+  margin: 0.25rem 0;
+}
 
 
 #navView{
