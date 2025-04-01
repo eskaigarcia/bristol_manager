@@ -119,9 +119,21 @@ main{
   font-family: var(--font-display);
   color: white;
   text-align: left;
-  margin-left: 00px;
+  margin-top: 1%;
+  
+  
   
 }
 .insalumatras{
   background-color: var(--color-primary-darkest);
+  border-radius: 15px;
+  
+  
+  
+  color:white;
 }
+.insalum td {
+  padding: 7px;
+  
+}
+
