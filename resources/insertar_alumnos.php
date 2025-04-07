@@ -7,29 +7,49 @@
 </head>
 <body>
     <?php
+    ob_start();
     include "../añadir_alumnos.php";
     require "dbConnect.php";
 
-    $nombre=$_GET["nombre"];
-    $apellido=$_GET["apellido"];
-    $telefono=$_GET["telefono"];
-    $dni=$_GET["dni"];
-    $email=$_GET["email"];
-    $direccion=$_GET["direccion"];
-    $cp=$_GET["cp"];
-    $localidad=$_GET["localidad"];
-    $iban=$_GET["iban"];
-    $mayoria=$_GET["mayoria"];
-    $medico=$_GET["medico"];
-
+    $nombre=$_POST["nombre"];
+    $apellido=$_POST["apellido"];
+    $telefono=$_POST["telefono"];
+    $dni=$_POST["dni"];
+    $email=$_POST["email"];
+    $direccion=$_POST["direccion"];
+    $cp=$_POST["cp"];
+    $localidad=$_POST["localidad"];
+    $iban=$_POST["iban"];
+    $mayoria=$_POST["mayoria"];
+    $medico=$_POST["medico"];
     $datos="INSERT INTO alumnos (nombre, apellidos, telefono, dni, email, direccion, cp, localidad, iban,esAdulto,comentariosMedicos) VALUES ('$nombre', '$apellido', '$telefono', '$dni', '$email', '$direccion', '$cp', '$localidad', '$iban', '$mayoria', '$medico')";
-    $datos=mysqli_query($conectar,$datos);
-        if($datos){
-            echo "Alumno añadido correctamente";
+    $datos=mysqli_query($connection,$datos);
+    if ($datos) { 
+        $id_alumno = mysqli_insert_id($connection); 
+    
+        echo "El ID del alumno es: " . $id_alumno;
+    } else {
+        echo "Error al insertar el alumno: " . mysqli_error($connection);
+    }
+    
+    $nombreCont1=$_POST["nombreCont1"];
+    $telefonoCont1=$_POST["telefonoCont1"];
+    $relacionCont1=$_POST["relacionCont1"];
+    $datosCont1="INSERT INTO contactosemergencia (id_alumno, nombre, alumno, relacion) VALUES ('$id_alumno','$nombreCont1','$telefonoCont1', '$relacionCont1')";
+    
+    $nombreCont2=$_POST["nombreCont2"];
+    $telefonoCont2=$_POST["telefonoCont2"];
+    $relacionCont2=$_POST["relacionCont2"];
+    $datosCont2="INSERT INTO contactosemergencia (id_alumno, nombre, alumno, relacion) VALUES ('$id_alumno','$nombreCont2','$telefonoCont2', '$relacionCont2')";
+   
+    $datosContacto1=mysqli_query($connection,$datosCont1);
+    $datosContacto2=mysqli_query($connection,$datosCont2);
+    
+        if($id_alumno&&$datosContacto1&&$datosContacto2){
             header("Location: ../añadir_alumnos.php?success=1");   
             exit();
         }else{
-            echo "Error al añadir el alumno: " . mysqli_error($conectar);
+            echo "Error al añadir el alumno: " . mysqli_error($connection);
         }
     ?>
 </body>

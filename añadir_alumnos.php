@@ -4,12 +4,12 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Document</title>
-        <?php include './components/htmlHead.php'; ?>
+        <?php include 'components/htmlHead.php'; ?>
 </head>
 <body class="insalumfondo">
         <div class="insalumatras">
-        <h1 >Datos del alumno</h1>
-        <form name="insalum" method="get" class="insalum" action="resources/insertar_alumnos.php">
+        <h1 >Datos del alumno</h1><br>
+        <form name="insalum" method="POST" class="insalum" action="resources/insertar_alumnos.php">
             <table class="insalum">
                 <tr>
                     <td><label for="nombre">Nombre:</label></td>
@@ -64,9 +64,46 @@
                     <td colspan="2"><button type="submit">Enviar</button></td>
                 </tr>
             </table>
-        </form>
+        
         </div>
 
+
+
+
+
+        <div class="insalumatras">
+        <h1 >Contactos de emergencia</h1>
+            <table class="insalum">
+            <td colspan="2"><h2>Contacto número 1</h2></td>
+                <tr>
+                    <td><label for="nombreCont">Nombre:</label></td>
+                    <td><input type="text" id="nombreCont1" name="nombreCont1" placeholder="Nombre y apellido"></td>
+                </tr>
+                <tr>
+                    <td><label for="telefonoCont">Teléfono:</label></td>
+                    <td><input type="text" id="telefonoCont1" name="telefonoCont1" placeholder="Introduce el teléfono"></td>
+                </tr>
+                <tr>
+                    <td><label for="dniCont">Relacion:</label></td>
+                    <td><input type="text" id="relacionCont1" name="relacionCont1" placeholder="Relacion con el alumno"></td>
+                </tr>
+            <td colspan="2"><h2>Contacto número 2</h2></td>
+                <tr>
+                    <td><label for="nombreCont">Nombre y apellido:</label></td>
+                    <td><input type="text" id="nombreCont2" name="nombreCont2" placeholder="Nombre y apellido"></td>
+                </tr>
+                <tr>
+                    <td><label for="telefonoCont">Teléfono:</label></td>
+                    <td><input type="text" id="telefonoCont2" name="telefonoCont2" placeholder="Introduce el teléfono"></td>
+                </tr>
+                <tr>
+                    <td><label for="relacionCont">Relacion:</label></td>
+                    <td><input type="text" id="relacionCont2" name="relacionCont2" placeholder="Relacion con el alumno"></td>
+                </tr>
+                </tr>
+            </table>
+        </form>
+        </div>
         <button onclick="window.location.href='dashboard.php'" class="cardLink align_left">Volver atrás</button>
 </body>
 </html>

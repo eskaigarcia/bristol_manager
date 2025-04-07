@@ -5,13 +5,21 @@
     text-align: left;
     margin-top: 1%;
     
-    
+.insalum2{
+  font-family: var(--font-display);
+    color:var(--color-neutral);
+    text-align: left;
+    margin-top: 1%;
+}
     
   }
   .insalumatras{
     background-color: white;
     border-radius: 15px;
-    margin-right:70%;
+    float:left;
+    height: 20%;
+    width: 40%;
+    margin-right: 2%;
   }
   .insalum td {
     padding: 7px;
