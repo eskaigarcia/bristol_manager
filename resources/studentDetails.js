@@ -69,136 +69,25 @@ function displayStudentDetails(student) {
                 ${doTabBar()}
                 <div id="studentDataView">
                     <div class="scrollspySection" id="SDVData">
-                        <h3>Datos</h3>
-                        <div class="flex">
-                            <table class="camo">
-                                <tr>
-                                    <td>DNI:</td>
-                                    <td>${student.alumno.dni}</td>
-                                </tr>
-                                <tr>
-                                    <td>Teléfono:</td>
-                                    <td>${student.alumno.telefono}</td>
-                                </tr>
-                                <tr>
-                                    <td>Email:</td>
-                                    <td>${student.alumno.email}</td>
-                                </tr>
-                            </table>
-                            <table class="camo">
-                                <tr>
-                                    <td>Dirección:</td>
-                                    <td>${student.alumno.direccion}</td>
-                                </tr>
-                                <tr>
-                                    <td>CP:</td>
-                                    <td>${student.alumno.cp}</td>
-                                </tr>
-                                <tr>
-                                    <td>Localidad:</td>
-                                    <td>${student.alumno.localidad}</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="revealField">
-                            <p><b>IBAN:</b></p>
-                            ${student.alumno.iban}
-                        </div>
-                        <p><b>Comentarios médicos:</b></p>
-                        <p>${student.alumno.comentariosMedicos}</p>
+                        ${buildStudentData(student.alumno)}
                     </div>
                     <div class="scrollspySection" id="SDVCourses">
-                        <h3>Cursos y bonos</h3>
-                        ${buildCoursesTable()}
+                        ${buildCoursesTable(student.groups)}
+                    </div>
+                    <div class="scrollspySection" id="SDVBonos">
+                        ${buildVouchersTable(student.vouchers)}
                     </div>
                     <div class="scrollspySection" id="SDVPayments">
-                        <h3>Pagos</h3>
-                        <table class="styledData">
-                            <thead>    
-                                <tr>
-                                    <td>Curso asociado</td>
-                                    <td>Fecha</td>
-                                    <td>Cantidad</td>
-                                </tr>
-                            </thead>
-                            <tr>
-                                <td>Intensivo de inglés</td>
-                                <td>02/2025</td>
-                                <td>65.00€</td>
-                            </tr>
-                            <tr>
-                                <td>Intensivo de inglés</td>
-                                <td>03/2025</td>
-                                <td>65.00€</td>
-                            </tr>
-                        </table>
+                        ${buildPaymentsTable(student.payments)}
                     </div>
                     <div class="scrollspySection" id="SDVEmergencies">
-                        <h3>Contactos de emergencia</h3>
-                        <table class="styledData">
-                            <thead>    
-                                <tr>
-                                    <td>Nombre</td>
-                                    <td>Relación</td>
-                                    <td>Teléfono</td>
-                                </tr>
-                            </thead>
-                            <tr>
-                                <td>Carmen Ramírez</td>
-                                <td>Hermana</td>
-                                <td>645 24 35 46</td>
-                            </tr>
-                            <tr>
-                                <td>Carmen Ramírez</td>
-                                <td>Hermana</td>
-                                <td>645 24 35 46</td>
-                            </tr>
-                        </table>
+                        ${buildEmgContacts(student.contacts)}
                     </div>
                     <div class="scrollspySection" id="SDVGuardian">
-                        <h3>Responsable legal</h3>
-                        <div class="flex">
-                            <table class="camo">
-                                <tr>
-                                    <td>Nombre:</td>
-                                    <td>Joaquín González Sánchez de Diego</td>
-                                </tr>
-                                <tr>
-                                    <td>DNI:</td>
-                                    <td>12345678A</td>
-                                </tr>
-                                <tr>
-                                    <td>Teléfono:</td>
-                                    <td>644 26 53 64</td>
-                                </tr>
-                                <tr>
-                                    <td>Email:</td>
-                                    <td>hola@eskai.es</td>
-                                </tr>
-                            </table>
-                            <table class="camo">
-                                <tr>
-                                    <td>Dirección:</td>
-                                    <td>Calle Periodista Francisco de Paula Terrón nº5 4ºD</td>
-                                </tr>
-                                <tr>
-                                    <td>CP:</td>
-                                    <td>18001</td>
-                                </tr>
-                                <tr>
-                                    <td>Localidad:</td>
-                                    <td>Granada, Esoaña</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="revealField">
-                            <p><b>IBAN:</b></p>
-                            <input type="password" id="IBANField2" value="ES12 7586 9453 4953 2934" readonly>
-                            <button id="IBANButton2" class="mini" onclick="toggleIBAN2()">Mostrar</button>
-                        </div>
+                        ${buildGuardianInfo(student.guardian, student.alumno.esAdulto)}
                     </div>
-                    <div class="scrollspySection" id="SDVGuardian">
-                        <h3>Amigos y familiares</h3>
+                    <div class="scrollspySection" id="SDVFriends">
+                        ${buildRelations(student)}
                     </div>
                 </div>
             </div>
@@ -210,6 +99,7 @@ function displayStudentDetails(student) {
 }
 
 function formatObjectData(student) {
+    // FORMATEAMOS EL ALUMNO
     // Gestionamos los datos nulos
     if(student.alumno.comentariosMedicos == null) student.alumno.comentariosMedicos = 'Este alumno no tiene anotaciones médicas.';
     if(student.alumno.dni == null) student.alumno.dni = '';
@@ -222,29 +112,44 @@ function formatObjectData(student) {
     // Damos formato a los datos que lo necesitan
     student.alumno.fechaInclusion = student.alumno.fechaInclusion.split('-').reverse().join('/');
 
+    //Formateamos el numero de telefono
+    if (/^\d{9}$/.test(student.alumno.telefono)) {
+        student.alumno.telefono = student.alumno.telefono.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
+    }
+
     // Montamos el IBAN
     if (student.alumno.iban == null) {
-        student.alumno.iban = '<input type="text" id="IBANField" value="" readonly></input>'
+        student.alumno.iban = '<input type="text" id="IBANField" value="No proporcionado" readonly></input>'
     } else {
         student.alumno.iban = student.alumno.iban.replace(/(.{4})/g, '$1 ').trim();
         student.alumno.iban = `<input type="password" id="IBANField" value="${student.alumno.iban}" readonly><button id="IBANButton" class="mini" onclick="toggleIBAN()">Mostrar</button>`;
     }
 
+    // REPETIMOS CON EL GUARDIAN (IF EXISITS)
+    if(student.guardian != null) {
+        // Gestionamos los datos nulos
+        if(student.guardian.dni == null) student.guardian.dni = '';
+        if(student.guardian.telefono == null) student.guardian.telefono = '';
+        if(student.guardian.email == null) student.guardian.email = '';
+        if(student.guardian.direccion == null) student.guardian.direccion = '';
+        if(student.guardian.localidad == null) student.guardian.localidad = '';
+        if(student.guardian.cp == null) student.guardian.cp = '';
+
+        //Formateamos el numero de telefono
+        if (/^\d{9}$/.test(student.guardian.telefono)) {
+            student.guardian.telefono = student.guardian.telefono.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
+        }
+        
+        // Montamos el IBAN
+        if (student.guardian.iban == null) {
+            student.guardian.iban = '<input type="text" id="IBANField2" value="No proporcionado" readonly></input>'
+        } else {
+            student.guardian.iban = student.guardian.iban.replace(/(.{4})/g, '$1 ').trim();
+            student.guardian.iban = `<input type="password" id="IBANField2" value="${student.alumno.iban}" readonly><button id="IBANButton" class="mini" onclick="toggleIBAN()">Mostrar</button>`;
+        }
+    }
+
     return student;
-}
-
-function buildCoursesTable(student) {
-    
-    let table = ''
-    // IF coursos == 0 
-    // table = empty state
-
-    // ELSE
-    table += `<table class="styledData"><thead><tr><td>Cursos en los que está inscrito</td><td>Horario</td></tr></thead>`;
-    // FOR EACH course += <tr><td>Course</td><td>Schedule</td> </tr>
-    table += '</table>'
-
-    return table;
 }
 
 function doTabBar() {
@@ -254,8 +159,12 @@ function doTabBar() {
                         <span>Datos</span>
                     </a>
                     <a href="#SDVCourses">
-                        <img src="./img/education.png" alt="Cursos y bonos">
-                        <span>Cursos y bonos</span>
+                        <img src="./img/education.png" alt="Cursos">
+                        <span>Cursos</span>
+                    </a>
+                    <a href="#SDVBonos">
+                        <img src="./img/bonos.png" alt="Bonos">
+                        <span>Bonos</span>
                     </a>
                     <a href="#SDVPayments">
                         <img src="./img/payments.png" alt="Pagos">
@@ -266,28 +175,288 @@ function doTabBar() {
                         <span>Emergencias</span>
                     </a>
                     <a href="#SDVGuardian">
-                        <img src="./img/minor.png" alt="Responsable legal">
-                        <span>Responsable legal</span>
+                        <img src="./img/guardian.png" alt="Responsable legal">
+                        <span>Resp. legal</span>
                     </a>
                     <a href="#SDVFriends">
-                        <img src="./img/minor.png" alt="Amigos">
+                        <img src="./img/group.png" alt="Amigos">
                         <span>Amigos</span>
                     </a>
                 </div>`;
 }
 
-function buildPaymentsTable(student) {
-
+function buildStudentData(student) {
+    return `
+    <h3>Datos personales</h3>
+    <table class="camo">
+        <tr>
+            <td>DNI:</td>
+            <td>${student.dni}</td>
+        </tr>
+        <tr>
+            <td>Teléfono:</td>
+            <td>${student.telefono}</td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td>${student.email}</td>
+        </tr>
+        <tr>
+            <td>Dirección:</td>
+            <td>${student.direccion}</td>
+        </tr>
+        <tr>
+            <td>Código postal:</td>
+            <td>${student.cp}</td>
+        </tr>
+        <tr>
+            <td>Localidad:</td>
+            <td>${student.localidad}</td>
+        </tr>
+    </table>
+    <div class="revealField">
+        <p><b>IBAN:</b></p>
+        ${student.iban}
+    </div>
+    <p><b>Comentarios médicos:</b></p>
+    <p>${student.comentariosMedicos}</p>`
 }
 
-function buildContactsTable(student) {
-
-}
-
-function doGuardianTab(student) {
+function buildCoursesTable(groups) {
+    if (groups == null || groups.length === 0) return `
+    <h3>Cursos</h3>
+    <div class="emptyState-icon">
+        <img src="./img/es-enroll.png">
+        <div>
+            <p>Ningun curso activo</p>
+            <button>Apuntar a grupo</button>
+        </div>
+    </div>`;
     
+    let table = '<h3>Cursos</h3>'
+    table += `
+    <table class="styledData">
+        <thead>
+            <tr>
+                <td>Curso</td>
+                <td>Horario</td>
+                <td>Modalidad</td>
+                <td>Precio</td>
+            </tr>
+        </thead>`;
+
+    for (i in groups) {
+        table += `
+        <tr>
+            <td>${groups[i].nombre}</td>
+            <td></td>
+            <td>${groups[i].modalidad}</td>
+            <td>${(groups[i].precio/100).toFixed(2)}€</td>
+        </tr>`
+    }
+
+    table += '</table>'
+
+    return table;
 }
 
-function buildGuardianTable(student) {
+function buildVouchersTable(vouchers) {
+    if (vouchers == null || vouchers.length === 0) return `
+    <h3>Bonos</h3>
+    <div class="emptyState-icon">
+        <img src="./img/es-bonos.png">
+        <div>
+            <p>Sin bonos</p>
+            <button>Nuevo bono</button>
+        </div>
+    </div>`;
+    
+    let table = '<h3>Bonos</h3>'
+    table += `
+    <table class="styledData">
+        <thead>
+            <tr>
+                <td>Clases disponibles</td>
+                <td>Transferible</td>
+                <td>Fecha de compra</td>
+                <td>Caducidad</td>
+            </tr>
+        </thead>`;
 
+    for (i in vouchers) {
+        table += `
+        <tr>
+            <td>${parseInt(vouchers[i].cantidadClases) - parseInt(vouchers[i].used_classes)}/${vouchers[i].cantidadClases}</td>
+            <td>${(vouchers[i].esTransferido == 0) ? 'Si' : 'No'}</td>
+            <td>${vouchers[i].fechaPago.split(' ')[0].split('-').reverse().join('/')}</td>
+            <td>${vouchers[i].caducidad.split('-').reverse().join('/')}</td>
+        </tr>`;
+    }
+
+    table += '</table>'
+
+    return table;
+}
+
+function buildPaymentsTable(payments) {
+    if (payments == null || payments.length === 0) return `
+    <h3>Historial de pagos</h3>
+    <div class="emptyState-icon">
+        <img src="./img/es-payments.png">
+        <div>
+            <p>Ningun pago registrado o pendiente</p>
+            <button>Relizar un cobro</button>
+        </div>
+    </div>`;
+
+    let table = `
+    <div class="flex clear-between">
+        <h3>Historial de pagos</h3>
+        <button class="outlined">Realizar nuevo cobro</button>
+    </div>
+    <table class="styledData">
+        <thead>    
+            <tr>
+                <td>State</td>
+                <td>Curso</td>
+                <td>Mensualidad</td>
+                <td>Fecha del pago</td>
+                <td>Método</td>
+                <td>Total</td>
+            </tr>
+        </thead>`;
+                    
+    // FOR EACH PAYMENT
+    // table += <tr><td>Curso</td><td>Fecha</td><td>Precio</td><td>Método</td></tr>
+    for (i in payments) {
+        payments[i].fecha = payments[i].fecha.split('-').reverse().slice(1).join('/');
+        payments[i].fechaPago = payments[i].fechaPago.split(' ')[0].split('-').reverse().join('/') + ' ' + payments[i].fechaPago.split(' ')[1].slice(0, 5);
+        payments[i].precioPagado = payments[i].precioTotal - payments[i].descuentoCalculado - payments[i].descuentoPersonal;
+        payments[i].precioPagado = (payments[i].precioPagado / 100).toFixed(2);
+
+        table += `
+        <tr>
+            <td>Pagado</td>
+            <td>${payments[i].nombre}</td>
+            <td>${payments[i].fecha}</td>
+            <td>${payments[i].fechaPago}</td>
+            <td>${payments[i].metodoPago}</td>
+            <td>${payments[i].precioPagado}€</td>
+        </tr>`
+    }
+
+    table += '</table>';
+
+    return table
+}
+
+function buildEmgContacts(contacts) {
+    if (contacts == null || contacts.length === 0) return `
+    <h3>Contactos de emergencia</h3>
+    <div class="emptyState-icon">
+        <img src="./img/es-warn.png">
+        <div>
+            <p>Ningún contacto de emergencia registrado</p>
+            <button>Añadir</button>
+        </div>
+    </div>`;
+
+    let table = `
+    <div class="flex clear-between">
+        <h3>Contactos de emergencia</h3>
+        <button class="outlined">Modificar contactos de emergencia</button>
+    </div>
+    <table class="styledData">
+                    <thead>    
+                        <tr>
+                            <td>Nombre</td>
+                            <td>Teléfono</td>
+                            <td>Relación</td>
+                        </tr>
+                    </thead>`
+                    
+    // FOR EACH PAYMENT
+    // table += <tr><td>Nombre</td><td>Relación</td><td>Teléfono</td></tr>
+    for (i in contacts) {
+        let formattedPhone = contacts[i].telefono;
+        if (/^\d{9}$/.test(formattedPhone)) {
+            formattedPhone = formattedPhone.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
+        }
+        table += `
+        <tr>
+            <td>${contacts[i].nombre}</td>
+            <td>${formattedPhone}</td>
+            <td>${contacts[i].relacion}</td>
+        </tr>`;
+    }
+
+    table += '</table>';
+
+    return table
+}
+
+function buildGuardianInfo(guardian, isAdult) {
+    let src = (isAdult == 1) ? './img/es-guardian.png ': './img/es-warn.png'
+    if (guardian == null) return `
+    <h3>Responsable legal</h3>
+    <div class="emptyState-icon">
+        <img src="${src}">
+        <div>
+            <p>Ningún responsable legal regsitrado</p>
+            <button>Añadir</button>
+        </div>
+    </div>`;
+
+    return `
+    <div class="flex clear-between">
+        <h3>Responsable legal</h3>
+        <button class="outlined">Modificar responsable legal</button>
+    </div>
+    <table class="camo">
+        <tr>
+            <td>Nombre completo:</td>
+            <td>${guardian.nombre}, ${guardian.apellidos}</td>
+        </tr>
+        <tr>
+            <td>DNI:</td>
+            <td>${guardian.dni}</td>
+        </tr>
+        <tr>
+            <td>Teléfono:</td>
+            <td>${guardian.phone}</td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td>${guardian.email}</td>
+        </tr>
+        <tr>
+            <td>Dirección:</td>
+            <td>${guardian.direccion}</td>
+        </tr>
+        <tr>
+            <td>Código postal:</td>
+            <td>${guardian.cp}</td>
+        </tr>
+        <tr>
+            <td>Localidad:</td>
+            <td>${guardian.localidad}</td>
+        </tr>
+    </table>
+
+    <div class="revealField">
+        <p><b>IBAN:</b></p>
+        ${guardian.iban}
+    </div>`;
+}
+
+function buildRelations(relations) {
+    return `
+    <h3>Amigos y familiares</h3>
+    <div class="emptyState-icon">
+        <img src="./img/es-group.png">
+        <div>
+            <p>No se han encontrado amigos o hermanos</p>
+            <button>Añadir</button>
+        </div>
+    </div>`;
 }

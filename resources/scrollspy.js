@@ -25,10 +25,6 @@
       sections.forEach(function(section) {
         const sectionTop = section.offsetTop;
         const sectionBottom = sectionTop + section.offsetHeight;
-        console.log('------')
-        console.log(currentPosition)
-        console.log(sectionTop)
-        console.log(sectionBottom)
   
         if (currentPosition >= sectionTop && currentPosition < sectionBottom) {
           // Add the 'active' class to the corresponding menu item

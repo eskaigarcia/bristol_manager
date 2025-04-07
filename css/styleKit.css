@@ -131,7 +131,13 @@ main{
   background-color: var(--color-primary-lightest);
 }
 
-.flex{ display: flex; }
+.flex{ 
+  display: flex; 
+  &.clear-between{
+    justify-content: space-between;
+    align-items: baseline;
+  }
+}
 
 .spaced-items-sm {
   display: flex;

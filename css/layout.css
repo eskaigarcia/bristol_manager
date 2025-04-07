@@ -10,11 +10,16 @@ body{
   grid-template-columns: 260px 1fr; 
   grid-template-rows: 1fr; 
   grid-template-areas: 
-    "navView main"; 
+    ".  main"; 
 }
 
 #navView {
-  grid-area: navView;
+  width: 260px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100dvh;
+  overflow-y: auto;
 }
 
 main {
