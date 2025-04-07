@@ -17,6 +17,7 @@
 
   --color-accent-lighter: #f3c1c6;
   --color-accent: #9C0111;
+  --color-accent-dark: #76020e;
 
 
   /* Fonts */
@@ -131,3 +132,9 @@ main{
 }
 
 .flex{ display: flex; }
+
+.spaced-items-sm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
