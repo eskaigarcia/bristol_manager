@@ -43,6 +43,14 @@
         Clases
     </button>
 
+    <button 
+            class="align_left <?= basename(path: $_SERVER['PHP_SELF']) === 'relaciones.php' ? 'active' : '' ?>"
+            onclick=""
+        >
+        <img src="img/group-ondark.png" alt="">
+        Amigos
+    </button>
+
     <hr>
 
     <button 
