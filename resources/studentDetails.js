@@ -197,6 +197,9 @@ function displayStudentDetails(student) {
                             <button id="IBANButton2" class="mini" onclick="toggleIBAN2()">Mostrar</button>
                         </div>
                     </div>
+                    <div class="scrollspySection" id="SDVGuardian">
+                        <h3>Amigos y familiares</h3>
+                    </div>
                 </div>
             </div>
         </div>`
@@ -232,7 +235,7 @@ function formatObjectData(student) {
 
 function buildCoursesTable(student) {
     
-    let table
+    let table = ''
     // IF coursos == 0 
     // table = empty state
 
@@ -265,6 +268,10 @@ function doTabBar() {
                     <a href="#SDVGuardian">
                         <img src="./img/minor.png" alt="Responsable legal">
                         <span>Responsable legal</span>
+                    </a>
+                    <a href="#SDVFriends">
+                        <img src="./img/minor.png" alt="Amigos">
+                        <span>Amigos</span>
                     </a>
                 </div>`;
 }
