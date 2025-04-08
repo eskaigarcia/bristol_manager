@@ -10,18 +10,17 @@
     ob_start();
     include "../añadir_alumnos.php";
     require "dbConnect.php";
-
     $nombre=$_POST["nombre"];
     $apellido=$_POST["apellido"];
-    $telefono=$_POST["telefono"];
+    $telefono = !empty($_POST["telefono"]) ? $_POST["telefono"] : "NULL";
     $dni=$_POST["dni"];
-    $email=$_POST["email"];
+    $email = !empty($_POST["email"]) ? $_POST["email"] : "NULL";
     $direccion=$_POST["direccion"];
     $cp=$_POST["cp"];
     $localidad=$_POST["localidad"];
-    $iban=$_POST["iban"];
+    $iban = !empty($_POST["iban"]) ? $_POST["iban"] : "NULL";
     $mayoria=$_POST["mayoria"];
-    $medico=$_POST["medico"];
+    $medico = !empty($_POST["medico"]) ? $_POST["medico"] : "NULL";
     $datos="INSERT INTO alumnos (nombre, apellidos, telefono, dni, email, direccion, cp, localidad, iban,esAdulto,comentariosMedicos) VALUES ('$nombre', '$apellido', '$telefono', '$dni', '$email', '$direccion', '$cp', '$localidad', '$iban', '$mayoria', '$medico')";
     $datos=mysqli_query($connection,$datos);
     if ($datos) { 
