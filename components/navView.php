@@ -21,7 +21,7 @@
 
     <button 
             class="align_left <?= basename(path: $_SERVER['PHP_SELF']) === 'alumnos.php' ? 'active' : '' ?>"
-            onclick="window.location.href='alumnos.php'"
+            onclick=""
         >
         <img src="img/persona-ondark.png" alt="">
         Alumnos
@@ -29,7 +29,7 @@
 
     <button 
             class="align_left <?= basename(path: $_SERVER['PHP_SELF']) === 'grupos.php' ? 'active' : '' ?>"
-            onclick=""
+            onclick="window.location.href='grupos.php'"
         >
         <img src="img/grupo-ondark.png" alt="">
         Grupos
