@@ -1,16 +1,11 @@
 <?php
 
-$id_profesor = isset($_POST['id_profesor']) ? (int) $_POST['id_profesor'] : 0;
 $horarioDias = $_POST['horarioDias'] ?? [];
 $horarioHoras = $_POST['horarioHoras'] ?? [];
 $horarioDuraciones = $_POST['horarioDuraciones'] ?? [];
 $horasSemanales = isset($_POST['horasSemanales']) ? (int) $_POST['horasSemanales'] : 0;
 
-// Conexión BD
-$host = 'localhost';  
-$usuario = 'root'; 
-$contrasena = '';     
-$baseDeDatos = 'bristol_alumnos';  
+require './dbConnect.php';
 
 $conn = new mysqli($host, $usuario, $contrasena, $baseDeDatos);
 
