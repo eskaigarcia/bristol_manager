@@ -16,4 +16,5 @@
 <meta name="apple-mobile-web-app-title" content="Bristol" />
 <link rel="manifest" href="./favicon/site.webmanifest" />
 
-<!-- Bootstrap -->
+<!-- JS Libraries -->
+<script src="./components/library.js"></script>

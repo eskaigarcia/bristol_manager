@@ -87,7 +87,7 @@ function displayStudentDetails(student) {
                         ${buildGuardianInfo(student.guardian, student.alumno.esAdulto)}
                     </div>
                     <div class="scrollspySection" id="SDVFriends">
-                        ${buildRelations(student)}
+                        ${buildRelations(student.relations, student.alumno)}
                     </div>
                 </div>
             </div>
@@ -110,18 +110,13 @@ function formatObjectData(student) {
     if(student.alumno.cp == null) student.alumno.cp = '';
 
     // Damos formato a los datos que lo necesitan
-    student.alumno.fechaInclusion = student.alumno.fechaInclusion.split('-').reverse().join('/');
-
-    //Formateamos el numero de telefono
-    if (/^\d{9}$/.test(student.alumno.telefono)) {
-        student.alumno.telefono = student.alumno.telefono.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
-    }
+    student.alumno.fechaInclusion = _ex.format.date(student.alumno.fechaInclusion);
 
     // Montamos el IBAN
     if (student.alumno.iban == null) {
         student.alumno.iban = '<input type="text" id="IBANField" value="No proporcionado" readonly></input>'
     } else {
-        student.alumno.iban = student.alumno.iban.replace(/(.{4})/g, '$1 ').trim();
+        student.alumno.iban = _ex.format.iban(student.alumno.iban);
         student.alumno.iban = `<input type="password" id="IBANField" value="${student.alumno.iban}" readonly><button id="IBANButton" class="mini" onclick="toggleIBAN()">Mostrar</button>`;
     }
 
@@ -135,16 +130,11 @@ function formatObjectData(student) {
         if(student.guardian.localidad == null) student.guardian.localidad = '';
         if(student.guardian.cp == null) student.guardian.cp = '';
 
-        //Formateamos el numero de telefono
-        if (/^\d{9}$/.test(student.guardian.telefono)) {
-            student.guardian.telefono = student.guardian.telefono.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
-        }
-        
         // Montamos el IBAN
         if (student.guardian.iban == null) {
             student.guardian.iban = '<input type="text" id="IBANField2" value="No proporcionado" readonly></input>'
         } else {
-            student.guardian.iban = student.guardian.iban.replace(/(.{4})/g, '$1 ').trim();
+            student.guardian.iban = _ex.format.iban(student.guardian.iban);
             student.guardian.iban = `<input type="password" id="IBANField2" value="${student.alumno.iban}" readonly><button id="IBANButton" class="mini" onclick="toggleIBAN()">Mostrar</button>`;
         }
     }
@@ -195,7 +185,7 @@ function buildStudentData(student) {
         </tr>
         <tr>
             <td>Teléfono:</td>
-            <td>${student.telefono}</td>
+            <td>${_ex.format.phoneNum(student.telefono)}</td>
         </tr>
         <tr>
             <td>Email:</td>
@@ -251,7 +241,7 @@ function buildCoursesTable(groups) {
             <td>${groups[i].nombre}</td>
             <td></td>
             <td>${groups[i].modalidad}</td>
-            <td>${(groups[i].precio/100).toFixed(2)}€</td>
+            <td>${_ex.format.money(groups[i].precio)}</td>
         </tr>`
     }
 
@@ -288,8 +278,8 @@ function buildVouchersTable(vouchers) {
         <tr>
             <td>${parseInt(vouchers[i].cantidadClases) - parseInt(vouchers[i].used_classes)}/${vouchers[i].cantidadClases}</td>
             <td>${(vouchers[i].esTransferido == 0) ? 'Si' : 'No'}</td>
-            <td>${vouchers[i].fechaPago.split(' ')[0].split('-').reverse().join('/')}</td>
-            <td>${vouchers[i].caducidad.split('-').reverse().join('/')}</td>
+            <td>${_ex.format.date(vouchers[i].fechaPago)}</td>
+            <td>${_ex.format.date(vouchers[i].caducidad)}</td>
         </tr>`;
     }
 
@@ -329,19 +319,16 @@ function buildPaymentsTable(payments) {
     // FOR EACH PAYMENT
     // table += <tr><td>Curso</td><td>Fecha</td><td>Precio</td><td>Método</td></tr>
     for (i in payments) {
-        payments[i].fecha = payments[i].fecha.split('-').reverse().slice(1).join('/');
-        payments[i].fechaPago = payments[i].fechaPago.split(' ')[0].split('-').reverse().join('/') + ' ' + payments[i].fechaPago.split(' ')[1].slice(0, 5);
         payments[i].precioPagado = payments[i].precioTotal - payments[i].descuentoCalculado - payments[i].descuentoPersonal;
-        payments[i].precioPagado = (payments[i].precioPagado / 100).toFixed(2);
 
         table += `
         <tr>
             <td>Pagado</td>
             <td>${payments[i].nombre}</td>
-            <td>${payments[i].fecha}</td>
-            <td>${payments[i].fechaPago}</td>
+            <td>${_ex.format.date(payments[i].fecha, false)}</td>
+            <td>${_ex.format.date(payments[i].fechaPago)}</td>
             <td>${payments[i].metodoPago}</td>
-            <td>${payments[i].precioPagado}€</td>
+            <td>${_ex.format.money(payments[i].precioPagado)}</td>
         </tr>`
     }
 
@@ -376,16 +363,11 @@ function buildEmgContacts(contacts) {
                     </thead>`
                     
     // FOR EACH PAYMENT
-    // table += <tr><td>Nombre</td><td>Relación</td><td>Teléfono</td></tr>
     for (i in contacts) {
-        let formattedPhone = contacts[i].telefono;
-        if (/^\d{9}$/.test(formattedPhone)) {
-            formattedPhone = formattedPhone.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
-        }
         table += `
         <tr>
             <td>${contacts[i].nombre}</td>
-            <td>${formattedPhone}</td>
+            <td>${_ex.format.phoneNum(contacts[i].telefono)}</td>
             <td>${contacts[i].relacion}</td>
         </tr>`;
     }
@@ -423,7 +405,7 @@ function buildGuardianInfo(guardian, isAdult) {
         </tr>
         <tr>
             <td>Teléfono:</td>
-            <td>${guardian.phone}</td>
+            <td>${_ex.format.phoneNum(guardian.phone)}</td>
         </tr>
         <tr>
             <td>Email:</td>
@@ -449,8 +431,8 @@ function buildGuardianInfo(guardian, isAdult) {
     </div>`;
 }
 
-function buildRelations(relations) {
-    return `
+function buildRelations(relations, student) {
+    if (relations == null || relations.length === 0) return `
     <h3>Amigos y familiares</h3>
     <div class="emptyState-icon">
         <img src="./img/es-group.png">
@@ -459,4 +441,46 @@ function buildRelations(relations) {
             <button>Añadir</button>
         </div>
     </div>`;
+
+    let table = `
+    <div class="flex clear-between">
+        <h3>Amigos y familiares</h3>
+        <button class="outlined">Modificar relaciones</button>
+    </div>
+    <table class="styledData">
+                    <thead>    
+                        <tr>
+                            <td>Nombre completo</td>
+                            <td>Relación</td>
+                            <td>Fecha inicio</td>
+                            <td>Estado</td>
+                        </tr>
+                    </thead>`
+                    
+    // FOR EACH RELATION
+    const mainID = student.id_alumno;
+    for (i in relations) {
+        const ID1 = relations[i].a1ID;
+        let nombre, apellidos;
+
+        if(mainID == ID1) {
+            nombre = relations[i].a2Nombre;
+            apellidos = relations[i].a2Apellidos;
+        } else {
+            nombre = relations[i].a1Nombre;
+            apellidos = relations[i].a1Apellidos;
+        }
+
+        table += `
+        <tr>
+            <td>${nombre} ${apellidos}</td>
+            <td>${relations[i].tipoRelacion}</td>
+            <td>${_ex.format.date(relations[i].fechaInicio)}</td>
+            <td>${relations[i].esActivo}</td>
+        </tr>`;
+    }
+
+    table += '</table>';
+
+    return table;
 }
