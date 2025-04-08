@@ -13,35 +13,35 @@
             <table class="insalum">
                 <tr>
                     <td><label for="nombre">Nombre:</label></td>
-                    <td><input type="text" id="nombre" name="nombre" placeholder="Introduce el nombre"></td>
+                    <td><input type="text" id="nombre" name="nombre" placeholder="Introduce el nombre" required></td>
                 </tr>
                 <tr>
                     <td><label for="apellido">Apellido:</label></td>
-                    <td><input type="text" id="apellido" name="apellido" placeholder="Introduce el apellido"></td>
+                    <td><input type="text" id="apellido" name="apellido" placeholder="Introduce el apellido" required></td>
                 </tr>
                 <tr>
                     <td><label for="telefono">Teléfono:</label></td>
-                    <td><input type="text" id="telefono" name="telefono" placeholder="Introduce el teléfono"></td>
+                    <td><input type="tel" id="telefono" name="telefono" placeholder="Introduce el teléfono"></td>
                 </tr>
                 <tr>
                     <td><label for="dni">DNI:</label></td>
-                    <td><input type="text" id="dni" name="dni" placeholder="Introduce el DNI"></td>
+                    <td><input type="text" id="dni" name="dni" placeholder="Introduce el DNI" required></td>
                 </tr>
                 <tr >
                     <td><label for="email">Email:</label></td>
-                    <td><input type="text" id="email" name="email" placeholder="Introduce el email"></td>
+                    <td><input type="email" id="email" name="email" placeholder="Introduce el email"></td>
                 </tr>
                 <tr>
                     <td><label for="direccion">Dirección:</label></td>
-                    <td><input type="text" id="direccion" name="direccion" placeholder="Introduce la dirección"></td>
+                    <td><input type="text" id="direccion" name="direccion" placeholder="Introduce la dirección" required></td>
                 </tr>
                 <tr>
                     <td><label for="cp">Código Postal:</label></td>
-                    <td><input type="text" id="cp" name="cp" placeholder="Introduce el código postal"></td>
+                    <td><input type="number" id="cp" name="cp" placeholder="Introduce el código postal" required></td>
                 </tr>
                 <tr>
                     <td><label for="localidad">Localidad:</label></td>
-                    <td><input type="text" id="localidad" name="localidad" placeholder="Introduce la localidad"></td>
+                    <td><input type="text" id="localidad" name="localidad" placeholder="Introduce la localidad" required></td>
                 </tr>
                 <tr>
                     <td><label for="iban">IBAN:</label></td>
@@ -58,7 +58,7 @@
                 </tr>
                 <tr>
                     <td><label for="medico">Comentarios médicos:</label></td>
-                    <td><textarea style="max-width: 500px; max-height: 200px;" id="medico" name="medico" placeholder="Comentarios médicos" rows="5"></textarea></td>
+                    <td><textarea style="max-width: 500px; max-height: 200px;" id="medico" name="medico" placeholder="Comentarios médicos" rows="5" ></textarea></td>
                 </tr>
                 <tr>
                     <td colspan="2"><button type="submit">Enviar</button></td>
@@ -77,28 +77,28 @@
             <td colspan="2"><h2>Contacto número 1</h2></td>
                 <tr>
                     <td><label for="nombreCont">Nombre:</label></td>
-                    <td><input type="text" id="nombreCont1" name="nombreCont1" placeholder="Nombre y apellido"></td>
+                    <td><input type="text" id="nombreCont1" name="nombreCont1" placeholder="Nombre y apellido" required></td>
                 </tr>
                 <tr>
                     <td><label for="telefonoCont">Teléfono:</label></td>
-                    <td><input type="text" id="telefonoCont1" name="telefonoCont1" placeholder="Introduce el teléfono"></td>
+                    <td><input type="tel" id="telefonoCont1" name="telefonoCont1" placeholder="Introduce el teléfono" required></td>
                 </tr>
                 <tr>
                     <td><label for="dniCont">Relacion:</label></td>
-                    <td><input type="text" id="relacionCont1" name="relacionCont1" placeholder="Relacion con el alumno"></td>
+                    <td><input type="text" id="relacionCont1" name="relacionCont1" placeholder="Relacion con el alumno" required></td>
                 </tr>
             <td colspan="2"><h2>Contacto número 2</h2></td>
                 <tr>
                     <td><label for="nombreCont">Nombre y apellido:</label></td>
-                    <td><input type="text" id="nombreCont2" name="nombreCont2" placeholder="Nombre y apellido"></td>
+                    <td><input type="text" id="nombreCont2" name="nombreCont2" placeholder="Nombre y apellido" required></td>
                 </tr>
                 <tr>
                     <td><label for="telefonoCont">Teléfono:</label></td>
-                    <td><input type="text" id="telefonoCont2" name="telefonoCont2" placeholder="Introduce el teléfono"></td>
+                    <td><input type="tel" id="telefonoCont2" name="telefonoCont2" placeholder="Introduce el teléfono" required></td>
                 </tr>
                 <tr>
                     <td><label for="relacionCont">Relacion:</label></td>
-                    <td><input type="text" id="relacionCont2" name="relacionCont2" placeholder="Relacion con el alumno"></td>
+                    <td><input type="text" id="relacionCont2" name="relacionCont2" placeholder="Relacion con el alumno" required></td>
                 </tr>
                 </tr>
             </table>
