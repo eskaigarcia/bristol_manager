@@ -460,9 +460,9 @@ function buildRelations(relations, student) {
     // FOR EACH RELATION
     const mainID = student.id_alumno;
     for (i in relations) {
+        // Mostramos siempre el nombre del otro alumno.
         const ID1 = relations[i].a1ID;
         let nombre, apellidos;
-
         if(mainID == ID1) {
             nombre = relations[i].a2Nombre;
             apellidos = relations[i].a2Apellidos;
@@ -471,12 +471,17 @@ function buildRelations(relations, student) {
             apellidos = relations[i].a1Apellidos;
         }
 
+        // Hacemos legible el booleano de estado
+        let estado = 'Activa'
+        // if (relations[i],tipoRelacion == 'familiar' && CONCURRENT ENRROLLEMENT == false) estado = 'Inactiva'
+        if (relations[i].tipoRelacion == 'amigo' && relations[i].esActivo == 0) estado = 'Finalizada'
+
         table += `
         <tr>
             <td>${nombre} ${apellidos}</td>
             <td>${relations[i].tipoRelacion}</td>
             <td>${_ex.format.date(relations[i].fechaInicio)}</td>
-            <td>${relations[i].esActivo}</td>
+            <td>${estado}</td>
         </tr>`;
     }
 
