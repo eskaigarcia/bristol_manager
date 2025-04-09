@@ -35,12 +35,12 @@
     $nombreCont1=!empty($_POST["nombreCont1"]) ? $_POST["nombreCont1"] : "NULL";
     $telefonoCont1=!empty($_POST["telefonoCont1"]) ? $_POST["telefonoCont1"] : "NULL";
     $relacionCont1=!empty($_POST["relacionCont1"]) ? $_POST["relacionCont1"] : "NULL";
-    $datosCont1="INSERT INTO contactosemergencia (id_alumno, nombre, alumno, relacion) VALUES ('$id_alumno','$nombreCont1','$telefonoCont1', '$relacionCont1')";
+    $datosCont1="INSERT INTO contactosemergencia (id_alumno, nombre, telefono, relacion) VALUES ('$id_alumno','$nombreCont1','$telefonoCont1', '$relacionCont1')";
     
     $nombreCont2=!empty($_POST["nombreCont2"]) ? $_POST["nombreCont2"] : "NULL";
     $telefonoCont2=!empty($_POST["telefonoCont2"]) ? $_POST["telefonoCont2"] : "NULL";
     $relacionCont2=!empty($_POST["relacionCont2"]) ? $_POST["relacionCont2"] : "NULL";
-    $datosCont2="INSERT INTO contactosemergencia (id_alumno, nombre, alumno, relacion) VALUES ('$id_alumno','$nombreCont2','$telefonoCont2', '$relacionCont2')";
+    $datosCont2="INSERT INTO contactosemergencia (id_alumno, nombre, telefono, relacion) VALUES ('$id_alumno','$nombreCont2','$telefonoCont2', '$relacionCont2')";
    
     $datosContacto1=mysqli_query($connection,$datosCont1);
     $datosContacto2=mysqli_query($connection,$datosCont2);
