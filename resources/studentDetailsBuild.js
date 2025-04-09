@@ -8,38 +8,12 @@ function getStudentDetails(id) {
         // .catch(error => console.error("Error:", error.message));
 }
 
-function toggleIBAN() {
-    const field = document.getElementById('IBANField');
-    const button = document.getElementById('IBANButton');
-
-    if (field.type == 'text') {
-        field.type = 'password';
-        button.innerText = 'Mostrar';
-    } else { 
-        field.type = 'text'
-        button.innerText = 'Ocultar';
-    } 
-}
-
-function toggleIBAN2() {
-    const field = document.getElementById('IBANField2');
-    const button = document.getElementById('IBANButton2');
-
-    if (field.type == 'text') {
-        field.type = 'password';
-        button.innerText = 'Mostrar';
-    } else { 
-        field.type = 'text'
-        button.innerText = 'Ocultar';
-    } 
-}
-
-function removeDetailsModal() {
-    document.getElementById('studentDataModal').remove()
-}
-
 function displayStudentDetails(student) {
     console.log(student) // debugging the object
+
+    // Update active student in a global variable
+    storage.activeStudent = student.alumno.id_alumno;
+    storage.studentData = student;
 
     // Creamos los chips booleanos
     let chips = ''
@@ -178,38 +152,48 @@ function doTabBar() {
 function buildStudentData(student) {
     return `
     <h3>Datos personales</h3>
-    <table class="camo">
-        <tr>
-            <td>DNI:</td>
-            <td>${student.dni}</td>
-        </tr>
-        <tr>
-            <td>Teléfono:</td>
-            <td>${_ex.format.phoneNum(student.telefono)}</td>
-        </tr>
-        <tr>
-            <td>Email:</td>
-            <td>${student.email}</td>
-        </tr>
-        <tr>
-            <td>Dirección:</td>
-            <td>${student.direccion}</td>
-        </tr>
-        <tr>
-            <td>Código postal:</td>
-            <td>${student.cp}</td>
-        </tr>
-        <tr>
-            <td>Localidad:</td>
-            <td>${student.localidad}</td>
-        </tr>
-    </table>
+    <div class="flex">
+        <table class="camo">
+            <tr>
+                <td>DNI:</td>
+                <td>${student.dni}</td>
+            </tr>
+            <tr>
+                <td>Teléfono:</td>
+                <td>${_ex.format.phoneNum(student.telefono)}</td>
+            </tr>
+            <tr>
+                <td>Email:</td>
+                <td>${student.email}</td>
+            </tr>
+            <tr>
+                <td>Dirección:</td>
+                <td>${student.direccion}</td>
+            </tr>
+            <tr>
+                <td>Código postal:</td>
+                <td>${student.cp}</td>
+            </tr>
+            <tr>
+                <td>Localidad:</td>
+                <td>${student.localidad}</td>
+            </tr>
+        </table>
+        <div id="quickNotes">
+            <h4>Notas rápidas:</h4>
+            <textarea oninput="quickNotes.trigger()">${student.notasRapidas}</textarea>
+            <div class="hidden flex clear-between">
+                <button onclick="quickNotes.discard()">Descartar</button>
+                <button onclick="quickNotes.save()">Guardar cambios</button>
+            </div>
+        </div>
+    </div>
     <div class="revealField">
         <p><b>IBAN:</b></p>
         ${student.iban}
     </div>
     <p><b>Comentarios médicos:</b></p>
-    <p>${student.comentariosMedicos}</p>`
+    <p>${student.comentariosMedicos}</p>`;
 }
 
 function buildCoursesTable(groups) {
@@ -460,9 +444,9 @@ function buildRelations(relations, student) {
     // FOR EACH RELATION
     const mainID = student.id_alumno;
     for (i in relations) {
+        // Mostramos siempre el nombre del otro alumno.
         const ID1 = relations[i].a1ID;
         let nombre, apellidos;
-
         if(mainID == ID1) {
             nombre = relations[i].a2Nombre;
             apellidos = relations[i].a2Apellidos;
@@ -471,12 +455,17 @@ function buildRelations(relations, student) {
             apellidos = relations[i].a1Apellidos;
         }
 
+        // Hacemos legible el booleano de estado
+        let estado = 'Activa'
+        // if (relations[i],tipoRelacion == 'familiar' && CONCURRENT ENRROLLEMENT == false) estado = 'Inactiva'
+        if (relations[i].tipoRelacion == 'amigo' && relations[i].esActivo == 0) estado = 'Finalizada'
+
         table += `
         <tr>
             <td>${nombre} ${apellidos}</td>
             <td>${relations[i].tipoRelacion}</td>
             <td>${_ex.format.date(relations[i].fechaInicio)}</td>
-            <td>${relations[i].esActivo}</td>
+            <td>${estado}</td>
         </tr>`;
     }
 

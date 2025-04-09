@@ -4,9 +4,18 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Document</title>
-        <?php include 'components/htmlHead.php'; ?>
+        <?php 
+        include 'components/htmlHead.php'; 
+        if (isset($_GET['message'])) {
+            echo "<p style='color: green; font-weight: bold;'>" . htmlspecialchars($_GET['message']) . "</p>";
+        }?>
 </head>
 <body class="insalumfondo">
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("fecha").value = new Date().toISOString().split("T")[0];
+    });
+</script>
         <div class="insalumatras">
         <h1 >Datos del alumno</h1><br>
         <form name="insalum" method="POST" class="insalum" action="resources/insertar_alumnos.php">
@@ -25,7 +34,7 @@
                 </tr>
                 <tr>
                     <td><label for="dni">DNI:</label></td>
-                    <td><input type="text" id="dni" name="dni" placeholder="Introduce el DNI" required></td>
+                    <td><input type="text" id="dni" name="dni" placeholder="Introduce el DNI"></td>
                 </tr>
                 <tr >
                     <td><label for="email">Email:</label></td>
@@ -33,15 +42,15 @@
                 </tr>
                 <tr>
                     <td><label for="direccion">Dirección:</label></td>
-                    <td><input type="text" id="direccion" name="direccion" placeholder="Introduce la dirección" required></td>
+                    <td><input type="text" id="direccion" name="direccion" placeholder="Introduce la dirección"></td>
                 </tr>
                 <tr>
                     <td><label for="cp">Código Postal:</label></td>
-                    <td><input type="number" id="cp" name="cp" placeholder="Introduce el código postal" required></td>
+                    <td><input type="text" id="cp" name="cp" placeholder="Introduce el código postal"></td>
                 </tr>
                 <tr>
                     <td><label for="localidad">Localidad:</label></td>
-                    <td><input type="text" id="localidad" name="localidad" placeholder="Introduce la localidad" required></td>
+                    <td><input type="text" id="localidad" name="localidad" placeholder="Introduce la localidad"></td>
                 </tr>
                 <tr>
                     <td><label for="iban">IBAN:</label></td>
@@ -50,15 +59,23 @@
                 <tr>
                     <td><label for="mayoria">¿El alumno es mayor?</label></td>
                     <td>
-                        <input type="radio" id="mayor_si" name="mayoria" value="0">
+                        <input type="radio" id="mayor_si" name="mayoria" value="1">
                         <label for="mayor_si">Es mayor</label>
-                        <input type="radio" id="mayor_no" name="mayoria" value="1">
+                        <input type="radio" id="mayor_no" name="mayoria" value="0">
                         <label for="mayor_no">Es menor</label>
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="medico">Comentarios médicos:</label></td>
+                <td><label for="medico">Comentarios médicos:</label></td>
                     <td><textarea style="max-width: 500px; max-height: 200px;" id="medico" name="medico" placeholder="Comentarios médicos" rows="5" ></textarea></td>
+                </tr>
+                <tr>
+                    <td>
+                    <label for="fecha">Fecha de inscripcion del alumno:</label>
+                    </td>
+                    <td>
+                    <input type="date" id="fecha" name="fecha" >
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2"><button type="submit">Enviar</button></td>
@@ -77,28 +94,28 @@
             <td colspan="2"><h2>Contacto número 1</h2></td>
                 <tr>
                     <td><label for="nombreCont">Nombre:</label></td>
-                    <td><input type="text" id="nombreCont1" name="nombreCont1" placeholder="Nombre y apellido" required></td>
+                    <td><input type="text" id="nombreCont1" name="nombreCont1" placeholder="Nombre y apellido"></td>
                 </tr>
                 <tr>
                     <td><label for="telefonoCont">Teléfono:</label></td>
-                    <td><input type="tel" id="telefonoCont1" name="telefonoCont1" placeholder="Introduce el teléfono" required></td>
+                    <td><input type="tel" id="telefonoCont1" name="telefonoCont1" placeholder="Introduce el teléfono"></td>
                 </tr>
                 <tr>
                     <td><label for="dniCont">Relacion:</label></td>
-                    <td><input type="text" id="relacionCont1" name="relacionCont1" placeholder="Relacion con el alumno" required></td>
+                    <td><input type="text" id="relacionCont1" name="relacionCont1" placeholder="Relacion con el alumno"></td>
                 </tr>
             <td colspan="2"><h2>Contacto número 2</h2></td>
                 <tr>
                     <td><label for="nombreCont">Nombre y apellido:</label></td>
-                    <td><input type="text" id="nombreCont2" name="nombreCont2" placeholder="Nombre y apellido" required></td>
+                    <td><input type="text" id="nombreCont2" name="nombreCont2" placeholder="Nombre y apellido"></td>
                 </tr>
                 <tr>
                     <td><label for="telefonoCont">Teléfono:</label></td>
-                    <td><input type="tel" id="telefonoCont2" name="telefonoCont2" placeholder="Introduce el teléfono" required></td>
+                    <td><input type="tel" id="telefonoCont2" name="telefonoCont2" placeholder="Introduce el teléfono"></td>
                 </tr>
                 <tr>
                     <td><label for="relacionCont">Relacion:</label></td>
-                    <td><input type="text" id="relacionCont2" name="relacionCont2" placeholder="Relacion con el alumno" required></td>
+                    <td><input type="text" id="relacionCont2" name="relacionCont2" placeholder="Relacion con el alumno"></td>
                 </tr>
                 </tr>
             </table>
