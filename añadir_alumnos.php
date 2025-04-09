@@ -90,28 +90,28 @@
             <td colspan="2"><h2>Contacto número 1</h2></td>
                 <tr>
                     <td><label for="nombreCont">Nombre:</label></td>
-                    <td><input type="text" id="nombreCont1" name="nombreCont1" placeholder="Nombre y apellido" required></td>
+                    <td><input type="text" id="nombreCont1" name="nombreCont1" placeholder="Nombre y apellido"></td>
                 </tr>
                 <tr>
                     <td><label for="telefonoCont">Teléfono:</label></td>
-                    <td><input type="tel" id="telefonoCont1" name="telefonoCont1" placeholder="Introduce el teléfono" required></td>
+                    <td><input type="tel" id="telefonoCont1" name="telefonoCont1" placeholder="Introduce el teléfono"></td>
                 </tr>
                 <tr>
                     <td><label for="dniCont">Relacion:</label></td>
-                    <td><input type="text" id="relacionCont1" name="relacionCont1" placeholder="Relacion con el alumno" required></td>
+                    <td><input type="text" id="relacionCont1" name="relacionCont1" placeholder="Relacion con el alumno"></td>
                 </tr>
             <td colspan="2"><h2>Contacto número 2</h2></td>
                 <tr>
                     <td><label for="nombreCont">Nombre y apellido:</label></td>
-                    <td><input type="text" id="nombreCont2" name="nombreCont2" placeholder="Nombre y apellido" required></td>
+                    <td><input type="text" id="nombreCont2" name="nombreCont2" placeholder="Nombre y apellido"></td>
                 </tr>
                 <tr>
                     <td><label for="telefonoCont">Teléfono:</label></td>
-                    <td><input type="tel" id="telefonoCont2" name="telefonoCont2" placeholder="Introduce el teléfono" required></td>
+                    <td><input type="tel" id="telefonoCont2" name="telefonoCont2" placeholder="Introduce el teléfono"></td>
                 </tr>
                 <tr>
                     <td><label for="relacionCont">Relacion:</label></td>
-                    <td><input type="text" id="relacionCont2" name="relacionCont2" placeholder="Relacion con el alumno" required></td>
+                    <td><input type="text" id="relacionCont2" name="relacionCont2" placeholder="Relacion con el alumno"></td>
                 </tr>
                 </tr>
             </table>
