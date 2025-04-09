@@ -51,6 +51,7 @@
         }else{
             echo "Error al añadir el alumno: " . mysqli_error($connection);
         }
+        mysqli_close($connection);
     ?>
 </body>
 </html>
