@@ -30,7 +30,7 @@
                 </tr>
                 <tr>
                     <td><label for="dni">DNI:</label></td>
-                    <td><input type="text" id="dni" name="dni" placeholder="Introduce el DNI" required></td>
+                    <td><input type="text" id="dni" name="dni" placeholder="Introduce el DNI"></td>
                 </tr>
                 <tr >
                     <td><label for="email">Email:</label></td>
@@ -38,15 +38,15 @@
                 </tr>
                 <tr>
                     <td><label for="direccion">Dirección:</label></td>
-                    <td><input type="text" id="direccion" name="direccion" placeholder="Introduce la dirección" required></td>
+                    <td><input type="text" id="direccion" name="direccion" placeholder="Introduce la dirección"></td>
                 </tr>
                 <tr>
                     <td><label for="cp">Código Postal:</label></td>
-                    <td><input type="text" id="cp" name="cp" placeholder="Introduce el código postal" required></td>
+                    <td><input type="text" id="cp" name="cp" placeholder="Introduce el código postal"></td>
                 </tr>
                 <tr>
                     <td><label for="localidad">Localidad:</label></td>
-                    <td><input type="text" id="localidad" name="localidad" placeholder="Introduce la localidad" required></td>
+                    <td><input type="text" id="localidad" name="localidad" placeholder="Introduce la localidad"></td>
                 </tr>
                 <tr>
                     <td><label for="iban">IBAN:</label></td>
