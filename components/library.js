@@ -113,5 +113,50 @@ const _ex = {
                     'tiems': times,
                     'durations': durations};
         },
+    },
+
+    ui: {
+        toast: {
+            timer: null,
+            make(contentText = 'Aviso', buttonText = 'Ok', warn = true) {
+                const toast = document.createElement('div');
+                toast.id = 'toastMessage';
+                if (warn) toast.classList.add('warn');
+
+                const text = document.createElement('span');
+                text.textContent = contentText;
+
+                const button = document.createElement('button');
+                button.textContent = buttonText;
+                button.onclick = function () { 
+                    _ex.ui.toast.dismiss(); 
+                    clearTimeout(_ex.ui.toast.timer); 
+                };
+
+                button.addEventListener('click', () => toast.remove());
+                toast.appendChild(text);
+                toast.appendChild(button);
+                document.body.appendChild(toast);
+
+                toast.style.bottom = '-4rem';
+
+                setTimeout(_ex.ui.toast.pop, 10);
+            },
+
+            pop() {
+                document.getElementById('toastMessage').style.bottom = '5rem';
+                _ex.ui.toast.timer = setTimeout(_ex.ui.toast.dismiss, 5100);
+            },
+
+            dismiss() {
+                document.getElementById('toastMessage').style.bottom = '-4rem';
+                _ex.ui.toast.timer = setTimeout(_ex.ui.toast.delete, 150);
+            },
+
+            delete() {
+                const toast = document.getElementById('toastMessage');
+                if (toast) toast.remove();
+            }
+        }
     }
 }

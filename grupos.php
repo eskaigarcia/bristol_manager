@@ -57,7 +57,8 @@
                 <?php include './resources/groupSearch.php' ?>
             </div>
 
-            <script src="./resources/groupDetails.js"></script>
+            <script src="./resources/groupDetailsBuild.js"></script>
+            <script src="./resources/groupDetailsEdit.js"></script>
             <script src="./resources/scrollspy.js"></script>
             
         </main>

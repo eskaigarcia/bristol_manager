@@ -45,7 +45,8 @@
                 <?php include './resources/studentSearch.php' ?>
             </div>
 
-            <script src="./resources/studentDetails.js"></script>
+            <script src="./resources/studentDetailsBuild.js"></script>
+            <script src="./resources/studentDetailsEdit.js"></script>
             <script src="./resources/scrollspy.js"></script>
             
         </main>
