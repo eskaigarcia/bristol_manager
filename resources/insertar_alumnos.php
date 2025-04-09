@@ -8,16 +8,16 @@
 <body>
     <?php
     ob_start();
-    include "../añadir_alumnos.php";
+    include "../annadir_alumnos.php";
     require "dbConnect.php";
     $nombre=$_POST["nombre"];
     $apellido=$_POST["apellido"];
     $telefono = !empty($_POST["telefono"]) ? $_POST["telefono"] : "NULL";
-    $dni=$_POST["dni"];
+    $dni=!empty($_POST["dni"]) ? $_POST["dni"] : "NULL";
     $email = !empty($_POST["email"]) ? $_POST["email"] : "NULL";
-    $direccion=$_POST["direccion"];
-    $cp=$_POST["cp"];
-    $localidad=$_POST["localidad"];
+    $direccion=!empty($_POST["direccion"]) ? $_POST["direccion"] : "NULL";
+    $cp=!empty($_POST["cp"]) ? $_POST["cp"] : "NULL";
+    $localidad=!empty($_POST["localidad"]) ? $_POST["localidad"] : "NULL";
     $iban = !empty($_POST["iban"]) ? $_POST["iban"] : "NULL";
     $mayoria=$_POST["mayoria"];
     $medico = !empty($_POST["medico"]) ? $_POST["medico"] : "NULL";
@@ -46,7 +46,7 @@
     $datosContacto2=mysqli_query($connection,$datosCont2);
     
         if($id_alumno&&$datosContacto1&&$datosContacto2){
-            header("Location: ../añadir_alumnos.php?success=1");   
+            header("Location: ../annadir_alumnos.php?success=1");   
             exit();
         }else{
             echo "Error al añadir el alumno: " . mysqli_error($connection);

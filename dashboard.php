@@ -20,7 +20,7 @@
             <div class="card double">
                 <h2>Accesos rápidos</h2>
                 <hr>
-                <form method="post" action="añadir_alumnos.php">
+                <form method="post" action="annadir_alumnos.php">
                 <button type="submit" class="cardLink align_left"><img src="img/personaAdd-onlight.png" alt="">Nuevo alumno</button>
                 </form>
                 <button class="cardLink align_left"><img src="img/money-onlight.png" alt="">Nuevo cobro</button>
