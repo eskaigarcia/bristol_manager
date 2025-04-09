@@ -24,5 +24,94 @@ const _ex = {
             }
             return number;
         },
+    },
+
+    schedule: {
+        decode (schedule) {
+            // Decode day names
+            const dayMap = {
+                L: 'Lunes',
+                M: 'Martes',
+                X: 'Miércoles',
+                J: 'Jueves',
+                V: 'Viernes',
+                S: 'Sábado',
+                D: 'Domingo'
+            };
+
+            for (i in schedule.days){
+                schedule.days[i] = dayMap[schedule.days[i]] || schedule.days[i];
+            }
+
+            // Decode durations into end times
+            let endTimes = [];
+            for (i in schedule.days){
+                let hour = parseInt(schedule.times[i].split(':')[0]);
+                let minute = parseInt(schedule.times[i].split(':')[1]);
+                minute += parseInt(schedule.durations[i]);
+                while(minute >= 60){
+                    minute -= 60;
+                    hour++;
+                }
+                const endHour = (hour).toString().padStart(2, '0');
+                const endMinute = (minute).toString().padStart(2, '0');
+                endTimes.push(`${endHour}:${endMinute}`);
+            }
+
+            // Organize data into output array
+            let output = [];
+            for (i in schedule.days){
+                output.push([schedule.days[i], schedule.times[i], endTimes[i]]);
+            }
+
+            return output;
+        },
+
+        encode (array) {
+            // Encode day names into single digits
+            const dayMap = {
+                Lunes: 'L',
+                Martes: 'M',
+                Miércoles: 'X',
+                Jueves: 'J',
+                Viernes: 'V',
+                Sábado: 'S',
+                Domingo: 'D'
+            };
+
+            let days = [];
+            for (i in array){
+                days[i] = dayMap[array[i][0]] || array[i][0];
+            }
+
+            // Create an array with the start times
+            let times = [];
+            for (i in array) {
+                times.push(array[i][1]);
+            }
+
+            // Encode end times into durations
+            let durations = [];
+            for (i in array){
+                let startHour = parseInt(array[i][1].split(':')[0]);
+                let startMinute = parseInt(array[i][1].split(':')[1]);
+                let endHour = parseInt(array[i][2].split(':')[0]);
+                let endMinute = parseInt(array[i][2].split(':')[1]);
+
+                let hours = endHour - startHour;
+                let minutes = endMinute - startMinute;
+
+                while(minutes < 0 || hours >= 1){
+                    minutes += 60;
+                    hours--;
+                }
+
+                durations.push(minutes);
+            }
+
+            return {'days': days,
+                    'tiems': times,
+                    'durations': durations};
+        },
     }
 }

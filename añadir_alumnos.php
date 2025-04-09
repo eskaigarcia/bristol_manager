@@ -42,7 +42,7 @@
                 </tr>
                 <tr>
                     <td><label for="cp">Código Postal:</label></td>
-                    <td><input type="number" id="cp" name="cp" placeholder="Introduce el código postal" required></td>
+                    <td><input type="text" id="cp" name="cp" placeholder="Introduce el código postal" required></td>
                 </tr>
                 <tr>
                     <td><label for="localidad">Localidad:</label></td>
