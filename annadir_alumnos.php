@@ -67,10 +67,10 @@
                 </tr>
                 <tr>
                     <td>
-                    <label for="fecha"></label>
+                    <label for="fecha">Fecha de inscripcion del alumno:</label>
                     </td>
                     <td>
-                    <input type="hidden" id="fecha" name="fecha" readonly>
+                    <input type="date" id="fecha" name="fecha" >
                     </td>
                 </tr>
                 <tr>
