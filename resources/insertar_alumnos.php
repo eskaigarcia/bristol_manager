@@ -46,7 +46,7 @@
     $datosContacto2=mysqli_query($connection,$datosCont2);
     
         if($id_alumno&&$datosContacto1&&$datosContacto2){
-            header("Location: ../annadir_alumnos.php?success=1");   
+            header("Location: ../annadir_alumnos.php?success=1&message=Alumno añadido correctamente");   
             exit();
         }else{
             echo "Error al añadir el alumno: " . mysqli_error($connection);

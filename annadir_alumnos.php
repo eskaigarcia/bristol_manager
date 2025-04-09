@@ -4,7 +4,11 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Document</title>
-        <?php include 'components/htmlHead.php'; ?>
+        <?php 
+        include 'components/htmlHead.php'; 
+        if (isset($_GET['message'])) {
+            echo "<p style='color: green; font-weight: bold;'>" . htmlspecialchars($_GET['message']) . "</p>";
+        }?>
 </head>
 <body class="insalumfondo">
 <script>
@@ -55,9 +59,9 @@
                 <tr>
                     <td><label for="mayoria">¿El alumno es mayor?</label></td>
                     <td>
-                        <input type="radio" id="mayor_si" name="mayoria" value="0">
+                        <input type="radio" id="mayor_si" name="mayoria" value="1">
                         <label for="mayor_si">Es mayor</label>
-                        <input type="radio" id="mayor_no" name="mayoria" value="1">
+                        <input type="radio" id="mayor_no" name="mayoria" value="0">
                         <label for="mayor_no">Es menor</label>
                     </td>
                 </tr>
