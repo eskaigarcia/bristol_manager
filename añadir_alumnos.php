@@ -7,6 +7,11 @@
         <?php include 'components/htmlHead.php'; ?>
 </head>
 <body class="insalumfondo">
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("fecha").value = new Date().toISOString().split("T")[0];
+    });
+</script>
         <div class="insalumatras">
         <h1 >Datos del alumno</h1><br>
         <form name="insalum" method="POST" class="insalum" action="resources/insertar_alumnos.php">
@@ -57,8 +62,16 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="medico">Comentarios médicos:</label></td>
+                <td><label for="medico">Comentarios médicos:</label></td>
                     <td><textarea style="max-width: 500px; max-height: 200px;" id="medico" name="medico" placeholder="Comentarios médicos" rows="5" ></textarea></td>
+                </tr>
+                <tr>
+                    <td>
+                    <label for="fecha"></label>
+                    </td>
+                    <td>
+                    <input type="hidden" id="fecha" name="fecha" readonly>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2"><button type="submit">Enviar</button></td>

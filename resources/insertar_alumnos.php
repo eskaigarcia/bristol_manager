@@ -21,7 +21,8 @@
     $iban = !empty($_POST["iban"]) ? $_POST["iban"] : "NULL";
     $mayoria=$_POST["mayoria"];
     $medico = !empty($_POST["medico"]) ? $_POST["medico"] : "NULL";
-    $datos="INSERT INTO alumnos (nombre, apellidos, telefono, dni, email, direccion, cp, localidad, iban,esAdulto,comentariosMedicos) VALUES ('$nombre', '$apellido', '$telefono', '$dni', '$email', '$direccion', '$cp', '$localidad', '$iban', '$mayoria', '$medico')";
+    $fecha =$_POST["fecha"];
+    $datos="INSERT INTO alumnos (nombre, apellidos, telefono, dni, email, direccion, cp, localidad, iban,esAdulto,comentariosMedicos,fechaInclusion) VALUES ('$nombre', '$apellido', '$telefono', '$dni', '$email', '$direccion', '$cp', '$localidad', '$iban', '$mayoria', '$medico','$fecha')";
     $datos=mysqli_query($connection,$datos);
     if ($datos) { 
         $id_alumno = mysqli_insert_id($connection); 
