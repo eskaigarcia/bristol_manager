@@ -1,6 +1,8 @@
 <?php
 
-require './dbConnect.php';
+// CURRENTLY NOT WORKING
+
+require '../dbConnect.php';
 
 $query = "UPDATE alumnos SET notasRapidas = $_POST[notes] WHERE alumnos.id_alumno = $_POST[id]";
 

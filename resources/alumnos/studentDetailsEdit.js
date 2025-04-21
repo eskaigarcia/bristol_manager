@@ -89,7 +89,7 @@ const triggerEdit = {
             <div class="body">
                 <div class="editView">
                     <h3>Modificar datos personales:</h3>
-                    <form id="updateStudentForm" action="./resources/updateStudentDetails.php" method="POST">
+                    <form id="editStudentDetails">
                         <table class="camo">
                             <tr>
                                 <td><label for="nombre">Nombre:</label></td>
@@ -156,41 +156,43 @@ const triggerEdit = {
                         </table>
                         <div class="editFooter">
                             <button class="warn">Descartar cambios</button>
-                            <button type="submit">Guardar cambios</button>
+                            <button type="button" onclick="saveEdit.mainDetails()">Guardar cambios</button>
                         </div>
                     </form>
                 </div>
             </div>
             `;
-
-        // document.querySelector('#studentDataModal form').addEventListener('submit', async function(event) {
-        //     event.preventDefault(); // Prevent the default form submission
-
-        //     const formData = new FormData(event.target);
-        //     const data = Object.fromEntries(formData.entries());
-        //     data.id = storage.studentData.alumno.id_alumno; // Add the student ID to the data object
-
-        //     try {
-        //         const response = await fetch('./resources/updateStudentDetails.php', {
-        //             method: 'POST',
-        //             headers: { 'Content-Type': 'application/json' },
-        //             body: JSON.stringify(data),
-        //         });
-
-        //         if (!response.ok) {
-        //             throw new Error('Failed to update student details.');
-        //         }
-
-        //         const result = await response.json();
-        //         if (result.success) {
-        //             _ex.ui.toast.make('Detalles del alumno actualizados correctamente.');
-        //         } else {
-        //             _ex.ui.toast.make('Error al actualizar los detalles del alumno.');
-        //         }
-        //     } catch (error) {
-        //         console.error('Error:', error);
-        //         _ex.ui.toast.make('Ocurrió un error al intentar actualizar los detalles del alumno.');
-        //     }
-        // });
     }
 }
+
+const saveEdit = {
+    mainDetails() {
+        const formData = new FormData(document.getElementById('editStudentDetails'));
+        const data = Object.fromEntries(formData.entries());
+        data.id = storage.studentData.alumno.id_alumno; // Add the student ID to the data object
+
+        fetch('./updateStudentDetails.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update student details.');
+            }
+            return response.json();
+        })
+        .then(result => {
+            if (result.success) {
+                _ex.ui.toast.make('Detalles del alumno actualizados correctamente.', 'Aceptar', false);
+            } else {
+                _ex.ui.toast.make('Error al actualizar los detalles del alumno.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            _ex.ui.toast.make('Error al procesar la solicitud.');
+        });
+    }
+}
+
