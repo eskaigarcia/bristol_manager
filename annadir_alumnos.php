@@ -20,14 +20,29 @@
         var nombreTutor = document.getElementById("nombrer");
         var apellidoTutor = document.getElementById("apellidor");
         var dniTutor = document.getElementById("dnir");
+        var telefonoTutor = document.getElementById("telefonor");
+        var emailTutor = document.getElementById("emailr");
+        var direccionTutor = document.getElementById("direccionr");
+        var cpTutor = document.getElementById("cpr");
+        var localidadTutor = document.getElementById("localidadr");
         if (mayor.checked) {
             nombreTutor.removeAttribute("required");
             apellidoTutor.removeAttribute("required");
             dniTutor.removeAttribute("required");
+            telefonoTutor.removeAttribute("required");
+            emailTutor.removeAttribute("required");
+            direccionTutor.removeAttribute("required");
+            cpTutor.removeAttribute("required");
+            localidadTutor.removeAttribute("required");
         } else {
             nombreTutor.setAttribute("required", "required");
             apellidoTutor.setAttribute("required", "required");
             dniTutor.setAttribute("required", "required");
+            telefonoTutor.setAttribute("required", "required");
+            emailTutor.setAttribute("required", "required");
+            direccionTutor.setAttribute("required", "required");
+            cpTutor.setAttribute("required", "required");
+            localidadTutor.setAttribute("required", "required");
         }
     }
 </script>
