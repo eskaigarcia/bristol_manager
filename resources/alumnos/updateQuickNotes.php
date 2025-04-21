@@ -1,11 +1,22 @@
 <?php
 
-// CURRENTLY NOT WORKING
-
 require __DIR__.'/../dbConnect.php';
+$data = json_decode(file_get_contents('php://input'), true);
 
-$query = "UPDATE alumnos SET notasRapidas = $_POST[notes] WHERE alumnos.id_alumno = $_POST[id]";
+$id = $data["id"];
+$notes = $data["notes"];
 
-$result_emgContact = mysqli_query(mysql: $connection, query: $query);
+// Use prepared statements to prevent SQL injection and fix syntax issues
+$query = "UPDATE alumnos SET notasRapidas = ? WHERE id_alumno = ?";
+$stmt = $connection->prepare($query);
+$stmt->bind_param('si', $notes, $id);
 
-mysqli_close(mysql: $connection);
+if ($stmt->execute()) {
+    echo json_encode(['success' => true]);
+} else {
+    echo json_encode(['success' => false, 'error' => $stmt->error]);
+}
+
+$stmt->close();
+mysqli_close($connection);
+

@@ -6,7 +6,7 @@ const storage = {
 
 function removeDetailsModal() {
     if (storage.pendingEdits) {
-        _ex.ui.toast.make('Guarda o descarta los cambios de las notas rápidas antes de salir.')
+        _ex.ui.toast.make('Tienes cambios sin guardar.')
     } else {
         document.getElementById('studentDataModal').remove()
     }
@@ -56,12 +56,12 @@ const quickNotes = {
             headers: { 'Content-Type': 'application/json', },
             body: JSON.stringify({ notes, id }),
         })
-        // .then(response => {
-        //     if (!response.ok) throw new Error('Network response was not ok');
-        //     return response.json();
-        // })
-        // .then(data => { console.log('Success:', data); })
-        // .catch(error => { console.error('Error:', error); });
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => { console.log('Success:', data); })
+        .catch(error => { console.error('Error:', error); });
 
         document.querySelector('#quickNotes div').classList.add('hidden');
         storage.pendingEdits = false;
@@ -76,6 +76,7 @@ const quickNotes = {
 
 const triggerEdit = {
     mainDetails() {
+        storage.pendingEdits = true;
         const display = document.querySelector('#studentDataModal div');
         display.innerHTML = `<div class="header">
                 <div>
@@ -147,16 +148,16 @@ const triggerEdit = {
                             </tr>
                             <tr>
                                 <td><label for="comentarios_medicos">Comentarios Médicos:</label></td>
-                                <td><textarea id="comentarios_medicos" name="comentarios_medicos">${storage.studentData.alumno.comentariosMedicos}</textarea></td>
+                                <td><textarea id="comentarios_medicos" name="comentarios_medicos">${(storage.studentData.alumno.comentariosMedicos == null) ? '' : storage.studentData.alumno.comentariosMedicos}</textarea></td>
                             </tr>
                             <tr>
                                 <td><label for="notas_rapidas">Notas Rápidas:</label></td>
-                                <td><textarea id="notas_rapidas" name="notas_rapidas">${storage.studentData.alumno.notasRapidas}</textarea></td>
+                                <td><textarea id="notas_rapidas" name="notas_rapidas">${(storage.studentData.alumno.notasRapidas == null) ? '' : storage.studentData.alumno.notasRapidas}</textarea></td>
                             </tr>
                         </table>
                         <div class="editFooter">
-                            <button class="warn">Descartar cambios</button>
-                            <button type="button" onclick="saveEdit.mainDetails()">Guardar cambios</button>
+                            <button type="button" class="warn" onclick="discardEdits.mainDetails()">Descartar cambios</button>
+                            <button type="button" onclick="saveEdits.mainDetails()">Guardar cambios</button>
                         </div>
                     </form>
                 </div>
@@ -165,8 +166,9 @@ const triggerEdit = {
     }
 }
 
-const saveEdit = {
+const saveEdits = {
     mainDetails() {
+        storage.pendingEdits = false;
         const formData = new FormData(document.getElementById('editStudentDetails'));
         const data = Object.fromEntries(formData.entries());
         data.id = storage.studentData.alumno.id_alumno; // Add the student ID to the data object
@@ -185,6 +187,8 @@ const saveEdit = {
         .then(result => {
             if (result.success) {
                 _ex.ui.toast.make('Detalles del alumno actualizados correctamente.', 'Aceptar', false);
+                removeDetailsModal(); 
+                getStudentDetails(storage.studentData.alumno.id_alumno);
             } else {
                 _ex.ui.toast.make('Error al actualizar los detalles del alumno.');
             }
@@ -196,3 +200,11 @@ const saveEdit = {
     }
 }
 
+const discardEdits = {
+    mainDetails() {
+        storage.pendingEdits = false;
+        _ex.ui.toast.make('Cambios descartados', 'Ok', false)
+        removeDetailsModal(); 
+        getStudentDetails(storage.studentData.alumno.id_alumno);
+    }
+}

@@ -92,6 +92,8 @@ button{
   &.warn{
     background-color: var(--color-accent-light);
     color: var(--color-neutral-white);
+    border-color: var(--color-accent-dark);
+
     &:hover{
       background-color: var(--color-accent-dark);
     }

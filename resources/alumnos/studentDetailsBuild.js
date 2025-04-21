@@ -72,7 +72,6 @@ function displayStudentDetails(student) {
 function formatObjectData(student) {
     // FORMATEAMOS EL ALUMNO
     // Gestionamos los datos nulos
-    if(student.alumno.comentariosMedicos == null) student.alumno.comentariosMedicos = 'Este alumno no tiene anotaciones médicas.';
     if(student.alumno.dni == null) student.alumno.dni = '';
     if(student.alumno.telefono == null) student.alumno.telefono = '';
     if(student.alumno.email == null) student.alumno.email = '';
@@ -190,7 +189,7 @@ function buildStudentData(student) {
         </table>
         <div id="quickNotes">
             <h4>Notas rápidas:</h4>
-            <textarea oninput="quickNotes.trigger()">${student.notasRapidas}</textarea>
+            <textarea oninput="quickNotes.trigger()">${(student.notasRapidas == null) ? '' : student.notasRapidas}</textarea>
             <div class="hidden flex clear-between">
                 <button onclick="quickNotes.discard()">Descartar</button>
                 <button onclick="quickNotes.save()">Guardar cambios</button>
@@ -202,7 +201,7 @@ function buildStudentData(student) {
         ${buildIBANField(student.iban)}
     </div>
     <p><b>Comentarios médicos:</b></p>
-    <p>${student.comentariosMedicos}</p>`;
+    <p>${(student.comentariosMedicos == null) ? 'Este alumno no tiene notas médicas' : student.comentariosMedicos}</p>`;
 }
 
 function buildCoursesTable(groups) {
