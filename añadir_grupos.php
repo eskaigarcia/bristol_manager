@@ -64,7 +64,7 @@
                     <td><input type="number" id="id_profesor" name="id_profesor" placeholder="Introduce el ID del profesor" required></td>
                 </tr>
                 <tr>
-                    <td><label for="horarioDias">Días de clase:</label></td>
+                    <td><label for="horarioDias">Días de clase<br>(Aguante la tecla ctrl para elegir varios):</label></td>
                     <td>
                         <select id="horarioDias" name="horarioDias[]" multiple required>
                             <option value="L">Lunes</option>

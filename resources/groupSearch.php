@@ -13,21 +13,11 @@ function decodeHorario($encodedHorario) {
     }
 
     $decoded = json_decode($encodedHorario, true);
-
-    if ($decoded === null) {
-        return [];
-    }
-
-    return $decoded;
+    return $decoded ?? [];
 }
 
-// Define la función safeImplode fuera del ciclo
 function safeImplode($array) {
-    // Verifica si el valor es un array y si no es vacío, lo convierte en una cadena
-    if (is_array($array)) {
-        return implode(', ', $array);
-    }
-    return ''; // Si no es un array, devuelve una cadena vacía
+    return is_array($array) ? implode(', ', $array) : '';
 }
 
 function parseQuery(): array {
@@ -53,28 +43,30 @@ function doSearch(): void {
     require './resources/dbConnect.php';  
 
     $query = parseQuery();
-    $result = mysqli_query(mysql: $connection, query: $query[0]);
-    $resultCount = mysqli_query(mysql: $connection, query: $query[1]);
-    $count = mysqli_fetch_row(result: $resultCount)[0];
+    $result = mysqli_query($connection, $query[0]);
+    $resultCount = mysqli_query($connection, $query[1]);
+    $count = mysqli_fetch_row($resultCount)[0];
 
+    // Cabecera con cantidad de resultados
     echo "<h2>$count grupos encontrados</h2>";
-    echo '<table id="groupSearch">';
+
+    // Tabla con mismo estilo que studentSearch
+    echo '<table id="studentSearch">';
     echo "<tr class='head'>
-                <td>Nombre</td>
-                <td>Asignatura</td>
-                <td>Modalidad</td>
-                <td>Horas Semanales</td>
-                <td>Creación</td>
-                <td>Activo</td>
-                <td>Intensivo</td>
-                <td>Precio</td>
-                <td>Horario Días</td>
-                <td>Horario Horas</td>
-                <td>Horario Duraciones</td>
-            </tr>";
+            <td>Nombre</td>
+            <td>Asignatura</td>
+            <td>Modalidad</td>
+            <td>Horas Semanales</td>
+            <td>Creación</td>
+            <td>Activo</td>
+            <td>Intensivo</td>
+            <td>Precio</td>
+            <td>Horario Días</td>
+            <td>Horario Horas</td>
+            <td>Horario Duraciones</td>
+        </tr>";
 
-    while ($row = mysqli_fetch_array(result: $result, mode: MYSQLI_ASSOC)) {
-
+    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $row_activado = ($row['esActivo'] == 1) ? "Activo" : "Inactivo";
         $row_intensivo = ($row['esIntensivo'] == 1) ? "Sí" : "No";
 
@@ -83,22 +75,22 @@ function doSearch(): void {
         $horarioDuraciones = decodeHorario($row['horarioDuraciones']);
 
         echo "<tr>
-                <td>$row[nombre]</td>
-                <td>$row[asignatura]</td>
-                <td>$row[modalidad]</td>
-                <td>$row[horasSemanales]</td>
-                <td>$row[creacion]</td>
+                <td>{$row['nombre']}</td>
+                <td>{$row['asignatura']}</td>
+                <td>{$row['modalidad']}</td>
+                <td>{$row['horasSemanales']}</td>
+                <td>{$row['creacion']}</td>
                 <td>$row_activado</td>
                 <td>$row_intensivo</td>
-                <td>$row[precio]</td>
+                <td>{$row['precio']}</td>
                 <td>" . safeImplode($horarioDias) . "</td>
                 <td>" . safeImplode($horarioHoras) . "</td>
                 <td>" . safeImplode($horarioDuraciones) . "</td>
             </tr>";
     }
-    echo '</table>';
 
-    mysqli_close(mysql: $connection);
+    echo '</table>';
+    mysqli_close($connection);
 }
 
 doSearch();
