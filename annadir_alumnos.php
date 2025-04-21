@@ -15,6 +15,14 @@
     document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("fecha").value = new Date().toISOString().split("T")[0];
     });
+    function menoredad(){
+        var mayor = document.getElementById("mayor_si");
+        if (mayor.checked) {
+            document.getElementById("tutor").style.display = "none";
+        } else {
+            document.getElementById("tutor").style.display = "block";
+        }
+    }
 </script>
         <div class="insalumatras">
         <h1 >Datos del alumno</h1><br>
@@ -57,11 +65,11 @@
                     <td><input type="text" id="iban" name="iban" placeholder="Introduce el IBAN"></td>
                 </tr>
                 <tr>
-                    <td><label for="mayoria">¿El alumno es mayor?</label></td>
+                    <td><label for="mayoria">¿Es mayor de edad?</label></td>
                     <td>
-                        <input type="radio" id="mayor_si" name="mayoria" value="1">
+                        <input type="radio" id="mayor_si" name="mayoria" value="1" onchange="menoredad()">
                         <label for="mayor_si">Es mayor</label>
-                        <input type="radio" id="mayor_no" name="mayoria" value="0">
+                        <input type="radio" id="mayor_no" name="mayoria" value="0" onchange="menoredad()">
                         <label for="mayor_no">Es menor</label>
                     </td>
                 </tr>
@@ -83,11 +91,6 @@
             </table>
         
         </div>
-
-
-
-
-
         <div class="insalumatras">
         <h1 >Contactos de emergencia</h1>
             <table class="insalum">
@@ -119,8 +122,50 @@
                 </tr>
                 </tr>
             </table>
-        </form>
         </div>
+        <div class="insalumatras" id="tutor" style="display:none;">
+            <h1>Datos del Tutor</h1>
+        <table class="insalum" >
+                <tr>
+                    <td><label for="nombre">Nombre:</label></td>
+                    <td><input type="text" id="nombrer" name="nombrer" placeholder="Introduce el nombre"></td>
+                </tr>
+                <tr>
+                    <td><label for="apellido">Apellido:</label></td>
+                    <td><input type="text" id="apellidor" name="apellidor" placeholder="Introduce el apellido"></td>
+                </tr>
+                <tr>
+                    <td><label for="telefono">Teléfono:</label></td>
+                    <td><input type="tel" id="telefonor" name="telefonor" placeholder="Introduce el teléfono"></td>
+                </tr>
+                <tr>
+                    <td><label for="dni">DNI:</label></td>
+                    <td><input type="text" id="dnir" name="dnir" placeholder="Introduce el DNI"></td>
+                </tr>
+                <tr >
+                    <td><label for="email">Email:</label></td>
+                    <td><input type="email" id="emailr" name="emailr" placeholder="Introduce el email"></td>
+                </tr>
+                <tr>
+                    <td><label for="direccion">Dirección:</label></td>
+                    <td><input type="text" id="direccionr" name="direccionr" placeholder="Introduce la dirección"></td>
+                </tr>
+                <tr>
+                    <td><label for="cp">Código Postal:</label></td>
+                    <td><input type="text" id="cpr" name="cpr" placeholder="Introduce el código postal"></td>
+                </tr>
+                <tr>
+                    <td><label for="localidad">Localidad:</label></td>
+                    <td><input type="text" id="localidadr" name="localidadr" placeholder="Introduce la localidad"></td>
+                </tr>
+                <tr>
+                    <td><label for="iban">IBAN:</label></td>
+                    <td><input type="text" id="ibanr" name="ibanr" placeholder="Introduce el IBAN"></td>
+                </tr>
+                </tr>
+            </table>
+        </div>
+        </form>
         <button onclick="window.location.href='dashboard.php'" class="cardLink align_left">Volver atrás</button>
 </body>
 </html>
