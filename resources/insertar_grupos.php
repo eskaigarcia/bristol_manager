@@ -9,36 +9,25 @@ $modalidad = $_POST['modalidad'];
 $horasSemanales = $_POST['horasSemanales'];
 $esActivo = isset($_POST['esActivo']) ? 1 : 0;
 $precio = $_POST['precio'];
-$horarioDias = $_POST['horarioDias'];
-$horarioHoras = $_POST['horarioHoras'];
-$horarioDuraciones = $_POST['horarioDuraciones'];
+$horario = $_POST['horario']; // Días de clase
+$horarioHoras = $_POST['horarioHoras']; // Horas de clase
+$horarioDuraciones = $_POST['horarioDuraciones']; // Duraciones de clase
 
 // Función para convertir cadenas separadas por comas en arrays
 function convertirAArray($valor) {
     if (is_string($valor)) {
-        // Si es una cadena, separamos por comas y eliminamos espacios extra
         return array_map('trim', explode(',', $valor));
     }
     return $valor; // Si ya es un array, no lo tocamos
 }
 
-// Función para decodificar solo si el valor es una cadena
-function decodificarSiEsString($valor) {
-    if (is_string($valor)) {
-        return json_decode($valor, true);
-    }
-    return $valor; // Si ya es un array, no lo decodificamos
-}
-
-// Decodificar las cadenas de horarioDias, horarioHoras y horarioDuraciones si es necesario
-$horarioDias = decodificarSiEsString($horarioDias) ?: [];
-$horarioHoras = convertirAArray($horarioHoras);  // Convertir si es una cadena
-$horarioDuraciones = convertirAArray($horarioDuraciones);  // Convertir si es una cadena
+// Convertir días, horas y duraciones a arrays
+$horario = convertirAArray($horario);
+$horarioHoras = convertirAArray($horarioHoras);
+$horarioDuraciones = convertirAArray($horarioDuraciones);
 
 // Codificar los valores a JSON para almacenarlos en la base de datos
-$horarioDiasJson = json_encode($horarioDias);
-$horarioHorasJson = json_encode($horarioHoras);
-$horarioDuracionesJson = json_encode($horarioDuraciones);
+$horarioJson = json_encode(['dias' => $horario, 'horas' => $horarioHoras, 'duraciones' => $horarioDuraciones]);
 
 // Capturar si es intensivo, si está marcado en el formulario, se establece a 1, de lo contrario a 0
 $esIntensivo = isset($_POST['esIntensivo']) ? 1 : 0;
@@ -52,8 +41,8 @@ $result_check_profesor = mysqli_query($connection, $sql_check_profesor);
 
 if (mysqli_num_rows($result_check_profesor) > 0) {
     // Si el profesor existe, proceder con la inserción del grupo
-    $sql = "INSERT INTO grupos (nombre, asignatura, modalidad, horasSemanales, esActivo, precio, horarioDias, horarioHoras, horarioDuraciones, esIntensivo, id_profesor) 
-            VALUES ('$nombre', '$asignatura', '$modalidad', '$horasSemanales', '$esActivo', '$precio', '$horarioDiasJson', '$horarioHorasJson', '$horarioDuracionesJson', $esIntensivo, $id_profesor)";
+    $sql = "INSERT INTO grupos (nombre, asignatura, modalidad, horasSemanales, esActivo, precio, horario, esIntensivo, id_profesor) 
+            VALUES ('$nombre', '$asignatura', '$modalidad', '$horasSemanales', '$esActivo', '$precio', '$horarioJson', $esIntensivo, $id_profesor)";
 
     if (mysqli_query($connection, $sql)) {
         // Si la inserción es exitosa, redirigir al listado de grupos con éxito

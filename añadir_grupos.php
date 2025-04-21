@@ -64,30 +64,26 @@
                     <td><input type="number" id="id_profesor" name="id_profesor" placeholder="Introduce el ID del profesor" required></td>
                 </tr>
                 <tr>
-                    <td><label for="horarioDias">Días de clase<br>(Aguante la tecla ctrl para elegir varios):</label></td>
+                    <td><label for="horario">Días de clase:</label></td>
                     <td>
-                        <select id="horarioDias" name="horarioDias[]" multiple required>
-                            <option value="L">Lunes</option>
-                            <option value="M">Martes</option>
-                            <option value="X">Miércoles</option>
-                            <option value="J">Jueves</option>
-                            <option value="V">Viernes</option>
-                            <option value="S">Sábado</option>
-                            <option value="D">Domingo</option>
+                        <select id="horario" name="horario[]" multiple required>
+                            <option value="Lunes">Lunes</option>
+                            <option value="Martes">Martes</option>
+                            <option value="Miércoles">Miércoles</option>
+                            <option value="Jueves">Jueves</option>
+                            <option value="Viernes">Viernes</option>
+                            <option value="Sábado">Sábado</option>
+                            <option value="Domingo">Domingo</option>
                         </select>
                     </td>
                 </tr>
                 <tr>
                     <td><label for="horarioHoras">Horas de clase:</label></td>
-                    <td>
-                        <input type="text" id="horarioHoras" name="horarioHoras" placeholder="Ejemplo: 09:00, 11:00" required>
-                    </td>
+                    <td><input type="text" id="horarioHoras" name="horarioHoras" placeholder="Ejemplo: 09:00, 11:00" required></td>
                 </tr>
                 <tr>
                     <td><label for="horarioDuraciones">Duraciones de clase:</label></td>
-                    <td>
-                        <input type="text" id="horarioDuraciones" name="horarioDuraciones" placeholder="Ejemplo: 60, 90" required>
-                    </td>
+                    <td><input type="text" id="horarioDuraciones" name="horarioDuraciones" placeholder="Ejemplo: 60, 90" required></td>
                 </tr>
                 <tr>
                     <td colspan="2"><button type="submit">Crear Grupo</button></td>
