@@ -69,7 +69,7 @@
                         <select id="horario" name="horario[]" multiple required>
                             <option value="Lunes">Lunes</option>
                             <option value="Martes">Martes</option>
-                            <option value="Miércoles">Miércoles</option>
+                            <option value="Miércoles">Miercoles</option>
                             <option value="Jueves">Jueves</option>
                             <option value="Viernes">Viernes</option>
                             <option value="Sábado">Sábado</option>
