@@ -17,10 +17,17 @@
     });
     function menoredad(){
         var mayor = document.getElementById("mayor_si");
+        var nombreTutor = document.getElementById("nombrer");
+        var apellidoTutor = document.getElementById("apellidor");
+        var dniTutor = document.getElementById("dnir");
         if (mayor.checked) {
-            document.getElementById("tutor").style.display = "none";
+            nombreTutor.removeAttribute("required");
+            apellidoTutor.removeAttribute("required");
+            dniTutor.removeAttribute("required");
         } else {
-            document.getElementById("tutor").style.display = "block";
+            nombreTutor.setAttribute("required", "required");
+            apellidoTutor.setAttribute("required", "required");
+            dniTutor.setAttribute("required", "required");
         }
     }
 </script>
@@ -97,15 +104,15 @@
             <td colspan="2"><h2>Contacto número 1</h2></td>
                 <tr>
                     <td><label for="nombreCont">Nombre:</label></td>
-                    <td><input type="text" id="nombreCont1" name="nombreCont1" placeholder="Nombre y apellido"></td>
+                    <td><input type="text" id="nombreCont1" name="nombreCont1" placeholder="Nombre y apellido" required></td>
                 </tr>
                 <tr>
                     <td><label for="telefonoCont">Teléfono:</label></td>
-                    <td><input type="tel" id="telefonoCont1" name="telefonoCont1" placeholder="Introduce el teléfono"></td>
+                    <td><input type="tel" id="telefonoCont1" name="telefonoCont1" placeholder="Introduce el teléfono" required></td>
                 </tr>
                 <tr>
                     <td><label for="dniCont">Relacion:</label></td>
-                    <td><input type="text" id="relacionCont1" name="relacionCont1" placeholder="Relacion con el alumno"></td>
+                    <td><input type="text" id="relacionCont1" name="relacionCont1" placeholder="Relacion con el alumno" required></td>
                 </tr>
             <td colspan="2"><h2>Contacto número 2</h2></td>
                 <tr>
@@ -123,8 +130,8 @@
                 </tr>
             </table>
         </div>
-        <div class="insalumatras" id="tutor" style="display:none;">
-            <h1>Datos del Tutor</h1>
+        <div class="insalumatras" id="tutor" ">
+            <h1>Datos del responsable legal</h1>
         <table class="insalum" >
                 <tr>
                     <td><label for="nombre">Nombre:</label></td>
