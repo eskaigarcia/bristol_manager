@@ -9,9 +9,13 @@
         <main>
             <header>
                 <h1>Grupos</h1>
-                <button onclick="window.location.href='añadir_grupos.php'" class="cta">Nuevo grupo</button>
+                <a href="añadir_grupos.php" class="cta">
+                Nuevo grupo
+                </a>
+
             </header>
 
+            <!-- Caja de búsqueda -->
             <div class="card full">
                 <h2>Buscar grupos</h2>
                 <form action='<?php echo $_SERVER["PHP_SELF"]?>' method="get" id="searchBar">
@@ -39,16 +43,6 @@
                         </select>
                     </div>
 
-                    <!-- Aquí agregamos margen para separar más el campo de Intensivo -->
-                    <div class="full subGrid" style="margin-top: 20px;">
-                        <label for="g_esIntensivo">¿Es Intensivo?</label>
-                        <select id="g_esIntensivo" name="g_esIntensivo">
-                            <option value="">--Seleccionar--</option>
-                            <option value="1">Sí</option>
-                            <option value="0">No</option>
-                        </select>
-                    </div>
-
                     <div class="full center">
                         <button type="submit" class="cta">
                             <?php include './img/search.svg' ?>
@@ -58,13 +52,14 @@
                 </form>
             </div>
 
+            <!-- Tabla de resultados -->
             <div class="card full">
                 <?php include './resources/groupSearch.php' ?>
             </div>
 
-            <script src="./resources/groupDetailsBuild.js"></script>
-            <script src="./resources/groupDetailsEdit.js"></script>
+            <script src="./resources/groupDetails.js"></script>
             <script src="./resources/scrollspy.js"></script>
+            
         </main>
     </div>
 </body>

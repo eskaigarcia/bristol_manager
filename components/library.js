@@ -119,6 +119,10 @@ const _ex = {
         toast: {
             timer: null,
             make(contentText = 'Aviso', buttonText = 'Ok', warn = true) {
+                let test = document.getElementById('toastMessage');
+                if (test) test.remove();
+                clearTimeout(_ex.ui.toast.timer);
+
                 const toast = document.createElement('div');
                 toast.id = 'toastMessage';
                 if (warn) toast.classList.add('warn');
