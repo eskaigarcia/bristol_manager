@@ -1,98 +1,93 @@
 <?php
+// Incluir la conexión a la base de datos
+require './resources/dbConnect.php';
 
-$s_nombre = $_GET["g_nombre"] ?? '';
-$s_asignatura = $_GET["g_asignatura"] ?? '';
-$s_modalidad = $_GET["g_modalidad"] ?? '';
-$s_precio = $_GET["g_precio"] ?? '';
-$s_horasSemanales = $_GET["g_horasSemanales"] ?? '';
-$s_esActivo = $_GET["g_esActivo"] ?? '';
+// Ejecutar la consulta
+$query = "SELECT id_grupo, nombre, asignatura, modalidad, horasSemanales, creacion, esActivo, esIntensivo, precio, horario FROM grupos";
+$result = mysqli_query($connection, $query);
 
-function decodeHorario($encodedHorario) {
-    if ($encodedHorario == NULL) {
-        return [];
+// Verificar si la consulta tuvo éxito
+if (!$result) {
+    echo "Error al obtener los grupos: " . mysqli_error($connection);
+    exit();
+}
+
+// Contar el número de resultados
+$count = mysqli_num_rows($result);
+
+// Mostrar el número de resultados encontrados
+echo "<h2>$count grupos encontrados</h2>";
+
+// Mostrar la tabla con los resultados
+echo '<table id="studentSearch">';
+echo "<tr class='head'>
+        <td>ID del Grupo</td>
+        <td>Nombre</td>
+        <td>Asignatura</td>
+        <td>Modalidad</td>
+        <td>Horas Semanales</td>
+        <td>Fecha de Creación</td>
+        <td>Activo</td>
+        <td>Intensivo</td>
+        <td>Precio</td>
+        <td>Horario</td>
+    </tr>";
+
+while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+    // Convertir los valores de las columnas "esActivo" y "esIntensivo" a un formato legible
+    $row_activado = ($row['esActivo'] == 1) ? "Activo" : "Inactivo";
+    $row_intensivo = ($row['esIntensivo'] == 1) ? "Sí" : "No";
+
+    // Comprobar si la fecha es válida (no es NULL o '0000-00-00')
+    $fechaCreacion = 'No disponible';
+    if ($row['creacion'] != NULL && $row['creacion'] != '0000-00-00') {
+        // Si la fecha de creación es válida, formatearla
+        $fechaCreacion = date('d-m-Y', strtotime($row['creacion']));
+    } else {
+        // Si la fecha de creación no es válida, asignar la fecha actual
+        $fechaCreacion = date('d-m-Y'); // Fecha actual
     }
 
-    $decoded = json_decode($encodedHorario, true);
-    return $decoded ?? [];
-}
+    // Decodificar el horario (asumiendo que el valor de 'horario' es un JSON)
+    $horario = decodeHorario($row['horario']); // Decodificar el horario
 
-function safeImplode($array) {
-    return is_array($array) ? implode(', ', $array) : '';
-}
-
-function parseQuery(): array {
-    global $s_nombre, $s_asignatura, $s_modalidad, $s_precio, $s_horasSemanales, $s_esActivo;
-
-    $theCondition = '';
-    if ($s_nombre != '') $theCondition .= ($theCondition != '' ? ' AND ' : '') . "nombre LIKE '%$s_nombre%'"; 
-    if ($s_asignatura != '') $theCondition .= ($theCondition != '' ? ' AND ' : '') . "asignatura LIKE '%$s_asignatura%'"; 
-    if ($s_modalidad != '') $theCondition .= ($theCondition != '' ? ' AND ' : '') . "modalidad LIKE '%$s_modalidad%'"; 
-    if ($s_precio != '') $theCondition .= ($theCondition != '' ? ' AND ' : '') . "precio LIKE '$s_precio'"; 
-    if ($s_horasSemanales != '') $theCondition .= ($theCondition != '' ? ' AND ' : '') . "horasSemanales LIKE '$s_horasSemanales'"; 
-    if ($s_esActivo != '') $theCondition .= ($theCondition != '' ? ' AND ' : '') . "esActivo = $s_esActivo";
-
-    if ($theCondition == '') $theCondition = 1;
-
-    $theQuery = "SELECT id_grupo, nombre, asignatura, modalidad, horasSemanales, creacion, esActivo, esIntensivo, precio, horarioDias, horarioHoras, horarioDuraciones FROM grupos WHERE $theCondition LIMIT 100";
-    $theCounter = "SELECT COUNT(id_grupo) FROM grupos WHERE $theCondition LIMIT 100";
-
-    return [$theQuery, $theCounter];
-}
-
-function doSearch(): void {
-    require './resources/dbConnect.php';  
-
-    $query = parseQuery();
-    $result = mysqli_query($connection, $query[0]);
-    $resultCount = mysqli_query($connection, $query[1]);
-    $count = mysqli_fetch_row($resultCount)[0];
-
-    // Cabecera con cantidad de resultados
-    echo "<h2>$count grupos encontrados</h2>";
-
-    // Tabla con mismo estilo que studentSearch
-    echo '<table id="studentSearch">';
-    echo "<tr class='head'>
-            <td>Nombre</td>
-            <td>Asignatura</td>
-            <td>Modalidad</td>
-            <td>Horas Semanales</td>
-            <td>Creación</td>
-            <td>Activo</td>
-            <td>Intensivo</td>
-            <td>Precio</td>
-            <td>Horario Días</td>
-            <td>Horario Horas</td>
-            <td>Horario Duraciones</td>
+    // Mostrar cada fila de resultados
+    echo "<tr>
+            <td>{$row['id_grupo']}</td> <!-- Aquí se usa 'id_grupo' -->
+            <td>{$row['nombre']}</td>
+            <td>{$row['asignatura']}</td>
+            <td>{$row['modalidad']}</td>
+            <td>{$row['horasSemanales']}</td>
+            <td>{$fechaCreacion}</td> <!-- Fecha de creación formateada o la actual -->
+            <td>$row_activado</td>
+            <td>$row_intensivo</td>
+            <td>{$row['precio']}€</td>
+            <td>" . safeImplode($horario) . "</td> <!-- Muestra el horario decodificado -->
         </tr>";
-
-    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-        $row_activado = ($row['esActivo'] == 1) ? "Activo" : "Inactivo";
-        $row_intensivo = ($row['esIntensivo'] == 1) ? "Sí" : "No";
-
-        $horarioDias = decodeHorario($row['horarioDias']);
-        $horarioHoras = decodeHorario($row['horarioHoras']);
-        $horarioDuraciones = decodeHorario($row['horarioDuraciones']);
-
-        echo "<tr>
-                <td>{$row['nombre']}</td>
-                <td>{$row['asignatura']}</td>
-                <td>{$row['modalidad']}</td>
-                <td>{$row['horasSemanales']}</td>
-                <td>{$row['creacion']}</td>
-                <td>$row_activado</td>
-                <td>$row_intensivo</td>
-                <td>{$row['precio']}</td>
-                <td>" . safeImplode($horarioDias) . "</td>
-                <td>" . safeImplode($horarioHoras) . "</td>
-                <td>" . safeImplode($horarioDuraciones) . "</td>
-            </tr>";
-    }
-
-    echo '</table>';
-    mysqli_close($connection);
 }
 
-doSearch();
+echo '</table>';
 
+// Cerrar la conexión a la base de datos
+mysqli_close($connection);
+
+// Función para decodificar el horario desde JSON
+function decodeHorario($encodedHorario) {
+    if ($encodedHorario == NULL || $encodedHorario == '') {
+        return []; // Si el horario es NULL o vacío, devolvemos un array vacío
+    }
+
+    // Si el horario es un string JSON, lo decodificamos
+    $decoded = json_decode($encodedHorario, true);
+    return ($decoded != null) ? $decoded : []; // Si no se puede decodificar, devolvemos un array vacío
+}
+
+// Función para convertir un array a un string separado por comas
+function safeImplode($array) {
+    // Verificamos si es un array y si no está vacío
+    if (is_array($array) && count($array) > 0) {
+        return implode(', ', $array); // Convierte el array en una cadena separada por comas
+    }
+    return ''; // Retorna una cadena vacía si no es un array o el array está vacío
+}
 ?>
