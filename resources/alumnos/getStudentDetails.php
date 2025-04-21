@@ -1,6 +1,6 @@
 <?php
 
-require './dbConnect.php';
+require __DIR__.'/../dbConnect.php';
 
 // Get the selected student id for querying
 $id = $_GET['id'];

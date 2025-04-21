@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 
 // Include database connection
-require_once '../dbConnect.php';
+require __DIR__.'/../dbConnect.php';
 
 // Get the JSON input
 $input = file_get_contents('php://input');

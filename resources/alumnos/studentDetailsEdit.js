@@ -51,7 +51,7 @@ const quickNotes = {
         let notes = document.querySelector('#quickNotes textarea').value;
         let id = storage.activeStudent;
         
-        fetch('./updateQuickNotes.php', {
+        fetch('./resources/alumnos/updateQuickNotes.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', },
             body: JSON.stringify({ notes, id }),
@@ -171,7 +171,7 @@ const saveEdit = {
         const data = Object.fromEntries(formData.entries());
         data.id = storage.studentData.alumno.id_alumno; // Add the student ID to the data object
 
-        fetch('./updateStudentDetails.php', {
+        fetch('./resources/alumnos/updateStudentDetails.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),

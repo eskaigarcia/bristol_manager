@@ -1,5 +1,5 @@
 function getStudentDetails(id) {
-    fetch(`./getStudentDetails.php?id=${id}`)
+    fetch(`./resources/alumnos/getStudentDetails.php?id=${id}`)
         .then(response => {
             if (!response.ok) throw new Error("Alumno no encontrado")
             return response.json();

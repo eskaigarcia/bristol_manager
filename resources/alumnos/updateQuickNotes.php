@@ -2,7 +2,7 @@
 
 // CURRENTLY NOT WORKING
 
-require '../dbConnect.php';
+require __DIR__.'/../dbConnect.php';
 
 $query = "UPDATE alumnos SET notasRapidas = $_POST[notes] WHERE alumnos.id_alumno = $_POST[id]";
 
