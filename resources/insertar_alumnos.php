@@ -41,7 +41,20 @@
     $telefonoCont2=$_POST["telefonoCont2"];
     $relacionCont2=$_POST["relacionCont2"];
     $datosCont2="INSERT INTO contactosemergencia (id_alumno, nombre, telefono, relacion) VALUES ('$id_alumno','$nombreCont2','$telefonoCont2', '$relacionCont2')";
-   
+    
+    if ($mayoria == '0') {
+    $nombrer=$_POST["nombrer"];
+    $apellidor=$_POST["apellidor"];
+    $telefonor=$_POST["telefonor"];
+    $dnir=$_POST["dnir"];
+    $emailr=$_POST["emailr"];
+    $direccionr=$_POST["direccionr"];
+    $cpr=$_POST["cpr"];
+    $localidadr=$_POST["localidadr"];
+    $ibanr=$_POST["ibanr"];
+    $datosResponsable="INSERT INTO responsables (id_alumno, nombre, apellidos, telefono, dni, email, direccion, cp, localidad,iban) VALUES ('$id_alumno', '$nombrer', '$apellidor', '$telefonor', '$dnir', '$emailr', '$direccionr', '$cpr', '$localidadr', '$ibanr')";
+    $datosResponsable=mysqli_query($connection,$datosResponsable);
+    }
     $datosContacto1=mysqli_query($connection,$datosCont1);
     $datosContacto2=mysqli_query($connection,$datosCont2);
     

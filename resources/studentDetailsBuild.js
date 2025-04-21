@@ -15,12 +15,6 @@ function displayStudentDetails(student) {
     storage.activeStudent = student.alumno.id_alumno;
     storage.studentData = student;
 
-    // Creamos los chips booleanos
-    let chips = ''
-    chips += (student.alumno.esAdulto == 0) ? '<span class="chip warn">Menor de edad</span>' : '<span class="chip">Mayor de edad</span>';
-    chips += (student.alumno.esAmonestado == 1) ? '<span class="chip warn">Amonestado</span>' : '';
-    chips += (student.alumno.comentariosMedicos != null) ? '<span class="chip warn">Tiene anotaciones médicas</span>' : '';
-
     student = formatObjectData(student);
     
     // CONSTRUCCIÓN FINAL DE LA INTERFAZ
@@ -34,7 +28,7 @@ function displayStudentDetails(student) {
                 <div>
                     <p>Alumno ${student.alumno.id_alumno} - Inscrito el ${student.alumno.fechaInclusion}</p>
                     <h2>${student.alumno.apellidos}, ${student.alumno.nombre}</h2>
-                    <div class="spaced-items-sm">${chips}</div>
+                    <div class="spaced-items-sm">${buildChips(student.alumno)}</div>
                 </div>
                 <img onclick="removeDetailsModal()" class="iconButton" src="./img/close.png" alt="Cerrar">
             </div>
@@ -50,6 +44,9 @@ function displayStudentDetails(student) {
                     </div>
                     <div class="scrollspySection" id="SDVBonos">
                         ${buildVouchersTable(student.vouchers)}
+                    </div>
+                    <div class="scrollspySection" id="SDVClases">
+                        ${buildClassesTable(student)}
                     </div>
                     <div class="scrollspySection" id="SDVPayments">
                         ${buildPaymentsTable(student.payments)}
@@ -86,14 +83,6 @@ function formatObjectData(student) {
     // Damos formato a los datos que lo necesitan
     student.alumno.fechaInclusion = _ex.format.date(student.alumno.fechaInclusion);
 
-    // Montamos el IBAN
-    if (student.alumno.iban == null) {
-        student.alumno.iban = '<input type="text" id="IBANField" value="No proporcionado" readonly></input>'
-    } else {
-        student.alumno.iban = _ex.format.iban(student.alumno.iban);
-        student.alumno.iban = `<input type="password" id="IBANField" value="${student.alumno.iban}" readonly><button id="IBANButton" class="mini" onclick="toggleIBAN()">Mostrar</button>`;
-    }
-
     // REPETIMOS CON EL GUARDIAN (IF EXISITS)
     if(student.guardian != null) {
         // Gestionamos los datos nulos
@@ -103,17 +92,30 @@ function formatObjectData(student) {
         if(student.guardian.direccion == null) student.guardian.direccion = '';
         if(student.guardian.localidad == null) student.guardian.localidad = '';
         if(student.guardian.cp == null) student.guardian.cp = '';
-
-        // Montamos el IBAN
-        if (student.guardian.iban == null) {
-            student.guardian.iban = '<input type="text" id="IBANField2" value="No proporcionado" readonly></input>'
-        } else {
-            student.guardian.iban = _ex.format.iban(student.guardian.iban);
-            student.guardian.iban = `<input type="password" id="IBANField2" value="${student.alumno.iban}" readonly><button id="IBANButton" class="mini" onclick="toggleIBAN()">Mostrar</button>`;
-        }
     }
 
     return student;
+}
+
+function buildChips(student) {
+    let chips = ''
+    chips += (student.esAdulto == 0) ? '<span class="chip warn">Menor de edad</span>' : '<span class="chip">Mayor de edad</span>';
+    chips += (student.esAmonestado == 1) ? '<span class="chip warn">Amonestado</span>' : '';
+    chips += (student.comentariosMedicos != null) ? '<span class="chip warn">Tiene anotaciones médicas</span>' : '';
+    return chips;
+}
+
+function buildIBANField(iban, isGuardian = false) {
+    let id = isGuardian ? 'IBANField2' : 'IBANField' ;
+    let bid = isGuardian ? 'IBANButton2' : 'IBANButton' ; 
+    let fun = isGuardian ? 'toggleIBAN2' : 'toggleIBAN' ; 
+    
+    if (iban == null) {
+        return `<input type="text" id="${id}" value="No proporcionado" readonly></input>`
+    } else {
+        let temp = _ex.format.iban(iban);
+        return `<input type="password" id="${id}" value="${temp}" readonly><button id="${bid}" class="mini" onclick="${fun}()">Mostrar</button>`;
+    }
 }
 
 function doTabBar() {
@@ -129,6 +131,10 @@ function doTabBar() {
                     <a href="#SDVBonos">
                         <img src="./img/bonos.png" alt="Bonos">
                         <span>Bonos</span>
+                    </a>
+                    <a href="#SDVClases">
+                        <img src="./img/clases.png" alt="Clases">
+                        <span>Clases ind.</span>
                     </a>
                     <a href="#SDVPayments">
                         <img src="./img/payments.png" alt="Pagos">
@@ -151,7 +157,10 @@ function doTabBar() {
 
 function buildStudentData(student) {
     return `
-    <h3>Datos personales</h3>
+    <div class="flex clear-between">
+        <h3>Datos personales</h3>
+        <button class="outlined" onclick="triggerEdit.mainDetails()">Modificar datos</button>
+    </div>
     <div class="flex">
         <table class="camo">
             <tr>
@@ -190,7 +199,7 @@ function buildStudentData(student) {
     </div>
     <div class="revealField">
         <p><b>IBAN:</b></p>
-        ${student.iban}
+        ${buildIBANField(student.iban)}
     </div>
     <p><b>Comentarios médicos:</b></p>
     <p>${student.comentariosMedicos}</p>`;
@@ -207,7 +216,10 @@ function buildCoursesTable(groups) {
         </div>
     </div>`;
     
-    let table = '<h3>Cursos</h3>'
+    let table = `<div class="flex clear-between">
+        <h3>Historial de pagos</h3>
+        <button class="outlined">Añadir a un curso</button>
+    </div>`
     table += `
     <table class="styledData">
         <thead>
@@ -245,7 +257,11 @@ function buildVouchersTable(vouchers) {
         </div>
     </div>`;
     
-    let table = '<h3>Bonos</h3>'
+    let table = `<div class="flex clear-between">
+        <h3>Bonos</h3>
+        <button class="outlined">Nuevo bono</button>
+    </div>`;
+
     table += `
     <table class="styledData">
         <thead>
@@ -272,6 +288,45 @@ function buildVouchersTable(vouchers) {
     return table;
 }
 
+function buildClassesTable(classes) {
+    if (classes == null || classes.length === 0 || 0 == 0) return `
+    <h3>Clases individuales</h3>
+    <div class="emptyState-icon">
+        <img src="./img/es-classes.png">
+        <div>
+            <p>Sin clases individuales pendientes</p>
+            <button>Nueva clase</button>
+        </div>
+    </div>`;
+    
+    let table = `<div class="flex clear-between">
+        <h3>Clases individuales</h3>
+        <button class="outlined">Nueva clase</button>
+    </div>`
+    table += `
+    <table class="styledData">
+        <thead>
+            <tr>
+                <td>Profesor</td>
+                <td>Temática</td>
+                <td>Modalidad</td>
+                <td>Inicio</td>
+                <td>Fin</td>
+            </tr>
+        </thead>`;
+
+    for (i in classes) {
+        table += `
+        <tr>
+            
+        </tr>`
+    }
+
+    table += '</table>'
+
+    return table;
+}
+
 function buildPaymentsTable(payments) {
     if (payments == null || payments.length === 0) return `
     <h3>Historial de pagos</h3>
@@ -286,7 +341,7 @@ function buildPaymentsTable(payments) {
     let table = `
     <div class="flex clear-between">
         <h3>Historial de pagos</h3>
-        <button class="outlined">Realizar nuevo cobro</button>
+        <button class="outlined">Nuevo cobro</button>
     </div>
     <table class="styledData">
         <thead>    
@@ -411,7 +466,7 @@ function buildGuardianInfo(guardian, isAdult) {
 
     <div class="revealField">
         <p><b>IBAN:</b></p>
-        ${guardian.iban}
+        ${buildIBANField(guardian.iban, true)}
     </div>`;
 }
 
@@ -429,7 +484,7 @@ function buildRelations(relations, student) {
     let table = `
     <div class="flex clear-between">
         <h3>Amigos y familiares</h3>
-        <button class="outlined">Modificar relaciones</button>
+        <button class="outlined">Nueva relación</button>
     </div>
     <table class="styledData">
                     <thead>    

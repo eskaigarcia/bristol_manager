@@ -15,6 +15,21 @@
     document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("fecha").value = new Date().toISOString().split("T")[0];
     });
+    function menoredad(){
+        var mayor = document.getElementById("mayor_si");
+        var nombreTutor = document.getElementById("nombrer");
+        var apellidoTutor = document.getElementById("apellidor");
+        var dniTutor = document.getElementById("dnir");
+        if (mayor.checked) {
+            nombreTutor.removeAttribute("required");
+            apellidoTutor.removeAttribute("required");
+            dniTutor.removeAttribute("required");
+        } else {
+            nombreTutor.setAttribute("required", "required");
+            apellidoTutor.setAttribute("required", "required");
+            dniTutor.setAttribute("required", "required");
+        }
+    }
 </script>
         <div class="insalumatras">
         <h1 >Datos del alumno</h1><br>
@@ -57,11 +72,11 @@
                     <td><input type="text" id="iban" name="iban" placeholder="Introduce el IBAN"></td>
                 </tr>
                 <tr>
-                    <td><label for="mayoria">¿El alumno es mayor?</label></td>
+                    <td><label for="mayoria">¿Es mayor de edad?</label></td>
                     <td>
-                        <input type="radio" id="mayor_si" name="mayoria" value="1">
+                        <input type="radio" id="mayor_si" name="mayoria" value="1" onchange="menoredad()">
                         <label for="mayor_si">Es mayor</label>
-                        <input type="radio" id="mayor_no" name="mayoria" value="0">
+                        <input type="radio" id="mayor_no" name="mayoria" value="0" onchange="menoredad()">
                         <label for="mayor_no">Es menor</label>
                     </td>
                 </tr>
@@ -83,26 +98,21 @@
             </table>
         
         </div>
-
-
-
-
-
         <div class="insalumatras">
         <h1 >Contactos de emergencia</h1>
             <table class="insalum">
             <td colspan="2"><h2>Contacto número 1</h2></td>
                 <tr>
                     <td><label for="nombreCont">Nombre:</label></td>
-                    <td><input type="text" id="nombreCont1" name="nombreCont1" placeholder="Nombre y apellido"></td>
+                    <td><input type="text" id="nombreCont1" name="nombreCont1" placeholder="Nombre y apellido" required></td>
                 </tr>
                 <tr>
                     <td><label for="telefonoCont">Teléfono:</label></td>
-                    <td><input type="tel" id="telefonoCont1" name="telefonoCont1" placeholder="Introduce el teléfono"></td>
+                    <td><input type="tel" id="telefonoCont1" name="telefonoCont1" placeholder="Introduce el teléfono" required></td>
                 </tr>
                 <tr>
                     <td><label for="dniCont">Relacion:</label></td>
-                    <td><input type="text" id="relacionCont1" name="relacionCont1" placeholder="Relacion con el alumno"></td>
+                    <td><input type="text" id="relacionCont1" name="relacionCont1" placeholder="Relacion con el alumno" required></td>
                 </tr>
             <td colspan="2"><h2>Contacto número 2</h2></td>
                 <tr>
@@ -119,8 +129,50 @@
                 </tr>
                 </tr>
             </table>
-        </form>
         </div>
+        <div class="insalumatras" id="tutor" ">
+            <h1>Datos del responsable legal</h1>
+        <table class="insalum" >
+                <tr>
+                    <td><label for="nombre">Nombre:</label></td>
+                    <td><input type="text" id="nombrer" name="nombrer" placeholder="Introduce el nombre"></td>
+                </tr>
+                <tr>
+                    <td><label for="apellido">Apellido:</label></td>
+                    <td><input type="text" id="apellidor" name="apellidor" placeholder="Introduce el apellido"></td>
+                </tr>
+                <tr>
+                    <td><label for="telefono">Teléfono:</label></td>
+                    <td><input type="tel" id="telefonor" name="telefonor" placeholder="Introduce el teléfono"></td>
+                </tr>
+                <tr>
+                    <td><label for="dni">DNI:</label></td>
+                    <td><input type="text" id="dnir" name="dnir" placeholder="Introduce el DNI"></td>
+                </tr>
+                <tr >
+                    <td><label for="email">Email:</label></td>
+                    <td><input type="email" id="emailr" name="emailr" placeholder="Introduce el email"></td>
+                </tr>
+                <tr>
+                    <td><label for="direccion">Dirección:</label></td>
+                    <td><input type="text" id="direccionr" name="direccionr" placeholder="Introduce la dirección"></td>
+                </tr>
+                <tr>
+                    <td><label for="cp">Código Postal:</label></td>
+                    <td><input type="text" id="cpr" name="cpr" placeholder="Introduce el código postal"></td>
+                </tr>
+                <tr>
+                    <td><label for="localidad">Localidad:</label></td>
+                    <td><input type="text" id="localidadr" name="localidadr" placeholder="Introduce la localidad"></td>
+                </tr>
+                <tr>
+                    <td><label for="iban">IBAN:</label></td>
+                    <td><input type="text" id="ibanr" name="ibanr" placeholder="Introduce el IBAN"></td>
+                </tr>
+                </tr>
+            </table>
+        </div>
+        </form>
         <button onclick="window.location.href='dashboard.php'" class="cardLink align_left">Volver atrás</button>
 </body>
 </html>

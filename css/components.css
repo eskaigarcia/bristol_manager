@@ -262,6 +262,30 @@ header{
           }
         }
       }
+
+      .editView{
+        padding: 1rem 2rem;
+        overflow-y: scroll;
+
+        table{
+          width: 100%;
+
+          input{
+            width: 100%;
+          }
+
+          textarea{
+            width: 100%;
+            height: 5rem;
+          }
+          
+          .unlarge{
+            input{
+              width: auto !important;
+            }
+          }
+        }
+      }
     }
   }
 
