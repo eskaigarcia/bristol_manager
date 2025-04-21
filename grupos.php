@@ -9,7 +9,7 @@
         <main>
             <header>
                 <h1>Grupos</h1>
-                <a href="añadir_grupos.php" class="cta">Nuevo grupo</a>
+                <button onclick="window.location.href='añadir_grupos.php'" class="cta">Nuevo grupo</button>
             </header>
 
             <div class="card full">
