@@ -163,6 +163,35 @@ const triggerEdit = {
                 </div>
             </div>
             `;
+    },
+
+    emergencyContact() {
+        storage.pendingEdits = true;
+        const display = document.querySelector('#studentDataModal div');
+        display.innerHTML = `<div class="header">
+                <div>
+                    <p>Editando contactos de emergencia de:</p>
+                    <h2>${storage.studentData.alumno.apellidos}, ${storage.studentData.alumno.nombre}</h2>
+                    <div class="spaced-items-sm">${buildChips(storage.studentData.alumno)}</div>
+                </div>
+                <img onclick="removeDetailsModal()" class="iconButton" src="./img/close.png" alt="Cerrar">
+            </div>
+            
+            <div class="body">
+                <div class="editView">
+                    <h3>Modificar datos personales:</h3>
+                    <form id="editStudentDetails">
+                        <table class="camo">
+                            <tr>
+                            </tr>
+                        </table>
+                        <div class="editFooter">
+                            <button type="button" class="warn" onclick="discardEdits.mainDetails()">Descartar cambios</button>
+                            <button type="button" onclick="saveEdits.mainDetails()">Guardar cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>`;
     }
 }
 

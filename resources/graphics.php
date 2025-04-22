@@ -1,5 +1,6 @@
 <?php
 
+    // ALUMNOS
     $ico_telTrue = '<img src="./img/phoneEnabled.png" alt="Teléfono">';
     $ico_telFalse = '<img src="./img/phoneDisabled.png" alt="Ningún teléfono">';
 
@@ -12,3 +13,15 @@
     $ico_minor = '<img src="./img/minor.png" alt="Menor de edad">';
     $ico_amonestado = '<img src="./img/amonestado.png" alt="Estudiante amonestado">';
     $ico_healthSafety = '<img src="./img/health_safety.png" alt="Comentarios médicos">';
+
+
+    // GRUPOS
+    $ico_modeOnline = '<img src="./img/online.png" alt="Clases online">';
+    $ico_modeHybrid = '<img src="./img/hibrido.png" alt="Modelo híbrido, online + presencial">';
+    $ico_modePresential = '<img src="./img/presencial.png" alt="Clases presenciales">';
+
+    $ico_groupActive = '<img src="./img/grupoActivo.png" alt="Grupo en activo">';
+    $ico_groupInactive = '<img src="./img/grupoInactivo.png" alt="Grupo antiguo">';
+
+    $ico_groupIntensivo = '<img src="./img/grupoIntensivo.png" alt="Grupo intensivo">';
+    $ico_groupRecurrente = '<img src="./img/grupoRecurrente.png" alt="Grupo recurrente">';

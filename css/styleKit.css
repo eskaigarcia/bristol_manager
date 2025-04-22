@@ -13,7 +13,8 @@
 
   --color-neutral-white: #ffffff;
   --color-neutral-lightest: #f6f9ff;
-  --color-light: #A2A5AB;
+  --color-neutral-light: #A2A5AB;
+  --color-light: #A2A5AB; /* Deprecated, use --color-neutral-light instead*/
 
   --color-accent-lighter: #f3c1c6;
   --color-accent-light: #d52b3c;
