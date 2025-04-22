@@ -92,6 +92,8 @@ button{
   &.warn{
     background-color: var(--color-accent-light);
     color: var(--color-neutral-white);
+    border-color: var(--color-accent-dark);
+
     &:hover{
       background-color: var(--color-accent-dark);
     }
@@ -559,9 +561,29 @@ table{
 
   transition: bottom 0.10s ease-in;
 
+  button{
+    background-color: var(--color-primary);
+    color: var(--color-neutral-white);
+    cursor: pointer;
+
+    &:hover{
+      background-color: var(--color-primary-dark);
+    }
+  }
+
   &.warn{
     background-color: var(--color-accent-lighter);
     color: var(--color-accent-darkest);
     border-color: var(--color-accent-dark);
+
+    & button{
+      background-color: var(--color-accent);
+      color: var(--color-neutral-white);
+      cursor: pointer;
+  
+      &:hover{
+        background-color: var(--color-accent-dark);
+      }
+    }
   }
 }

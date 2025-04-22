@@ -1,5 +1,5 @@
 function getStudentDetails(id) {
-    fetch(`./resources/getStudentDetails.php?id=${id}`)
+    fetch(`./resources/alumnos/getStudentDetails.php?id=${id}`)
         .then(response => {
             if (!response.ok) throw new Error("Alumno no encontrado")
             return response.json();
@@ -72,7 +72,6 @@ function displayStudentDetails(student) {
 function formatObjectData(student) {
     // FORMATEAMOS EL ALUMNO
     // Gestionamos los datos nulos
-    if(student.alumno.comentariosMedicos == null) student.alumno.comentariosMedicos = 'Este alumno no tiene anotaciones médicas.';
     if(student.alumno.dni == null) student.alumno.dni = '';
     if(student.alumno.telefono == null) student.alumno.telefono = '';
     if(student.alumno.email == null) student.alumno.email = '';
@@ -190,7 +189,7 @@ function buildStudentData(student) {
         </table>
         <div id="quickNotes">
             <h4>Notas rápidas:</h4>
-            <textarea oninput="quickNotes.trigger()">${student.notasRapidas}</textarea>
+            <textarea oninput="quickNotes.trigger()">${(student.notasRapidas == null) ? '' : student.notasRapidas}</textarea>
             <div class="hidden flex clear-between">
                 <button onclick="quickNotes.discard()">Descartar</button>
                 <button onclick="quickNotes.save()">Guardar cambios</button>
@@ -202,7 +201,7 @@ function buildStudentData(student) {
         ${buildIBANField(student.iban)}
     </div>
     <p><b>Comentarios médicos:</b></p>
-    <p>${student.comentariosMedicos}</p>`;
+    <p>${(student.comentariosMedicos == null) ? 'Este alumno no tiene notas médicas' : student.comentariosMedicos}</p>`;
 }
 
 function buildCoursesTable(groups) {
@@ -217,8 +216,8 @@ function buildCoursesTable(groups) {
     </div>`;
     
     let table = `<div class="flex clear-between">
-        <h3>Historial de pagos</h3>
-        <button class="outlined">Añadir a un curso</button>
+        <h3>Cursos</h3>
+        <button class="outlined">Ir a cursos</button>
     </div>`
     table += `
     <table class="styledData">
@@ -346,7 +345,7 @@ function buildPaymentsTable(payments) {
     <table class="styledData">
         <thead>    
             <tr>
-                <td>State</td>
+                <td>Estado</td>
                 <td>Curso</td>
                 <td>Mensualidad</td>
                 <td>Fecha del pago</td>
@@ -383,14 +382,14 @@ function buildEmgContacts(contacts) {
         <img src="./img/es-warn.png">
         <div>
             <p>Ningún contacto de emergencia registrado</p>
-            <button>Añadir</button>
+            <button onclick="triggerEdit.emergencyContact()">Añadir</button>
         </div>
     </div>`;
 
     let table = `
     <div class="flex clear-between">
         <h3>Contactos de emergencia</h3>
-        <button class="outlined">Modificar contactos de emergencia</button>
+        <button class="outlined" onclick="triggerEdit.emergencyContact('')">Añadir un nuevo contacto</button>
     </div>
     <table class="styledData">
                     <thead>    
@@ -398,16 +397,21 @@ function buildEmgContacts(contacts) {
                             <td>Nombre</td>
                             <td>Teléfono</td>
                             <td>Relación</td>
+                            <td>Acciones</td>
                         </tr>
                     </thead>`
                     
-    // FOR EACH PAYMENT
+    // FOR EACH CONTACT
     for (i in contacts) {
         table += `
         <tr>
             <td>${contacts[i].nombre}</td>
             <td>${_ex.format.phoneNum(contacts[i].telefono)}</td>
             <td>${contacts[i].relacion}</td>
+            <td style="width: 10rem;">
+                <button class="mini inline" onclick="triggerEdit.emergencyContact(${contacts[i].id_contacto}, '${contacts[i].nombre}', '${contacts[i].telefono}', '${contacts[i].relacion}')">Modificar</button>
+                <button class="warn mini inline" onclick="triggerEdit.emergencyContactDelete(${contacts[i].id_contacto}, '${contacts[i].nombre}', '${contacts[i].relacion}')">Eliminar</button>
+            </td>
         </tr>`;
     }
 

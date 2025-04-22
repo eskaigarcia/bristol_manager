@@ -1,12 +1,12 @@
 <?php
 
-require './dbConnect.php';
+require __DIR__.'/../dbConnect.php';
 
 // Get the selected student id for querying
 $id = $_GET['id'];
 
 // Set of database queries to perform
-    $query_emgContact = "SELECT nombre, relacion, telefono FROM contactosemergencia WHERE id_alumno = $id";
+    $query_emgContact = "SELECT id_contacto, nombre, relacion, telefono FROM contactosemergencia WHERE id_alumno = $id";
     $query_guardian = "SELECT nombre, apellidos, telefono, dni, email, direccion, cp, localidad, iban FROM responsables WHERE id_alumno = $id";
     $query_groups = "SELECT g.nombre, g.modalidad, g.precio -- TODO: ADD DATES (Pending Joshua)
                     FROM alumnosgrupos t JOIN grupos g ON t.id_grupo = g.id_grupo WHERE t.id_alumno = $id AND t.fechaFin IS NULL";
