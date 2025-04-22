@@ -198,7 +198,7 @@ const triggerEdit = {
                             </table>
                             <div class="editFooter">
                                 <button type="button" class="warn" onclick="discardEdits.any()">Descartar cambios</button>
-                                <button type="button" onclick="saveEdits.emergencyContact('')">Guardar cambios</button>
+                                <button type="button" onclick="saveEdits.emergencyContact()">Guardar cambios</button>
                             </div>
                         </form>
                     </div>
@@ -234,7 +234,7 @@ const triggerEdit = {
     },
 
     emergencyContactDelete(id_contact) {
-
+        saveEdits.emergencyContactDelete(id_contact);
     }
 
 }
@@ -277,8 +277,13 @@ const saveEdits = {
         const formData = new FormData(document.getElementById('editEmergencyContact'));
         const data = Object.fromEntries(formData.entries());
         data.id = storage.activeStudent; // Add the student ID to the data object
+        data.contact = id_contact;
 
-        let direction = (id_contact == '') ? './resources/alumnos/newEmgContact.php' : './resources/alumnos/updateEmgContact.php';
+        console.log(id_contact)
+
+        let direction = (id_contact == undefined) ? './resources/alumnos/newEmgContact.php' : './resources/alumnos/updateEmgContact.php';
+        
+        console.log(direction);
         
         fetch(direction, {
             method: 'POST',
@@ -294,11 +299,43 @@ const saveEdits = {
         .then(result => {
             console.log('Response from server:', result); // Log the response for debugging
             if (result.success) {
-                _ex.ui.toast.make('Detalles del alumno actualizados correctamente.', 'Aceptar', false);
+                _ex.ui.toast.make('Contacto actulizado correctamente.', 'Aceptar', false);
                 removeDetailsModal(); 
                 getStudentDetails(storage.activeStudent);
             } else {
-                _ex.ui.toast.make('Error al actualizar los detalles del alumno.');
+                _ex.ui.toast.make('Error al actualizar los detalles del contacto.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            _ex.ui.toast.make('Error al procesar la solicitud.');
+        });
+    },
+
+    emergencyContactDelete(id_contact) {
+        storage.pendingEdits = false;
+
+        // Debug: log the payload being sent
+        console.log('Deleting emergency contact, sending:', { id_contact });
+
+        fetch('./resources/alumnos/deleteEmgContact.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_contact }),
+        })
+        .then(response => {
+            if (!response.ok) {
+            throw new Error('Failed to delete emergency contact.');
+            }
+            return response.json();
+        })
+        .then(result => {
+            if (result.success) {
+                _ex.ui.toast.make('Contacto de emergencia eliminado correctamente.', 'Aceptar', false);
+                removeDetailsModal(); 
+                getStudentDetails(storage.studentData.alumno.id_alumno);
+            } else {
+                _ex.ui.toast.make('Error al eliminar el contacto de emergencia.');
             }
         })
         .catch(error => {
