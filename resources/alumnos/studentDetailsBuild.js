@@ -216,8 +216,8 @@ function buildCoursesTable(groups) {
     </div>`;
     
     let table = `<div class="flex clear-between">
-        <h3>Historial de pagos</h3>
-        <button class="outlined">Añadir a un curso</button>
+        <h3>Cursos</h3>
+        <button class="outlined">Ir a cursos</button>
     </div>`
     table += `
     <table class="styledData">
@@ -345,7 +345,7 @@ function buildPaymentsTable(payments) {
     <table class="styledData">
         <thead>    
             <tr>
-                <td>State</td>
+                <td>Estado</td>
                 <td>Curso</td>
                 <td>Mensualidad</td>
                 <td>Fecha del pago</td>
