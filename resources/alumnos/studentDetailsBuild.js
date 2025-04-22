@@ -382,14 +382,14 @@ function buildEmgContacts(contacts) {
         <img src="./img/es-warn.png">
         <div>
             <p>Ningún contacto de emergencia registrado</p>
-            <button>Añadir</button>
+            <button onclick="triggerEdit.emergencyContact()">Añadir</button>
         </div>
     </div>`;
 
     let table = `
     <div class="flex clear-between">
         <h3>Contactos de emergencia</h3>
-        <button class="outlined">Modificar contactos de emergencia</button>
+        <button class="outlined" onclick="triggerEdit.emergencyContact('')">Añadir un nuevo contacto</button>
     </div>
     <table class="styledData">
                     <thead>    
@@ -397,16 +397,21 @@ function buildEmgContacts(contacts) {
                             <td>Nombre</td>
                             <td>Teléfono</td>
                             <td>Relación</td>
+                            <td>Acciones</td>
                         </tr>
                     </thead>`
                     
-    // FOR EACH PAYMENT
+    // FOR EACH CONTACT
     for (i in contacts) {
         table += `
         <tr>
             <td>${contacts[i].nombre}</td>
             <td>${_ex.format.phoneNum(contacts[i].telefono)}</td>
             <td>${contacts[i].relacion}</td>
+            <td style="width: 10rem;">
+                <button class="mini inline" onclick="triggerEdit.emergencyContact(${contacts[i].id_contacto}, '${contacts[i].nombre}', '${contacts[i].telefono}', '${contacts[i].relacion}')">Modificar</button>
+                <button class="warn mini inline" onclick="triggerEdit.emergencyContactDelete(${contacts[i].id_contacto}, '${contacts[i].nombre}', '${contacts[i].relacion}')">Eliminar</button>
+            </td>
         </tr>`;
     }
 

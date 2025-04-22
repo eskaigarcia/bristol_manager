@@ -156,7 +156,7 @@ const triggerEdit = {
                             </tr>
                         </table>
                         <div class="editFooter">
-                            <button type="button" class="warn" onclick="discardEdits.mainDetails()">Descartar cambios</button>
+                            <button type="button" class="warn" onclick="discardEdits.any()">Descartar cambios</button>
                             <button type="button" onclick="saveEdits.mainDetails()">Guardar cambios</button>
                         </div>
                     </form>
@@ -165,34 +165,78 @@ const triggerEdit = {
             `;
     },
 
-    emergencyContact() {
+    emergencyContact(id_contact = null, name = '', tel = '', rel = '') {
         storage.pendingEdits = true;
         const display = document.querySelector('#studentDataModal div');
         display.innerHTML = `<div class="header">
                 <div>
-                    <p>Editando contactos de emergencia de:</p>
+                    <p>Editando contacto de emergencia de:</p>
                     <h2>${storage.studentData.alumno.apellidos}, ${storage.studentData.alumno.nombre}</h2>
                     <div class="spaced-items-sm">${buildChips(storage.studentData.alumno)}</div>
                 </div>
                 <img onclick="removeDetailsModal()" class="iconButton" src="./img/close.png" alt="Cerrar">
-            </div>
+            </div>`
             
-            <div class="body">
-                <div class="editView">
-                    <h3>Modificar datos personales:</h3>
-                    <form id="editStudentDetails">
-                        <table class="camo">
-                            <tr>
-                            </tr>
-                        </table>
-                        <div class="editFooter">
-                            <button type="button" class="warn" onclick="discardEdits.mainDetails()">Descartar cambios</button>
-                            <button type="button" onclick="saveEdits.mainDetails()">Guardar cambios</button>
-                        </div>
-                    </form>
-                </div>
-            </div>`;
+            if (id_contact == null) {
+                display.innerHTML += `<div class="body">
+                    <div class="editView">
+                        <h3>Nuevo contacto de emergencia:</h3>
+                        <form id="editEmergencyContact">
+                            <table class="camo">
+                                <tr>
+                                    <td><label for="contact_name">Nombre:</label></td>
+                                    <td><input type="text" id="contact_name" name="contact_name" required></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="contact_phone">Teléfono:</label></td>
+                                    <td><input type="tel" id="contact_phone" name="contact_phone" required></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="contact_relation">Relación:</label></td>
+                                    <td><input type="text" id="contact_relation" name="contact_relation" required></td>
+                                </tr>
+                            </table>
+                            <div class="editFooter">
+                                <button type="button" class="warn" onclick="discardEdits.any()">Descartar cambios</button>
+                                <button type="button" onclick="saveEdits.emergencyContact('')">Guardar cambios</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>`;
+        } else {
+            display.innerHTML += `<div class="body">
+                    <div class="editView">
+                        <h3>Nuevo contacto de emergencia:</h3>
+                        <form id="editEmergencyContact">
+                            <table class="camo">
+                                <tr>
+                                    <td><label for="contact_name">Nombre:</label></td>
+                                    <td><input type="text" id="contact_name" name="contact_name" value="${name}" required></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="contact_phone">Teléfono:</label></td>
+                                    <td><input type="tel" id="contact_phone" name="contact_phone" value="${tel}" required></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="contact_relation">Relación:</label></td>
+                                    <td><input type="text" id="contact_relation" name="contact_relation" value="${rel}" required></td>
+                                </tr>
+                            </table>
+                            <div class="editFooter">
+                                <button type="button" class="warn" onclick="discardEdits.any()">Descartar cambios</button>
+                                <button type="button" onclick="saveEdits.emergencyContact(${id_contact})">Guardar cambios</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>`;
+        }
+            
+    },
+
+    emergencyContactDelete(id_contact) {
+
     }
+
 }
 
 const saveEdits = {
@@ -226,11 +270,46 @@ const saveEdits = {
             console.error('Error:', error);
             _ex.ui.toast.make('Error al procesar la solicitud.');
         });
+    },
+
+    emergencyContact(id_contact) {
+        storage.pendingEdits = false;
+        const formData = new FormData(document.getElementById('editEmergencyContact'));
+        const data = Object.fromEntries(formData.entries());
+        data.id = storage.activeStudent; // Add the student ID to the data object
+
+        let direction = (id_contact == '') ? './resources/alumnos/newEmgContact.php' : './resources/alumnos/updateEmgContact.php';
+        
+        fetch(direction, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update student details.');
+            }
+            return response.json();
+        })
+        .then(result => {
+            console.log('Response from server:', result); // Log the response for debugging
+            if (result.success) {
+                _ex.ui.toast.make('Detalles del alumno actualizados correctamente.', 'Aceptar', false);
+                removeDetailsModal(); 
+                getStudentDetails(storage.activeStudent);
+            } else {
+                _ex.ui.toast.make('Error al actualizar los detalles del alumno.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            _ex.ui.toast.make('Error al procesar la solicitud.');
+        });
     }
 }
 
 const discardEdits = {
-    mainDetails() {
+    any() {
         storage.pendingEdits = false;
         _ex.ui.toast.make('Cambios descartados', 'Ok', false)
         removeDetailsModal(); 
