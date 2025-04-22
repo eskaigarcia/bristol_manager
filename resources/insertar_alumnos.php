@@ -36,12 +36,13 @@
     $telefonoCont1=$_POST["telefonoCont1"];
     $relacionCont1=$_POST["relacionCont1"];
     $datosCont1="INSERT INTO contactosemergencia (id_alumno, nombre, telefono, relacion) VALUES ('$id_alumno','$nombreCont1','$telefonoCont1', '$relacionCont1')";
-    
+if(!empty($_POST["nombreCont2"]) && !empty($_POST["telefonoCont2"]) && !empty($_POST["relacionCont2"])){
     $nombreCont2=$_POST["nombreCont2"];
     $telefonoCont2=$_POST["telefonoCont2"];
     $relacionCont2=$_POST["relacionCont2"];
     $datosCont2="INSERT INTO contactosemergencia (id_alumno, nombre, telefono, relacion) VALUES ('$id_alumno','$nombreCont2','$telefonoCont2', '$relacionCont2')";
-    
+    $datosContacto2=mysqli_query($connection,$datosCont2);
+}
     if ($mayoria == '0') {
     $nombrer=$_POST["nombrer"];
     $apellidor=$_POST["apellidor"];
@@ -56,9 +57,9 @@
     $datosResponsable=mysqli_query($connection,$datosResponsable);
     }
     $datosContacto1=mysqli_query($connection,$datosCont1);
-    $datosContacto2=mysqli_query($connection,$datosCont2);
     
-        if($id_alumno&&$datosContacto1&&$datosContacto2){
+    
+        if($id_alumno&&$datosContacto1){
             header("Location: ../annadir_alumnos.php?success=1&message=Alumno añadido correctamente");   
             exit();
         }else{
