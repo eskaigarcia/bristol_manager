@@ -15,7 +15,7 @@
         <main>
             <header>
                 <h1>Profesor</h1>
-                <button class="cta">
+                <button class="cta" onclick="window.location.href='../bristol_alumnos/annadir_profesor.php' ">
                     Nuevo profesor
                 </button>
             </header>
@@ -26,21 +26,15 @@
                             <input type="text" id="prof_nombre" name="prof_nombre">
                         <label for="prof_apellidos">Apellidos:</label>
                             <input type="text" id="prof_apellidos" name="prof_apellidos">
-                        <label for="prof_Grupos">Grupos:</label>
-                            <input type="text" id="prof_Grupos" name="prof_Grupos">
+                        <label for="prof_Grupos">Grupo:</label>
+                            <input type="text" id="prof_Grupo" name="prof_Grupo">
                         <label for="prof_dni">Asignatura:</label>
                             <input type="text" id="prof_dni" name="prof_dni">
-                         <label for="prof_Activo">Activo:</label><!--ahora lo cambio a radio button -->
-                            <input type="text" id="prof_Activo" name="prof_Activo">
-                            <!--<h2>Buscar por alumno</h2>
-                    <div class="full subGrid">
-                        
-                        <label for="prof_Activo">Nombre:</label>
-                            <input type="text" id="prof_Activo" name="prof_Activo">
-                        <label for="prof_tel">Apellido:</label>
-                            <input type="text" id="prof_tel" name="prof_tel">
-                    </div>
--->
+                        <label for="activo">Es activo:</label>
+                        <select id="activo" name="activo">
+                            <option value="Si">Si</option>
+                            <option value="No">No</option>
+                        </select>
                     <div class="full center">
                         <button type="submit" class="cta">
                             <?php include './img/search.svg' ?>
