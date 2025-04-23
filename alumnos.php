@@ -9,7 +9,7 @@
         <main>
             <header>
                 <h1>Alumnos</h1>
-                <button class="cta">
+                <button class="cta" onclick="createStudent()">
                     <?php include './img/addStudent.svg'; ?>
                     Nuevo alumno
                 </button>
@@ -47,6 +47,7 @@
 
             <script src="./resources/alumnos/studentDetailsBuild.js"></script>
             <script src="./resources/alumnos/studentDetailsEdit.js"></script>
+            <script src="./resources/alumnos/newStudent.js"></script>
             <script src="./resources/scrollspy.js"></script>
             
         </main>
