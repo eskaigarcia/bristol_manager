@@ -184,7 +184,7 @@ button{
   z-index: 10;
 
   > div{
-    min-width: 25rem;
+    width: 25rem;
     min-height: 10rem;
     display: flex;
     flex-direction: column;
