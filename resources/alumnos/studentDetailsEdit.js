@@ -198,7 +198,7 @@ const triggerEdit = {
                             </table>
                             <div class="editFooter">
                                 <button type="button" class="warn" onclick="discardEdits.any()">Descartar cambios</button>
-                                <button type="button" onclick="saveEdits.emergencyContact('')">Guardar cambios</button>
+                                <button type="button" onclick="saveEdits.emergencyContact()">Guardar cambios</button>
                             </div>
                         </form>
                     </div>
@@ -234,8 +234,142 @@ const triggerEdit = {
     },
 
     emergencyContactDelete(id_contact) {
+        const action = () => saveEdits.emergencyContactDelete(id_contact);
+        _ex.ui.dialog.make('Eliminar contacto', '¿Está seguro de que quiere eliminar el contacto de emergencia de este alumno? Esta acción no se puede deshacer.', action, 'Eliminar', true);
+    },
 
-    }
+    guardian() {
+        storage.pendingEdits = true;
+        const display = document.querySelector('#studentDataModal div'); 
+
+        if(storage.studentData.guardian == null) {
+            display.innerHTML = `<div class="header">
+            <div>
+                <p>Editando responsable legal del alumno:</p>
+                <h2>${storage.studentData.alumno.apellidos}, ${storage.studentData.alumno.nombre}</h2>
+                <div class="spaced-items-sm">${buildChips(storage.studentData.alumno)}</div>
+            </div>
+            <img onclick="removeDetailsModal()" class="iconButton" src="./img/close.png" alt="Cerrar">
+        </div>
+        
+        <div class="body">
+            <div class="editView">
+                <h3>Modificar datos del responsable legal:</h3>
+                <form id="editGuardianDetails">
+                    <table class="camo">
+                        <tr>
+                            <td><label for="nombre">Nombre:</label></td>
+                            <td><input type="text" id="nombre" name="nombre"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="apellidos">Apellidos:</label></td>
+                            <td><input type="text" id="apellidos" name="apellidos""></td>
+                        </tr>
+                        <tr>
+                            <td><label for="dni">DNI:</label></td>
+                            <td><input type="text" id="dni" name="dni"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="telefono">Teléfono:</label></td>
+                            <td><input type="tel" id="telefono" name="telefono"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="email">Email:</label></td>
+                            <td><input type="email" id="email" name="email"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="direccion">Dirección:</label></td>
+                            <td><input type="text" id="direccion" name="direccion"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="codigo_postal">Código Postal:</label></td>
+                            <td><input type="text" id="codigo_postal" name="codigo_postal"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="localidad">Localidad:</label></td>
+                            <td><input type="text" id="localidad" name="localidad"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="iban">IBAN:</label></td>
+                            <td><input type="text" id="iban" name="iban"></td>
+                        </tr>
+                    </table>
+                    <div class="editFooter">
+                        <button type="button" onclick="discardEdits.any()">Descartar cambios</button>
+                        <button type="button" onclick="saveEdits.guardian(true)">Guardar cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        `;
+        } else {
+            display.innerHTML = `<div class="header">
+            <div>
+                <p>Editando responsable legal del alumno:</p>
+                <h2>${storage.studentData.alumno.apellidos}, ${storage.studentData.alumno.nombre}</h2>
+                <div class="spaced-items-sm">${buildChips(storage.studentData.alumno)}</div>
+            </div>
+            <img onclick="removeDetailsModal()" class="iconButton" src="./img/close.png" alt="Cerrar">
+        </div>
+        
+        <div class="body">
+            <div class="editView">
+                <h3>Modificar datos del responsable legal:</h3>
+                <form id="editGuardianDetails">
+                    <table class="camo">
+                        <tr>
+                            <td><label for="nombre">Nombre:</label></td>
+                            <td><input type="text" id="nombre" name="nombre" value="${storage.studentData.guardian.nombre}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="apellidos">Apellidos:</label></td>
+                            <td><input type="text" id="apellidos" name="apellidos" value="${storage.studentData.guardian.apellidos}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="dni">DNI:</label></td>
+                            <td><input type="text" id="dni" name="dni" value="${storage.studentData.guardian.dni}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="telefono">Teléfono:</label></td>
+                            <td><input type="tel" id="telefono" name="telefono" value="${storage.studentData.guardian.telefono}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="email">Email:</label></td>
+                            <td><input type="email" id="email" name="email" value="${storage.studentData.guardian.email}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="direccion">Dirección:</label></td>
+                            <td><input type="text" id="direccion" name="direccion" value="${storage.studentData.guardian.direccion}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="codigo_postal">Código Postal:</label></td>
+                            <td><input type="text" id="codigo_postal" name="codigo_postal" value="${storage.studentData.guardian.cp}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="localidad">Localidad:</label></td>
+                            <td><input type="text" id="localidad" name="localidad" value="${storage.studentData.guardian.localidad}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="iban">IBAN:</label></td>
+                            <td><input type="text" id="iban" name="iban" value="${(storage.studentData.guardian.iban != null) ? storage.studentData.guardian.iban : ''}"></td>
+                        </tr>
+                    </table>
+                    <div class="editFooter">
+                        <button type="button" class="warn" onclick="triggerEdit.guardianDelete(${storage.activeStudent})">Eliminar responsable legal</button>
+                        <button type="button" onclick="discardEdits.any()">Descartar cambios</button>
+                        <button type="button" onclick="saveEdits.guardian()">Guardar cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        `;
+        }
+    },
+
+    guardianDelete(id_alumno) {
+        const action = () => saveEdits.guardianDelete(id_alumno);
+        _ex.ui.dialog.make('Eliminar responsable legal', '¿Está seguro de que quiere eliminar el responsable legal de este alumno? Los menores deben tener un responsable legal. Esta acción no se puede deshacer.', action, 'Eliminar', true);
+    },
 
 }
 
@@ -244,7 +378,7 @@ const saveEdits = {
         storage.pendingEdits = false;
         const formData = new FormData(document.getElementById('editStudentDetails'));
         const data = Object.fromEntries(formData.entries());
-        data.id = storage.studentData.alumno.id_alumno; // Add the student ID to the data object
+        data.id = storage.activeStudent; // Add the student ID to the data object
 
         fetch('./resources/alumnos/updateStudentDetails.php', {
             method: 'POST',
@@ -261,7 +395,7 @@ const saveEdits = {
             if (result.success) {
                 _ex.ui.toast.make('Detalles del alumno actualizados correctamente.', 'Aceptar', false);
                 removeDetailsModal(); 
-                getStudentDetails(storage.studentData.alumno.id_alumno);
+                getStudentDetails(storage.activeStudent);
             } else {
                 _ex.ui.toast.make('Error al actualizar los detalles del alumno.');
             }
@@ -277,8 +411,13 @@ const saveEdits = {
         const formData = new FormData(document.getElementById('editEmergencyContact'));
         const data = Object.fromEntries(formData.entries());
         data.id = storage.activeStudent; // Add the student ID to the data object
+        data.contact = id_contact;
 
-        let direction = (id_contact == '') ? './resources/alumnos/newEmgContact.php' : './resources/alumnos/updateEmgContact.php';
+        console.log(id_contact)
+
+        let direction = (id_contact == undefined) ? './resources/alumnos/newEmgContact.php' : './resources/alumnos/updateEmgContact.php';
+        
+        console.log(direction);
         
         fetch(direction, {
             method: 'POST',
@@ -294,11 +433,109 @@ const saveEdits = {
         .then(result => {
             console.log('Response from server:', result); // Log the response for debugging
             if (result.success) {
+                _ex.ui.toast.make('Contacto actulizado correctamente.', 'Aceptar', false);
+                removeDetailsModal(); 
+                getStudentDetails(storage.activeStudent);
+            } else {
+                _ex.ui.toast.make('Error al actualizar los detalles del contacto.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            _ex.ui.toast.make('Error al procesar la solicitud.');
+        });
+    },
+
+    emergencyContactDelete(id_contact) {
+        storage.pendingEdits = false;
+
+        // Debug: log the payload being sent
+        console.log('Deleting emergency contact, sending:', { id_contact });
+
+        fetch('./resources/alumnos/deleteEmgContact.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_contact }),
+        })
+        .then(response => {
+            if (!response.ok) {
+            throw new Error('Failed to delete emergency contact.');
+            }
+            return response.json();
+        })
+        .then(result => {
+            if (result.success) {
+                _ex.ui.toast.make('Contacto de emergencia eliminado correctamente.', 'Aceptar', false);
+                removeDetailsModal(); 
+                getStudentDetails(storage.activeStudent);
+            } else {
+                _ex.ui.toast.make('Error al eliminar el contacto de emergencia.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            _ex.ui.toast.make('Error al procesar la solicitud.');
+        });
+    },
+
+    guardian(creating = false) {
+        storage.pendingEdits = false;
+        const formData = new FormData(document.getElementById('editGuardianDetails'));
+        const data = Object.fromEntries(formData.entries());
+        data.id = storage.activeStudent; // Add the student ID to the data object
+
+        let location = (creating) ? './resources/alumnos/newGuardianDetails.php' : './resources/alumnos/updateGuardianDetails.php';
+
+        fetch(location, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update student details.');
+            }
+            return response.json();
+        })
+        .then(result => {
+            if (result.success) {
                 _ex.ui.toast.make('Detalles del alumno actualizados correctamente.', 'Aceptar', false);
                 removeDetailsModal(); 
                 getStudentDetails(storage.activeStudent);
             } else {
                 _ex.ui.toast.make('Error al actualizar los detalles del alumno.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            _ex.ui.toast.make('Error al procesar la solicitud.');
+        });
+    },
+
+    guardianDelete(id_alumno){
+        storage.pendingEdits = false;
+
+        // Debug: log the payload being sent
+        console.log('Deleting emergency contact, sending:', { id_alumno });
+
+        fetch('./resources/alumnos/deleteGuardian.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_alumno }),
+        })
+        .then(response => {
+            if (!response.ok) {
+            throw new Error('Failed to delete guardian.');
+            }
+            return response.json();
+        })
+        .then(result => {
+            if (result.success) {
+                _ex.ui.toast.make('Responsable legal eliminado correctamente.', 'Aceptar', false);
+                removeDetailsModal(); 
+                getStudentDetails(storage.activeStudent);
+            } else {
+                _ex.ui.toast.make('Error al eliminar el responsable legal.');
             }
         })
         .catch(error => {
@@ -313,6 +550,6 @@ const discardEdits = {
         storage.pendingEdits = false;
         _ex.ui.toast.make('Cambios descartados', 'Ok', false)
         removeDetailsModal(); 
-        getStudentDetails(storage.studentData.alumno.id_alumno);
+        getStudentDetails(storage.activeStudent);
     }
 }

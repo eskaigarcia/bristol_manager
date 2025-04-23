@@ -23,31 +23,21 @@ if (!$data) {
     exit;
 }
 
-if (
-    !isset($data['id']) ||
-    !isset($data['contact_name']) ||
-    !isset($data['contact_phone']) ||
-    !isset($data['contact_relation']) ||
-    !isset($data['contact'])
-) {
+// Only require 'id_alumno'
+if (!isset($data['id_alumno'])) {
     echo json_encode([
         'success' => false,
-        'message' => 'All fields are required.',
+        'message' => 'Contact id is required.',
         'received_data' => $data
     ]);
     exit;
 }
 
-// Use the correct keys from the JS form
-$id_alumno = $data['id'];
-$nombre = $data['contact_name'];
-$telefono = $data['contact_phone'];
-$relacion = $data['contact_relation'];
-$id_contacto = $data['contact'];
+$id_alumno = $data['id_alumno'];
 
 try {
     $stmt = $connection->prepare(
-        "UPDATE contactosemergencia SET id_alumno = ?, nombre = ?, telefono = ?, relacion = ? WHERE id_contacto = ?"
+        "DELETE FROM responsables WHERE id_alumno = ?"
     );
     if (!$stmt) {
         echo json_encode([
@@ -57,14 +47,14 @@ try {
         ]);
         exit;
     }
-    $stmt->bind_param('isssi', $id_alumno, $nombre, $telefono, $relacion, $id_contacto);
+    $stmt->bind_param('i', $id_alumno);
 
     if ($stmt->execute()) {
         echo json_encode(['success' => true]);
     } else {
         echo json_encode([
             'success' => false,
-            'message' => 'Failed to update emergency contact.',
+            'message' => 'Failed to delete guardian.',
             'error' => $stmt->error
         ]);
     }

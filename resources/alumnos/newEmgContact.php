@@ -23,22 +23,37 @@ if (!$data) {
     exit;
 }
 
-if (!isset($data['id']) || !isset($data['contact_name']) || !isset($data['contact_phone']) || !isset($data['contact_relation'])) {
+// Validate that all fields are present and not empty
+if (
+    empty($data['id']) ||
+    empty($data['contact_name']) ||
+    empty($data['contact_phone']) ||
+    empty($data['contact_relation'])
+) {
     echo json_encode([
         'success' => false,
-        'message' => 'All fields are required.',
+        'message' => 'All fields are required and must not be empty.',
         'received_data' => $data
     ]);
     exit;
 }
 
-// Use the correct keys from the JS form
-$id_alumno = $data['id'];
-$nombre = $data['contact_name'];
-$telefono = $data['contact_phone'];
-$relacion = $data['contact_relation'];
+// Sanitize and type-cast input
+$id_alumno = intval($data['id']);
+$nombre = trim($data['contact_name']);
+$telefono = trim($data['contact_phone']);
+$relacion = trim($data['contact_relation']);
 
 try {
+    // Check if connection variable exists and is valid
+    if (!isset($connection) || !$connection) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Database connection failed.'
+        ]);
+        exit;
+    }
+
     $stmt = $connection->prepare("INSERT INTO contactosemergencia (id_alumno, nombre, telefono, relacion) VALUES (?, ?, ?, ?)");
     if (!$stmt) {
         echo json_encode([
@@ -52,20 +67,25 @@ try {
 
     if ($stmt->execute()) {
         echo json_encode(['success' => true]);
+        $stmt->close();
+        $connection->close();
+        exit;
     } else {
         echo json_encode([
             'success' => false,
             'message' => 'Failed to create emergency contact.',
             'error' => $stmt->error
         ]);
+        $stmt->close();
+        $connection->close();
+        exit;
     }
-
-    $stmt->close();
 } catch (Exception $e) {
     echo json_encode([
         'success' => false,
         'message' => $e->getMessage()
     ]);
+    if (isset($stmt) && $stmt) $stmt->close();
+    if (isset($connection) && $connection) $connection->close();
+    exit;
 }
-
-$connection->close();

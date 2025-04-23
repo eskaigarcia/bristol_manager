@@ -169,6 +169,57 @@ button{
   }
 }
 
+/* Dialog */
+#dialogBox{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  width: 100dvw;
+  height: 100dvh;
+  top: 0;
+  left: 0;
+
+  background-color: var(--color-primary-scrim);
+  z-index: 10;
+
+  > div{
+    width: 25rem;
+    min-height: 10rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--color-primary-lightest);
+    padding: 1.5rem 2rem;
+    border-radius: var(--radius-lg);
+
+    &.destructive{
+      button:last-child{
+        background-color: var(--color-accent-light);
+        color: var(--color-neutral-white);
+        border-color: var(--color-accent-dark);
+
+        &:hover{
+          background-color: var(--color-accent-dark);
+        }
+      }
+    }
+
+    .buttonContainer{
+      display: flex;
+      flex-direction: row;
+      margin-top: 2rem;
+      justify-content: flex-end;
+      gap: 1rem;
+
+      button{
+        width: 10rem;
+      }
+    }
+  }
+}
+
+
 /* Empty States */
 .emptyState-icon{
   width: 100%;
