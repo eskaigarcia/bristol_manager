@@ -428,7 +428,7 @@ function buildGuardianInfo(guardian, isAdult) {
         <img src="${src}">
         <div>
             <p>Ningún responsable legal regsitrado</p>
-            <button onclick="">Añadir responsable</button>
+            <button onclick="triggerEdit.guardian()">Añadir</button>
         </div>
     </div>`;
 

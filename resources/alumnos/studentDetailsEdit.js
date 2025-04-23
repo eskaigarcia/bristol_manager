@@ -240,67 +240,130 @@ const triggerEdit = {
 
     guardian() {
         storage.pendingEdits = true;
-        const display = document.querySelector('#studentDataModal div');
-        display.innerHTML = `<div class="header">
-                <div>
-                    <p>Editando responsable legal del alumno:</p>
-                    <h2>${storage.studentData.alumno.apellidos}, ${storage.studentData.alumno.nombre}</h2>
-                    <div class="spaced-items-sm">${buildChips(storage.studentData.alumno)}</div>
-                </div>
-                <img onclick="removeDetailsModal()" class="iconButton" src="./img/close.png" alt="Cerrar">
+        const display = document.querySelector('#studentDataModal div'); 
+
+        if(storage.studentData.guardian == null) {
+            display.innerHTML = `<div class="header">
+            <div>
+                <p>Editando responsable legal del alumno:</p>
+                <h2>${storage.studentData.alumno.apellidos}, ${storage.studentData.alumno.nombre}</h2>
+                <div class="spaced-items-sm">${buildChips(storage.studentData.alumno)}</div>
             </div>
-            
-            <div class="body">
-                <div class="editView">
-                    <h3>Modificar datos del responsable legal:</h3>
-                    <form id="editGuardianDetails">
-                        <table class="camo">
-                            <tr>
-                                <td><label for="nombre">Nombre:</label></td>
-                                <td><input type="text" id="nombre" name="nombre" value="${storage.studentData.guardian.nombre}"></td>
-                            </tr>
-                            <tr>
-                                <td><label for="apellidos">Apellidos:</label></td>
-                                <td><input type="text" id="apellidos" name="apellidos" value="${storage.studentData.guardian.apellidos}"></td>
-                            </tr>
-                            <tr>
-                                <td><label for="dni">DNI:</label></td>
-                                <td><input type="text" id="dni" name="dni" value="${storage.studentData.guardian.dni}"></td>
-                            </tr>
-                            <tr>
-                                <td><label for="telefono">Teléfono:</label></td>
-                                <td><input type="tel" id="telefono" name="telefono" value="${storage.studentData.guardian.telefono}"></td>
-                            </tr>
-                            <tr>
-                                <td><label for="email">Email:</label></td>
-                                <td><input type="email" id="email" name="email" value="${storage.studentData.guardian.email}"></td>
-                            </tr>
-                            <tr>
-                                <td><label for="direccion">Dirección:</label></td>
-                                <td><input type="text" id="direccion" name="direccion" value="${storage.studentData.guardian.direccion}"></td>
-                            </tr>
-                            <tr>
-                                <td><label for="codigo_postal">Código Postal:</label></td>
-                                <td><input type="text" id="codigo_postal" name="codigo_postal" value="${storage.studentData.guardian.cp}"></td>
-                            </tr>
-                            <tr>
-                                <td><label for="localidad">Localidad:</label></td>
-                                <td><input type="text" id="localidad" name="localidad" value="${storage.studentData.guardian.localidad}"></td>
-                            </tr>
-                            <tr>
-                                <td><label for="iban">IBAN:</label></td>
-                                <td><input type="text" id="iban" name="iban" value="${(storage.studentData.guardian.iban != null) ? storage.studentData.guardian.iban : ''}"></td>
-                            </tr>
-                        </table>
-                        <div class="editFooter">
-                            <button type="button" class="warn" onclick="triggerEdit.guardianDelete(${storage.activeStudent})">Eliminar responsable legal</button>
-                            <button type="button" onclick="discardEdits.any()">Descartar cambios</button>
-                            <button type="button" onclick="saveEdits.guardian()">Guardar cambios</button>
-                        </div>
-                    </form>
-                </div>
+            <img onclick="removeDetailsModal()" class="iconButton" src="./img/close.png" alt="Cerrar">
+        </div>
+        
+        <div class="body">
+            <div class="editView">
+                <h3>Modificar datos del responsable legal:</h3>
+                <form id="editGuardianDetails">
+                    <table class="camo">
+                        <tr>
+                            <td><label for="nombre">Nombre:</label></td>
+                            <td><input type="text" id="nombre" name="nombre"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="apellidos">Apellidos:</label></td>
+                            <td><input type="text" id="apellidos" name="apellidos""></td>
+                        </tr>
+                        <tr>
+                            <td><label for="dni">DNI:</label></td>
+                            <td><input type="text" id="dni" name="dni"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="telefono">Teléfono:</label></td>
+                            <td><input type="tel" id="telefono" name="telefono"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="email">Email:</label></td>
+                            <td><input type="email" id="email" name="email"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="direccion">Dirección:</label></td>
+                            <td><input type="text" id="direccion" name="direccion"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="codigo_postal">Código Postal:</label></td>
+                            <td><input type="text" id="codigo_postal" name="codigo_postal"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="localidad">Localidad:</label></td>
+                            <td><input type="text" id="localidad" name="localidad"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="iban">IBAN:</label></td>
+                            <td><input type="text" id="iban" name="iban"></td>
+                        </tr>
+                    </table>
+                    <div class="editFooter">
+                        <button type="button" onclick="discardEdits.any()">Descartar cambios</button>
+                        <button type="button" onclick="saveEdits.guardian(true)">Guardar cambios</button>
+                    </div>
+                </form>
             </div>
-            `;
+        </div>
+        `;
+        } else {
+            display.innerHTML = `<div class="header">
+            <div>
+                <p>Editando responsable legal del alumno:</p>
+                <h2>${storage.studentData.alumno.apellidos}, ${storage.studentData.alumno.nombre}</h2>
+                <div class="spaced-items-sm">${buildChips(storage.studentData.alumno)}</div>
+            </div>
+            <img onclick="removeDetailsModal()" class="iconButton" src="./img/close.png" alt="Cerrar">
+        </div>
+        
+        <div class="body">
+            <div class="editView">
+                <h3>Modificar datos del responsable legal:</h3>
+                <form id="editGuardianDetails">
+                    <table class="camo">
+                        <tr>
+                            <td><label for="nombre">Nombre:</label></td>
+                            <td><input type="text" id="nombre" name="nombre" value="${storage.studentData.guardian.nombre}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="apellidos">Apellidos:</label></td>
+                            <td><input type="text" id="apellidos" name="apellidos" value="${storage.studentData.guardian.apellidos}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="dni">DNI:</label></td>
+                            <td><input type="text" id="dni" name="dni" value="${storage.studentData.guardian.dni}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="telefono">Teléfono:</label></td>
+                            <td><input type="tel" id="telefono" name="telefono" value="${storage.studentData.guardian.telefono}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="email">Email:</label></td>
+                            <td><input type="email" id="email" name="email" value="${storage.studentData.guardian.email}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="direccion">Dirección:</label></td>
+                            <td><input type="text" id="direccion" name="direccion" value="${storage.studentData.guardian.direccion}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="codigo_postal">Código Postal:</label></td>
+                            <td><input type="text" id="codigo_postal" name="codigo_postal" value="${storage.studentData.guardian.cp}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="localidad">Localidad:</label></td>
+                            <td><input type="text" id="localidad" name="localidad" value="${storage.studentData.guardian.localidad}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="iban">IBAN:</label></td>
+                            <td><input type="text" id="iban" name="iban" value="${(storage.studentData.guardian.iban != null) ? storage.studentData.guardian.iban : ''}"></td>
+                        </tr>
+                    </table>
+                    <div class="editFooter">
+                        <button type="button" class="warn" onclick="triggerEdit.guardianDelete(${storage.activeStudent})">Eliminar responsable legal</button>
+                        <button type="button" onclick="discardEdits.any()">Descartar cambios</button>
+                        <button type="button" onclick="saveEdits.guardian()">Guardar cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        `;
+        }
     },
 
     guardianDelete(id_alumno) {
@@ -415,13 +478,15 @@ const saveEdits = {
         });
     },
 
-    guardian() {
+    guardian(creating = false) {
         storage.pendingEdits = false;
         const formData = new FormData(document.getElementById('editGuardianDetails'));
         const data = Object.fromEntries(formData.entries());
         data.id = storage.activeStudent; // Add the student ID to the data object
 
-        fetch('./resources/alumnos/updateGuardianDetails.php', {
+        let location = (creating) ? './resources/alumnos/newGuardianDetails.php' : './resources/alumnos/updateGuardianDetails.php';
+
+        fetch(location, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),

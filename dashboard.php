@@ -27,6 +27,13 @@
                 <button class="cardLink align_left"><img src="img/groupAdd-onlight.png" alt="">Añadir alumno a grupo</button>
                 <button class="cardLink align_left"><img src="img/groupRemove-onlight.png" alt="">Eliminar alumno de grupo</button>
             </div>
+
+            <div class="card double stat-singleNum">
+                <h2>Comprobador de integridad</h2>
+                <p><span>✅</span> Sin errores de integridad</p>
+                <button>Ir a notificaciones</button>
+            </div>
+
         </main>
     </div>
 
