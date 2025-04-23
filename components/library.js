@@ -116,6 +116,51 @@ const _ex = {
     },
 
     ui: {
+        dialog: {
+            make(title = 'Diálogo', text = 'Contenido', action = _ex.ui.dialog.dismiss, actionText = 'Aceptar', destructive = false) {
+                const scrim = document.createElement('div');
+                scrim.id = 'dialogBox';
+
+                const dialog = document.createElement('div');
+                if (destructive) dialog.classList.add('destructive');
+
+                const textdiv = document.createElement('div');
+                textdiv.classList.add('textContainer')
+                const titleText = document.createElement('h2');
+                titleText.textContent = title;
+                const textText = document.createElement('p');
+                textText.textContent = text;
+
+                const buttondiv = document.createElement('div');
+                buttondiv.classList.add('buttonContainer')
+                const closeButton = document.createElement('button');
+                closeButton.textContent = 'Cancelar';
+                closeButton.onclick = function () { 
+                    _ex.ui.dialog.dismiss();
+                };
+
+                const button = document.createElement('button');
+                button.textContent = actionText;
+                button.onclick = function () { 
+                    action(); 
+                    _ex.ui.dialog.dismiss();
+                };
+
+                textdiv.appendChild(titleText);
+                textdiv.appendChild(textText);
+                dialog.appendChild(textdiv);
+                buttondiv.appendChild(closeButton);
+                buttondiv.appendChild(button);
+                dialog.appendChild(buttondiv);
+                scrim.appendChild(dialog)
+                document.body.appendChild(scrim);
+            },
+
+            dismiss() {
+                document.getElementById('dialogBox').remove();
+            }
+        }, 
+
         toast: {
             timer: null,
             make(contentText = 'Aviso', buttonText = 'Ok', warn = true) {

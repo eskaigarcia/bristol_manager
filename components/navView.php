@@ -53,7 +53,7 @@
 
     <button 
             class="align_left <?= basename(path: $_SERVER['PHP_SELF']) === 'profesores.php' ? 'active' : '' ?>"
-            onclick=""
+            onclick="window.location.href='profesores.php'"
         >
         <img src="img/teacher-ondark.png" alt="">
         Profesores

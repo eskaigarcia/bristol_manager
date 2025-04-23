@@ -42,11 +42,11 @@
 
             <!-- Tabla de resultados -->
             <div class="card full">
-                <?php include './resources/studentSearch.php' ?>
+                <?php include './resources/alumnos/studentSearch.php' ?>
             </div>
 
-            <script src="./resources/studentDetailsBuild.js"></script>
-            <script src="./resources/studentDetailsEdit.js"></script>
+            <script src="./resources/alumnos/studentDetailsBuild.js"></script>
+            <script src="./resources/alumnos/studentDetailsEdit.js"></script>
             <script src="./resources/scrollspy.js"></script>
             
         </main>

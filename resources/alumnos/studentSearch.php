@@ -26,7 +26,7 @@ function parseQuery(): array {
 }
 function doSearch(): void {
 
-    require './resources/dbConnect.php';
+    require __DIR__.'/../dbConnect.php';
 
     // Query performing
     $query = parseQuery();
@@ -44,7 +44,7 @@ function doSearch(): void {
                 <td>Info</td>
             </tr>";
 
-    require 'studentSearchGraphics.php';
+    require __DIR__.'/../graphics.php';
 
     while ($row = mysqli_fetch_array(result: $result, mode: MYSQLI_ASSOC)) {
         
