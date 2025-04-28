@@ -34,7 +34,7 @@ function displayStudentDetails(student) {
             </div>
 
             <div class="body">
-                ${doTabBar()}
+                ${doTabBar_studentDetails()}
                 <div id="studentDataView">
                     <div class="scrollspySection" id="SDVData">
                         ${buildStudentData(student.alumno)}
@@ -117,7 +117,7 @@ function buildIBANField(iban, isGuardian = false) {
     }
 }
 
-function doTabBar() {
+function doTabBar_studentDetails() {
     return `<div class="tabs-scrollspy">
                     <a href="#SDVData">
                         <img src="./img/contactInfo.png" alt="Información y datos del alumno">

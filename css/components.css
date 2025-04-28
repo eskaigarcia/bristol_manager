@@ -297,6 +297,10 @@ header{
       height: calc(100% - 8.5rem);
       border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     
+      &.noMeta{
+        height: calc(100% - 5.2rem) !important;
+      }
+
       display: flex;
       flex-direction: column;
     
