@@ -49,7 +49,13 @@
             <script src="./resources/alumnos/studentDetailsEdit.js"></script>
             <script src="./resources/alumnos/newStudent.js"></script>
             <script src="./resources/scrollspy.js"></script>
-            
+            <script>
+            // Show toast if student was just added
+            if (sessionStorage.getItem('studentAdded')) {
+                _ex.ui.toast.make('Alumno añadido correctamente.', 'Aceptar', false);
+                sessionStorage.removeItem('studentAdded');
+            }
+            </script>
         </main>
     </div>
 </body>

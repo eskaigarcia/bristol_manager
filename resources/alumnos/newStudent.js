@@ -141,29 +141,29 @@ function buildNewEmgContacts() {
         <div class="flex gap-md">
             <table class="camo">
                 <tr>
-                    <td><label for="contact_name">Nombre:</label></td>
+                    <td><label for="contact1_name">Nombre:</label></td>
                     <td><input type="text" id="contact1_name" name="contact_name" required></td>
                 </tr>
                 <tr>
-                    <td><label for="contact_phone">Teléfono:</label></td>
+                    <td><label for="contact1_phone">Teléfono:</label></td>
                     <td><input type="tel" id="contact1_phone" name="contact_phone" required></td>
                 </tr>
                 <tr>
-                    <td><label for="contact_relation">Relación:</label></td>
+                    <td><label for="contact1_relation">Relación:</label></td>
                     <td><input type="text" id="contact1_relation" name="contact_relation" required></td>
                 </tr>
             </table>
             <table class="camo">
                 <tr>
-                    <td><label for="contact_name">Nombre:</label></td>
+                    <td><label for="contact2_name">Nombre:</label></td>
                     <td><input type="text" id="contact2_name" name="contact_name" required></td>
                 </tr>
                 <tr>
-                    <td><label for="contact_phone">Teléfono:</label></td>
+                    <td><label for="contact2_phone">Teléfono:</label></td>
                     <td><input type="tel" id="contact2_phone" name="contact_phone" required></td>
                 </tr>
                 <tr>
-                    <td><label for="contact_relation">Relación:</label></td>
+                    <td><label for="contact2_relation">Relación:</label></td>
                     <td><input type="text" id="contact2_relation" name="contact_relation" required></td>
                 </tr>
             </table>
@@ -361,7 +361,41 @@ function validateNewStudent() {
     return [emptyInputs, missingContacts, noGuardian, missingAdress];
 }
 
+function validateDuplicateStudents() {
+    const nombre = document.getElementById('nombre')?.value.trim() || '';
+    const apellidos = document.getElementById('apellidos')?.value.trim() || '';
+    const dni = document.getElementById('dni')?.value.trim() || '';
+
+    if (!nombre && !apellidos && !dni) return false;
+
+    let duplicate = false;
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', './resources/alumnos/getDuplicateStudents.php', false); // synchronous
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({ nombre, apellidos, dni }));
+
+    if (xhr.status === 200) {
+        try {
+            const result = JSON.parse(xhr.responseText);
+            if (result.duplicate) {
+                duplicate = true;
+            }
+        } catch (e) {
+            _ex.ui.toast.make(e);
+        }
+    } else {
+        _ex.ui.toast.make('No se pudo comprobar duplicados.');
+    }
+    return duplicate;
+}
+
 function submitNewStudent() {
+    // Check for duplicates before proceeding
+    let duplication = validateDuplicateStudents();
+    if (duplication) {
+        _ex.ui.dialog.makeNotice('Posible duplicado', 'Hemos encontrado un alumno que ya existe con estos nombre y apellidos o con este DNI. Asegúrate de no estar incluyendo un alumno duplicado de forma accidental antes de continuar.')
+    }
+
     let checks = validateNewStudent()
     if (checks.some(check => check)) {
         if (storage.warnings) {
@@ -438,8 +472,10 @@ function saveStudentToDatabase() {
     .then(res => res.json())
     .then(result => {
         if (result.success) {
-            _ex.ui.toast.make('Alumno añadido correctamente.', 'Aceptar', false);
+            // Set flag to show toast after reload
+            sessionStorage.setItem('studentAdded', '1');
             document.getElementById('studentDataModal').remove();
+            location.reload();
         } else {
             _ex.ui.toast.make('Error al añadir el alumno: ' + (result.message || ''));
         }

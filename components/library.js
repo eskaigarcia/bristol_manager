@@ -156,6 +156,36 @@ const _ex = {
                 document.body.appendChild(scrim);
             },
 
+            makeNotice(title = 'Diálogo', text = 'Contenido'){
+                const scrim = document.createElement('div');
+                scrim.id = 'dialogBox';
+
+                const dialog = document.createElement('div');
+
+                const textdiv = document.createElement('div');
+                textdiv.classList.add('textContainer')
+                const titleText = document.createElement('h2');
+                titleText.textContent = title;
+                const textText = document.createElement('p');
+                textText.textContent = text;
+
+                const buttondiv = document.createElement('div');
+                buttondiv.classList.add('buttonContainer')
+                const button = document.createElement('button');
+                button.textContent = 'Aceptar';
+                button.onclick = function () { 
+                    _ex.ui.dialog.dismiss();
+                };
+
+                textdiv.appendChild(titleText);
+                textdiv.appendChild(textText);
+                dialog.appendChild(textdiv);
+                buttondiv.appendChild(button);
+                dialog.appendChild(buttondiv);
+                scrim.appendChild(dialog)
+                document.body.appendChild(scrim);
+            },
+
             dismiss() {
                 document.getElementById('dialogBox').remove();
             }
