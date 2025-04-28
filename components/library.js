@@ -117,7 +117,7 @@ const _ex = {
 
     ui: {
         dialog: {
-            make(title = 'Diálogo', text = 'Contenido', action = _ex.ui.dialog.dismiss, actionText = 'Aceptar', destructive = false) {
+            make(title = 'Diálogo', text = 'Contenido', action = _ex.ui.dialog.dismiss, actionText = 'Aceptar', destructive = false, cancelText = 'Cancelar') {
                 const scrim = document.createElement('div');
                 scrim.id = 'dialogBox';
 
@@ -134,7 +134,7 @@ const _ex = {
                 const buttondiv = document.createElement('div');
                 buttondiv.classList.add('buttonContainer')
                 const closeButton = document.createElement('button');
-                closeButton.textContent = 'Cancelar';
+                closeButton.textContent = cancelText;
                 closeButton.onclick = function () { 
                     _ex.ui.dialog.dismiss();
                 };
