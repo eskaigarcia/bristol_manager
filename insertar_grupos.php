@@ -17,14 +17,14 @@ $horarioHorasJson = json_encode($horarioHoras);
 $horarioDuracionesJson = json_encode($horarioDuraciones);
 
 $id_profesor = $_POST['id_profesor'];
+$fecha_creacion = date('Y-m-d'); // Genera la fecha actual en PHP
 
 $sql_check_profesor = "SELECT id_profesor FROM profesores WHERE id_profesor = '$id_profesor'";
 $result_check_profesor = mysqli_query($connection, $sql_check_profesor);
 
-
 if (mysqli_num_rows($result_check_profesor) > 0) {
-    $sql = "INSERT INTO grupos (nombre, asignatura, modalidad, horasSemanales, esActivo, precio, horarioDias, horarioHoras, horarioDuraciones, id_profesor) 
-            VALUES ('$nombre', '$asignatura', '$modalidad', '$horasSemanales', '$esActivo', '$precio', '$horarioDiasJson', '$horarioHorasJson', '$horarioDuracionesJson', $id_profesor)";
+    $sql = "INSERT INTO grupos (nombre, asignatura, modalidad, horasSemanales, esActivo, precio, horarioDias, horarioHoras, horarioDuraciones, id_profesor, creacion) 
+            VALUES ('$nombre', '$asignatura', '$modalidad', '$horasSemanales', '$esActivo', '$precio', '$horarioDiasJson', '$horarioHorasJson', '$horarioDuracionesJson', $id_profesor, '$fecha_creacion')";
 
     if (mysqli_query($connection, $sql)) {
         header("Location: ../grupos.php?success=1");
