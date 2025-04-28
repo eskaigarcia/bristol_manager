@@ -29,18 +29,14 @@
                         <label for="prof_Grupos">Grupo:</label>
                             <input type="text" id="prof_Grupo" name="prof_Grupo">
                         <label for="prof_dni">Asignatura:</label>
-                            <input type="text" id="prof_dni" name="prof_dni">
-                        <label for="activo">Es activo:</label>
-                        <select id="activo" name="activo">
-                            <option value="Si">Si</option>
-                            <option value="No">No</option>
-                        </select>
+                            <input type="text" id="prof_asignatura" name="prof_asignatura">
                     <div class="full center">
                         <button type="submit" class="cta">
                             <?php include './img/search.svg' ?>
                             Buscar
                         </button>
                     </div>
+                    <div class="card full"><?php include 'resources/teachersearch.php' ?></div>
             </form>
         </main>
     </div>
