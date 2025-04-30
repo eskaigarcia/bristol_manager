@@ -1,5 +1,4 @@
 <?php
-
 require __DIR__.'/../dbConnect.php';
 
 // Obtener el id del grupo
