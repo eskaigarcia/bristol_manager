@@ -23,7 +23,6 @@ echo "<tr class='head'>
         <td>Activo</td>
         <td>Intensivo</td>
         <td>Precio</td>
-        <td>Horario</td>
     </tr>";
 
 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
@@ -42,7 +41,6 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                 <td>{$activo}</td>
                 <td>{$intensivo}</td>
                 <td>{$row['precio']}€</td>
-                <td>{$horarioFormateado}</td>
             </tr>";
 }
 
