@@ -504,8 +504,8 @@ header{
   }
 }
 
-/* Student Search Table */
-#studentSearch{
+/* Student Search Table NOW GENERIC */
+#searchResult{
   width: 100%;
   border-collapse: collapse;
   font-size: 1.125rem;
@@ -528,6 +528,10 @@ header{
 
     &:last-child{
       width: 60px;
+    }
+
+    &.mini{
+      width: 75px;
     }
   }
 

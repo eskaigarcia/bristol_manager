@@ -21,8 +21,8 @@
                     <label for="nombre">Nombre:</label>
                     <input type="text" id="nombre" name="nombre">
 
-                    <label for="asignatura">Asignatura:</label>
-                    <input type="text" id="asignatura" name="asignatura">
+                    <label for="profesor">Profesor:</label>
+                    <input type="text" id="profesor" name="profesor">
 
                     <div class="full subGrid">
                         <div class="full subGrid">
@@ -33,6 +33,18 @@
                                 <input class="mini" type="number" id="precio" name="precio" step="any" value="200">
                         </div>
 
+                        <div class="full subGrid">
+                            <label for="horasSemanales">Hrs/semana:</label>
+                            <input type="number" id="horasSemanales" name="horasSemanales" step="0.5" min="0" max="10">
+                            
+                            <label for="curso">Año:</label>
+                            <input type="number" id="curso" name="curso" step="1" min="2020" max="2100">
+                        </div>
+                        
+                    </div>
+                    
+
+                    <div class="full subGrid">
                         <label for="modalidad">Modalidad:</label>
                         <select id="modalidad" name="modalidad">
                             <option value="">Cualquier modalidad</option>
@@ -40,13 +52,7 @@
                             <option value="online">Online</option>
                             <option value="hibrido">Híbrido</option>
                         </select>
-                    </div>
-                    
-
-                    <div class="full subGrid">
-                        <label for="horasSemanales">Hrs/semana:</label>
-                        <input type="number" id="horasSemanales" name="horasSemanales" step="0.5" min="0" max="10">
-
+                            
                         <label for="esIntensivo">Intensivo: </label>
                         <select id="esIntensivo" name="esIntensivo">
                             <option value="">Cualquiera</option>
