@@ -1,6 +1,7 @@
 <?php
 
 require __DIR__.'/../dbConnect.php';
+require __DIR__.'/../graphics.php';
 
 $query = "SELECT id_grupo, nombre, asignatura, modalidad, creacion, horasSemanales, esActivo, esIntensivo, precio, horario FROM grupos";
 $result = mysqli_query($connection, $query);
@@ -25,18 +26,30 @@ echo "<tr class='head'>
     </tr>";
 
 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-    $activo = ($row['esActivo'] == 1) ? "Activo" : "Inactivo";
-    $intensivo = ($row['esIntensivo'] == 1) ? "Sí" : "No";
+    // Calcular el curso a partir de la fecha de creación
+    $creacion = $row['creacion']; // formato YYYY-MM-DD
+    $year = intval(substr($creacion, 0, 4));
+    $mes = intval(substr($creacion, 5, 2));
+    if ($mes >= 8) {
+        $curso = $year . '/' . ($year + 1);
+    } else {
+        $curso = ($year - 1) . '/' . $year;
+    }
 
-    $fechaSolo = substr($row['creacion'], 0, 10);
+    // Calcular el precio
+    $precio = $row['precio'] / 100;
+
+    // Evaluate booleans
+    $row_activo = ($row['esActivo'] == 1) ? "<p class='tooltip'>$ico_groupActive<span>Grupo activo</span></p>" : "<p class='tooltip'>$ico_groupInactive<span>Grupo inactivo</span></p>";
+    $row_intensivo = ($row['esIntensivo'] == 1) ? "<p class='tooltip'>$ico_groupIntensivo<span>Grupo intensivo</span></p>" : "<p class='tooltip'>$ico_groupRecurrente<span>Grupo recurrente</span></p>";
 
     echo "<tr>
                 <td>{$row['nombre']}</td>
                 <td>{$row['asignatura']}</td>
-                <td> </td>
-                <td>{$fechaSolo}</td>
+                <td>{$row_activo} {$row_intensivo}</td>
+                <td>$curso</td>
                 <td>{$row['horasSemanales']}</td>
-                <td>{$row['precio']}€</td>
+                <td>{$precio}€</td>
                 <td><button onclick='getGroupDetails({$row["id_grupo"]})'>Info</button></td>
             </tr>";
 }
