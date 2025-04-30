@@ -17,12 +17,11 @@ echo '<table id="studentSearch">';
 echo "<tr class='head'>
         <td>Nombre</td>
         <td>Asignatura</td>
-        <td>Modalidad</td>
-        <td>Fecha de creación</td>
-        <td>Horas Semanales</td>
-        <td>Activo</td>
-        <td>Intensivo</td>
+        <td>Detalles</td>
+        <td>Curso</td>
+        <td>H/sem</td>
         <td>Precio</td>
+        <td>Info</td>
     </tr>";
 
 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
@@ -32,15 +31,13 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
     $fechaSolo = substr($row['creacion'], 0, 10);
 
     echo "<tr>
-                
                 <td>{$row['nombre']}</td>
                 <td>{$row['asignatura']}</td>
-                <td>{$row['modalidad']}</td>
+                <td> </td>
                 <td>{$fechaSolo}</td>
                 <td>{$row['horasSemanales']}</td>
-                <td>{$activo}</td>
-                <td>{$intensivo}</td>
                 <td>{$row['precio']}€</td>
+                <td><button onclick='getGroupDetails({$row["id_grupo"]})'>Info</button></td>
             </tr>";
 }
 
