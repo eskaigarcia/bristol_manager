@@ -9,7 +9,7 @@
         <main>
             <header>
                 <h1>Grupos</h1>
-                <button onclick="window.location.href='añadir_grupos.php'" class="cta">
+                <button onclick="createGroup()" class="cta">
                     <?php include './img/addGroup.svg'; ?>
                     Nuevo grupo
                 </button>
@@ -74,6 +74,7 @@
                 <?php include './resources/grupos/groupSearch.php' ?>
             </div>
 
+            <script src="./resources/grupos/newGroup.js"></script>
             <script src="./resources/grupos/getTeacherSelector.js"></script>
             <script src="./resources/grupos/groupDetailsBuild.js"></script>
             <script src="./resources/scrollspy.js"></script>
