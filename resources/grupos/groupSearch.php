@@ -3,7 +3,38 @@
 require __DIR__.'/../dbConnect.php';
 require __DIR__.'/../graphics.php';
 
-$query = "SELECT id_grupo, id_profesor, nombre, modalidad, creacion, horasSemanales, esActivo, esIntensivo, precio, horario FROM grupos";
+// Parse filters from GET
+$nombre = $_GET["nombre"] ?? '';
+$profesor = $_GET["profesor"] ?? '';
+$precio_min = $_GET["precio_min"] ?? '';
+$precio_max = $_GET["precio_max"] ?? '';
+$horasSemanales = $_GET["horasSemanales"] ?? '';
+$curso = $_GET["curso"] ?? '';
+$modalidad = $_GET["modalidad"] ?? '';
+$intensivo = $_GET["intensivo"] ?? '';
+
+// Build WHERE clause
+$where = '';
+if ($nombre !== '') $where .= ($where ? ' AND ' : '') . "nombre LIKE '%$nombre%'";
+// if ($profesor !== '') $where .= ($where ? ' AND ' : '') . "id_profesor = '$profesor'";
+if ($precio_min !== '') $where .= ($where ? ' AND ' : '') . "precio >= " . (intval($precio_min) * 100);
+if ($precio_max !== '') $where .= ($where ? ' AND ' : '') . "precio <= " . (intval($precio_max) * 100);
+if ($horasSemanales !== '') $where .= ($where ? ' AND ' : '') . "horasSemanales = " . (floatval($horasSemanales) * 2);
+if ($modalidad !== '') $where .= ($where ? ' AND ' : '') . "modalidad = '$modalidad'";
+// if ($intensivo !== '') $where .= ($where ? ' AND ' : '') . "esIntensivo = " . (intval($intensivo));
+
+// Curso (año académico)
+if ($curso !== '') {
+    // $curso format: "2024"
+    $year = intval($curso);
+    $start_date = ($year - 1) . "-08-01";
+    $end_date = ($year + 1) . "-07-31";
+    $where .= ($where ? ' AND ' : '') . "(creacion >= '$start_date' AND creacion <= '$end_date')";
+}
+
+if ($where === '') $where = '1';
+
+$query = "SELECT id_grupo, id_profesor, nombre, modalidad, creacion, horasSemanales, esActivo, esIntensivo, precio, horario FROM grupos WHERE $where LIMIT 100";
 $result = mysqli_query($connection, $query);
 
 if (!$result) {

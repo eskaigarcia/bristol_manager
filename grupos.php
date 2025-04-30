@@ -26,11 +26,11 @@
 
                     <div class="full subGrid">
                         <div class="full subGrid">
-                                <label for="precio">Precio min:</label>
-                                <input class="mini" type="number" id="precio" name="precio" step="any" value="0">
+                                <label for="precio_min">Precio min:</label>
+                                <input class="mini" type="number" id="precio_min" name="precio_min" step="any" value="0">
 
-                                <label for="precio">Precio max:</label>
-                                <input class="mini" type="number" id="precio" name="precio" step="any" value="200">
+                                <label for="precio_max">Precio max:</label>
+                                <input class="mini" type="number" id="precio_max" name="precio_max" step="any" value="200">
                         </div>
 
                         <div class="full subGrid">
