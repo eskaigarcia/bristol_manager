@@ -117,7 +117,7 @@ const _ex = {
 
     ui: {
         dialog: {
-            make(title = 'Diálogo', text = 'Contenido', action = _ex.ui.dialog.dismiss, actionText = 'Aceptar', destructive = false) {
+            make(title = 'Diálogo', text = 'Contenido', action = _ex.ui.dialog.dismiss, actionText = 'Aceptar', destructive = false, cancelText = 'Cancelar') {
                 const scrim = document.createElement('div');
                 scrim.id = 'dialogBox';
 
@@ -134,7 +134,7 @@ const _ex = {
                 const buttondiv = document.createElement('div');
                 buttondiv.classList.add('buttonContainer')
                 const closeButton = document.createElement('button');
-                closeButton.textContent = 'Cancelar';
+                closeButton.textContent = cancelText;
                 closeButton.onclick = function () { 
                     _ex.ui.dialog.dismiss();
                 };
@@ -150,6 +150,36 @@ const _ex = {
                 textdiv.appendChild(textText);
                 dialog.appendChild(textdiv);
                 buttondiv.appendChild(closeButton);
+                buttondiv.appendChild(button);
+                dialog.appendChild(buttondiv);
+                scrim.appendChild(dialog)
+                document.body.appendChild(scrim);
+            },
+
+            makeNotice(title = 'Diálogo', text = 'Contenido'){
+                const scrim = document.createElement('div');
+                scrim.id = 'dialogBox';
+
+                const dialog = document.createElement('div');
+
+                const textdiv = document.createElement('div');
+                textdiv.classList.add('textContainer')
+                const titleText = document.createElement('h2');
+                titleText.textContent = title;
+                const textText = document.createElement('p');
+                textText.textContent = text;
+
+                const buttondiv = document.createElement('div');
+                buttondiv.classList.add('buttonContainer')
+                const button = document.createElement('button');
+                button.textContent = 'Aceptar';
+                button.onclick = function () { 
+                    _ex.ui.dialog.dismiss();
+                };
+
+                textdiv.appendChild(titleText);
+                textdiv.appendChild(textText);
+                dialog.appendChild(textdiv);
                 buttondiv.appendChild(button);
                 dialog.appendChild(buttondiv);
                 scrim.appendChild(dialog)

@@ -193,6 +193,10 @@ button{
     padding: 1.5rem 2rem;
     border-radius: var(--radius-lg);
 
+    button{
+      text-align: center;
+    }
+
     &.destructive{
       button:last-child{
         background-color: var(--color-accent-light);
@@ -370,6 +374,70 @@ header{
   }
 }
 
+/* Notifications */
+.inlineFormWarning{
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: var(--border-md);
+  background-color: var(--color-accent-lighter);
+  border: 2px solid var(--color-accent-dark);
+
+  p:first-child{
+    font-weight: 600;
+  }
+
+  p{
+    color: var(--color-accent-dark);
+  }
+}
+
+#toastMessage{
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30rem;
+  z-index: 20;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background-color: var(--color-primary-lighter);
+  color: var(--color-primary-darkest);
+  border: 1px solid var(--color-primary-dark);
+
+  transition: bottom 0.10s ease-in;
+
+  button{
+    background-color: var(--color-primary);
+    color: var(--color-neutral-white);
+    cursor: pointer;
+
+    &:hover{
+      background-color: var(--color-primary-dark);
+    }
+  }
+
+  &.warn{
+    background-color: var(--color-accent-lighter);
+    color: var(--color-accent-darkest);
+    border-color: var(--color-accent-dark);
+
+    & button{
+      background-color: var(--color-accent);
+      color: var(--color-neutral-white);
+      cursor: pointer;
+  
+      &:hover{
+        background-color: var(--color-accent-dark);
+      }
+    }
+  }
+}
+
 /* Reveal field */
 .revealField{
   gap: 8px;
@@ -392,7 +460,7 @@ header{
   padding: 1rem 1rem 0; 
 
   display: grid; 
-  grid-template-columns: 5rem 1fr; 
+  grid-template-columns: 6rem 1fr; 
   grid-template-rows: repeat(4, 32px); 
   gap: 4px 4px; 
 
@@ -403,7 +471,7 @@ header{
       width: 100%;
 
       display: grid; 
-      grid-template-columns: repeat(2, 5rem 1fr); 
+      grid-template-columns: repeat(2, 6rem 1fr); 
       grid-template-rows: 32px; 
       gap: 4px 4px; 
     }
@@ -425,6 +493,10 @@ header{
   input{
     text-align: left;
     font-size: var(--font-size-lg);
+
+    &.mini{
+      width: 90%;
+    }
   }
 
   button{
@@ -432,8 +504,8 @@ header{
   }
 }
 
-/* Student Search Table */
-#studentSearch{
+/* Student Search Table NOW GENERIC */
+#searchResult{
   width: 100%;
   border-collapse: collapse;
   font-size: 1.125rem;
@@ -456,6 +528,10 @@ header{
 
     &:last-child{
       width: 60px;
+    }
+
+    &.mini{
+      width: 75px;
     }
   }
 
@@ -595,50 +671,13 @@ table{
   }
 }
 
-/* Toast */
-#toastMessage{
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 30rem;
-  z-index: 20;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-weight: 600;
+/* Text Styles */
+.requiredAlert{
+  font-size: 0.75rem;
+  text-decoration: underline;
+}
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  background-color: var(--color-primary-lighter);
-  color: var(--color-primary-darkest);
-  border: 1px solid var(--color-primary-dark);
-
-  transition: bottom 0.10s ease-in;
-
-  button{
-    background-color: var(--color-primary);
-    color: var(--color-neutral-white);
-    cursor: pointer;
-
-    &:hover{
-      background-color: var(--color-primary-dark);
-    }
-  }
-
-  &.warn{
-    background-color: var(--color-accent-lighter);
-    color: var(--color-accent-darkest);
-    border-color: var(--color-accent-dark);
-
-    & button{
-      background-color: var(--color-accent);
-      color: var(--color-neutral-white);
-      cursor: pointer;
-  
-      &:hover{
-        background-color: var(--color-accent-dark);
-      }
-    }
-  }
+.requiredMark{
+  font-weight: 400;
+  color: var(--color-accent);
 }

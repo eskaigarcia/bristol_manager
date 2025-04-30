@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,7 +34,7 @@
                     <td>
                         <select id="horasSemanales" name="horasSemanales" required>
                             <option value="1">1 Hora</option>
-                            <option value="1.5">1:30 Hora</option>
+                            <option value="1.5">1.5 Hora</option>
                             <option value="2">2 Horas</option>
                             <option value="3">3 Horas</option>
                             <option value="4">4 Horas</option>
@@ -64,12 +64,12 @@
                     <td><input type="number" id="id_profesor" name="id_profesor" placeholder="Introduce el ID del profesor" required></td>
                 </tr>
                 <tr>
-                    <td><label for="horario">Días de clase:</label></td>
+                    <td><label for="horarioDias">Días de clase:</label></td>
                     <td>
-                        <select id="horario" name="horario[]" multiple required>
+                        <select id="horarioDias" name="horarioDias[]" multiple required>
                             <option value="Lunes">Lunes</option>
                             <option value="Martes">Martes</option>
-                            <option value="Miércoles">Miercoles</option>
+                            <option value="Miércoles">Miércoles</option>
                             <option value="Jueves">Jueves</option>
                             <option value="Viernes">Viernes</option>
                             <option value="Sábado">Sábado</option>
@@ -92,5 +92,6 @@
         </form>
     </div>
     <button onclick="window.location.href='dashboard.php'" class="cardLink align_left">Volver atrás</button>
+    <script src="resources/conversionsgrupos.js"></script>
 </body>
 </html>

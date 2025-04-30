@@ -140,6 +140,14 @@ main{
   background-color: var(--color-primary-lightest);
 }
 
+
+.center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
 .flex{ 
   display: flex; 
   &.clear-between{
@@ -148,10 +156,8 @@ main{
   }
 }
 
-.spaced-items-sm {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+.gap-md {
+  gap: 1rem;
 }
 
 .hidden {
@@ -161,4 +167,10 @@ main{
 
 .inline {
   display: inline;
+}
+
+.spaced-items-sm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }

@@ -36,7 +36,7 @@ function doSearch(): void {
 
     // Output
     echo "<h2>$count alumnos</h2>";
-    echo '<table id="studentSearch">';
+    echo '<table id="searchResult">';
     echo "<tr class = 'head'>
                 <td>Nombre completo</td>
                 <td>Datos</td>
