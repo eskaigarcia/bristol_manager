@@ -22,6 +22,14 @@
                     <input type="text" id="asignatura" name="asignatura">
 
                     <div class="full subGrid">
+                        <div class="full subGrid">
+                                <label for="precio">Precio min:</label>
+                                <input class="mini" type="number" id="precio" name="precio" step="any" value="0">
+
+                                <label for="precio">Precio max:</label>
+                                <input class="mini" type="number" id="precio" name="precio" step="any" value="200">
+                        </div>
+
                         <label for="modalidad">Modalidad:</label>
                         <select id="modalidad" name="modalidad">
                             <option value="">Cualquier modalidad</option>
@@ -29,26 +37,18 @@
                             <option value="online">Online</option>
                             <option value="hibrido">Híbrido</option>
                         </select>
-
-                        <div class="full subGrid">
-                                <label for="precio">Precio min:</label>
-                                <input type="number" id="precio" name="precio" step="any" value="0">
-
-                                <label for="precio">Precio max:</label>
-                                <input type="number" id="precio" name="precio" step="any" value="200">
-                        </div>
                     </div>
                     
 
                     <div class="full subGrid">
-                        <label for="horasSemanales">H. semanales:</label>
-                        <input type="number" id="horasSemanales" name="horasSemanales" step="0.5">
+                        <label for="horasSemanales">Hrs/semana:</label>
+                        <input type="number" id="horasSemanales" name="horasSemanales" step="0.5" min="0" max="10">
 
                         <label for="esIntensivo">Intensivo: </label>
                         <select id="esIntensivo" name="esIntensivo">
-                            <option value=""></option>
-                            <option value="1">Sí</option>
-                            <option value="0">No</option>
+                            <option value="">Cualquiera</option>
+                            <option value="1">Intensivos</option>
+                            <option value="0">No intensivos</option>
                         </select>
                     </div>
 

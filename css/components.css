@@ -460,7 +460,7 @@ header{
   padding: 1rem 1rem 0; 
 
   display: grid; 
-  grid-template-columns: 5rem 1fr; 
+  grid-template-columns: 6rem 1fr; 
   grid-template-rows: repeat(4, 32px); 
   gap: 4px 4px; 
 
@@ -471,7 +471,7 @@ header{
       width: 100%;
 
       display: grid; 
-      grid-template-columns: repeat(2, 5rem 1fr); 
+      grid-template-columns: repeat(2, 6rem 1fr); 
       grid-template-rows: 32px; 
       gap: 4px 4px; 
     }
@@ -493,6 +493,10 @@ header{
   input{
     text-align: left;
     font-size: var(--font-size-lg);
+
+    &.mini{
+      width: 90%;
+    }
   }
 
   button{
