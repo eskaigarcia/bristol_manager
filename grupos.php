@@ -65,6 +65,7 @@
                 <?php include './resources/grupos/groupSearch.php' ?>
             </div>
 
+            <script src="./resources/grupos/groupDetailsBuild.js"></script>
             <script src="./resources/scrollspy.js"></script>
         </main>
     </div>
