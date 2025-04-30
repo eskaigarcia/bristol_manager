@@ -3,7 +3,6 @@
 <head>
     <?php include './components/htmlHead.php'; ?>
     <style>
-        /* Añadir estilo para desplazar el indicador de precio hacia la derecha */
         .range-container {
             display: flex;
             align-items: center;
@@ -14,7 +13,7 @@
             font-size: 1.2em;
         }
 
-        /* Alineación para "Activo" y "¿Es Intensivo?" */
+        
         .checkbox-container {
             position: relative;
             margin-top: 20px;
