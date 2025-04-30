@@ -15,33 +15,38 @@
             <div class="card full">
                 <h2>Buscar grupos</h2>
                 <form action='<?php echo $_SERVER["PHP_SELF"]?>' method="get" id="searchBar">
-                    <label for="g_nombre">Nombre:</label>
-                    <input type="text" id="g_nombre" name="g_nombre">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre">
 
-                    <label for="g_asignatura">Asignatura:</label>
-                    <input type="text" id="g_asignatura" name="g_asignatura">
+                    <label for="asignatura">Asignatura:</label>
+                    <input type="text" id="asignatura" name="asignatura">
 
                     <div class="full subGrid">
-                        <label for="g_modalidad">Modalidad:</label>
-                        <select id="g_modalidad" name="g_modalidad">
-                            <option value="">Selecciona modalidad</option>
+                        <label for="modalidad">Modalidad:</label>
+                        <select id="modalidad" name="modalidad">
+                            <option value="">Cualquier modalidad</option>
                             <option value="presencial">Presencial</option>
                             <option value="online">Online</option>
                             <option value="hibrido">Híbrido</option>
                         </select>
 
-                        <label for="g_precio">Precio:</label>
-                        <input type="number" id="g_precio" name="g_precio" step="any">
+                        <div class="full subGrid">
+                                <label for="precio">Precio min:</label>
+                                <input type="number" id="precio" name="precio" step="any" value="0">
+
+                                <label for="precio">Precio max:</label>
+                                <input type="number" id="precio" name="precio" step="any" value="200">
+                        </div>
                     </div>
                     
 
                     <div class="full subGrid">
-                        <label for="g_horasSemanales">H. semanales:</label>
-                        <input type="number" id="g_horasSemanales" name="g_horasSemanales" step="0.5">
+                        <label for="horasSemanales">H. semanales:</label>
+                        <input type="number" id="horasSemanales" name="horasSemanales" step="0.5">
 
-                        <label for="g_esIntensivo">Intensivo: </label>
-                        <select id="g_esIntensivo" name="g_esIntensivo">
-                            <option value="">--Seleccionar--</option>
+                        <label for="esIntensivo">Intensivo: </label>
+                        <select id="esIntensivo" name="esIntensivo">
+                            <option value=""></option>
                             <option value="1">Sí</option>
                             <option value="0">No</option>
                         </select>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'dbConnect.php';
+require __DIR__.'/../dbConnect.php';
 
 $nombre = $_POST['nombre'];
 $asignatura = $_POST['asignatura'];
