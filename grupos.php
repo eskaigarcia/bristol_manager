@@ -21,27 +21,25 @@
                     <label for="g_asignatura">Asignatura:</label>
                     <input type="text" id="g_asignatura" name="g_asignatura">
 
-                    <label for="g_modalidad">Modalidad:</label>
-                    <input type="text" id="g_modalidad" name="g_modalidad">
+                    <div class="full subGrid">
+                        <label for="g_modalidad">Modalidad:</label>
+                        <select id="g_modalidad" name="g_modalidad">
+                            <option value="">Selecciona modalidad</option>
+                            <option value="presencial">Presencial</option>
+                            <option value="online">Online</option>
+                            <option value="hibrido">Híbrido</option>
+                        </select>
 
-                    <label for="g_precio">Precio:</label>
-                    <input type="number" id="g_precio" name="g_precio" step="any">
+                        <label for="g_precio">Precio:</label>
+                        <input type="number" id="g_precio" name="g_precio" step="any">
+                    </div>
+                    
 
                     <div class="full subGrid">
-                        <label for="g_horasSemanales">Horas semanales:</label>
+                        <label for="g_horasSemanales">H. semanales:</label>
                         <input type="number" id="g_horasSemanales" name="g_horasSemanales" step="0.5">
 
-                        <label for="g_esActivo">Activo:</label>
-                        <select id="g_esActivo" name="g_esActivo">
-                            <option value="">--Seleccionar--</option>
-                            <option value="1">Sí</option>
-                            <option value="0">No</option>
-                        </select>
-                    </div>
-
-                    <!-- Aquí agregamos margen para separar más el campo de Intensivo -->
-                    <div class="full subGrid" style="margin-top: 20px;">
-                        <label for="g_esIntensivo">¿Es Intensivo?</label>
+                        <label for="g_esIntensivo">Intensivo: </label>
                         <select id="g_esIntensivo" name="g_esIntensivo">
                             <option value="">--Seleccionar--</option>
                             <option value="1">Sí</option>
@@ -59,11 +57,9 @@
             </div>
 
             <div class="card full">
-                <?php include './resources/groupSearch.php' ?>
+                <?php include './resources/grupos/groupSearch.php' ?>
             </div>
 
-            <script src="./resources/groupDetailsBuild.js"></script>
-            <script src="./resources/groupDetailsEdit.js"></script>
             <script src="./resources/scrollspy.js"></script>
         </main>
     </div>

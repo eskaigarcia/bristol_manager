@@ -1,6 +1,7 @@
 <?php
 session_start();
-require 'dbConnect.php';  // Conexión a la base de datos
+
+require __DIR__.'/../dbConnect.php';
 
 // Obtener los datos del formulario
 $nombre = $_POST['nombre'];

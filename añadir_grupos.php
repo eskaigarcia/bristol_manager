@@ -9,7 +9,7 @@
 <body class="insalumatras">
     <div class="insalumatras">
         <h1>Datos del Grupo</h1><br>
-        <form name="insgrupo" method="POST" class="insalum" action="resources/insertar_grupos.php">
+        <form name="insgrupo" method="POST" class="insalum" action="resources/groupos/insertar_grupos.php">
             <table class="insalum">
                 <tr>
                     <td><label for="nombre">Nombre del grupo:</label></td>
