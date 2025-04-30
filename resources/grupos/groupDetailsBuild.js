@@ -1,17 +1,26 @@
 function getGroupDetails(id) {
     fetch(`./resources/grupos/getGroupDetails.php?id=${id}`)
         .then(response => {
-            if (!response.ok) throw new Error("Grupo no encontrado")
-            return response.json();
+            if (!response.ok) throw new Error("No se pudieron cargar los detalles del grupo");
+            return response.json();  // Asegúrate de que la respuesta es JSON
         })
-        .then(data => displayGroupDetails(data))
-        // .catch(error => console.error("Error:", error.message));
+        .then(group => {
+            if (group.error) {
+                alert(group.error);  // Si hay un error en los datos devueltos, lo mostramos
+            } else {
+                displayGroupDetails(group);
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            alert(error.message);  // Mostramos el error de la alerta
+        });
 }
 
 function displayGroupDetails(group) {
-    console.log(group); // debugging the object
+    console.log(group); // Para depurar, verifica que el grupo esté llegando correctamente
 
-    // CONSTRUCCIÓN FINAL DE LA INTERFAZ
+    // Construcción del modal para mostrar los detalles del grupo
     let div = document.createElement('div');
     div.className = 'modal groupData';
     div.id = 'groupDataModal';
@@ -20,41 +29,40 @@ function displayGroupDetails(group) {
         <div>
             <div class="header">
                 <div>
-                    <p>Grupo ${group.id_grupo} - Creado el ${group.fechaCreacion || ''}</p>
+                    <p>Grupo ${group.id_grupo} - Creado el ${group.creacion || ''}</p>
                     <h2>${group.nombre}</h2>
                     <div class="spaced-items-sm">
-                        ${buildGroupChips(group)}
+                        ${buildGroupChips(group)}  <!-- Esta función construye las "chips" de información -->
                     </div>
                 </div>
                 <img onclick="removeDetailsModal()" class="iconButton" src="./img/close.png" alt="Cerrar">
             </div>
 
             <div class="body">
-                ${doTabBar_groupDetails()}
+                ${doTabBar_groupDetails()}  <!-- Aquí generas la barra de navegación del modal -->
                 <div id="groupDataView">
                     <div class="scrollspySection" id="GDVData">
-                        ${buildGroupData(group)}
+                        ${buildGroupData(group)}  <!-- Aquí generas la tabla con los datos del grupo -->
                     </div>
                 </div>
             </div>
         </div>`;
 
     document.querySelector('body').appendChild(div);
-
-    startScrollSpy();
+    startScrollSpy();  // Si usas scrollspy, esta función lo activa
 }
 
-// Chips para grupo
+// Función que crea las "chips" de información del grupo
 function buildGroupChips(group) {
     let chips = '';
-    chips += group.activo ? '<span class="chip">Activo</span>' : '<span class="chip warn">Inactivo</span>';
-    chips += group.intensivo ? '<span class="chip warn">Intensivo</span>' : '';
+    chips += group.esActivo ? '<span class="chip">Activo</span>' : '<span class="chip warn">Inactivo</span>';
+    chips += group.esIntensivo ? '<span class="chip warn">Intensivo</span>' : '';
     chips += group.modalidad ? `<span class="chip">${group.modalidad}</span>` : '';
     chips += group.horario ? `<span class="chip">${group.horario}</span>` : '';
     return chips;
 }
 
-// Tab bar para grupos
+// Función para crear la barra de navegación del modal
 function doTabBar_groupDetails() {
     return `<div class="tabs-scrollspy">
         <a href="#GDVData">
@@ -64,7 +72,7 @@ function doTabBar_groupDetails() {
     </div>`;
 }
 
-// Datos principales del grupo
+// Función para generar los detalles del grupo en una tabla
 function buildGroupData(group) {
     return `
         <table class="camo">
@@ -78,11 +86,11 @@ function buildGroupData(group) {
             </tr>
             <tr>
                 <td>Intensivo:</td>
-                <td>${group.intensivo ? 'Sí' : 'No'}</td>
+                <td>${group.esIntensivo ? 'Sí' : 'No'}</td>
             </tr>
             <tr>
                 <td>Activo:</td>
-                <td>${group.activo ? 'Sí' : 'No'}</td>
+                <td>${group.esActivo ? 'Sí' : 'No'}</td>
             </tr>
             <tr>
                 <td>Horario:</td>
@@ -92,12 +100,13 @@ function buildGroupData(group) {
     `;
 }
 
+// Función para eliminar el modal cuando se cierra
 function removeDetailsModal() {
     const modal = document.getElementById('groupDataModal');
     if (modal) modal.remove();
 }
 
-// Dummy para scrollspy si lo usas
+// Función Dummy para ScrollSpy, si la usas
 function startScrollSpy() {
-    // Implementa si tienes scrollspy, si no puedes dejarlo vacío
+    // Aquí podrías activar cualquier funcionalidad de scrollspy si la usas
 }
