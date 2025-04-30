@@ -21,13 +21,13 @@
             </header>
                 <div class="card full">
                     <h2>Buscar maestro</h2>
-                    <form id="searchBar">
+                    <form id="searchBar" method="POST"aijsduiha><!--hacer un action para que haga algo-->
                         <label for="prof_nombre">Nombre:</label>
                             <input type="text" id="prof_nombre" name="prof_nombre">
-                        <label for="prof_apellidos">Apellidos:</label>
-                            <input type="text" id="prof_apellidos" name="prof_apellidos">
-                        <label for="prof_Grupos">Grupo:</label>
-                            <input type="text" id="prof_Grupo" name="prof_Grupo">
+                        <label for="prof_grupos">grupos:</label>
+                            <input type="text" id="prof_grupos" name="prof_grupos">
+                        <label for="prof_partiulares">particulares:</label>
+                            <input type="text" id="prof_Grupo" name="prof_particulares">
                         <label for="prof_dni">Asignatura:</label>
                             <input type="text" id="prof_asignatura" name="prof_asignatura">
                     <div class="full center">
