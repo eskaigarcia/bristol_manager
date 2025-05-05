@@ -2,8 +2,8 @@ function createStudent() {
     // CONSTRUCCIÓN FINAL DE LA INTERFAZ
     storage.pendingEdits = true;
     let div = document.createElement('div');
-    div.className = 'modal studentData';
-    div.id = 'studentDataModal';
+    div.className = 'modal';
+    div.id = 'popUpModal';
 
     div.innerHTML = `
         <div>
@@ -16,7 +16,7 @@ function createStudent() {
 
             <div class="body noMeta">
                 ${doTabBar_newStudent()}
-                <div id="studentDataView">
+                <div id="modalBodyView">
                     <div class="scrollspySection" id="SDVData">
                         <div class="flex clear-between">
                             <h3>Datos personales</h3>
@@ -286,7 +286,7 @@ function removealerts() {
 
 function cancelStudentInsertion() {
     storage.pendingEdits = false;
-    document.getElementById('studentDataModal').remove()
+    document.getElementById('popUpModal').remove()
 }
 
 function validateNewStudent() {
@@ -474,7 +474,7 @@ function saveStudentToDatabase() {
         if (result.success) {
             // Set flag to show toast after reload
             sessionStorage.setItem('studentAdded', '1');
-            document.getElementById('studentDataModal').remove();
+            document.getElementById('popUpModal').remove();
             location.reload();
         } else {
             _ex.ui.toast.make('Error al añadir el alumno: ' + (result.message || ''));

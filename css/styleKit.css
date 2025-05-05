@@ -174,3 +174,9 @@ main{
   flex-wrap: wrap;
   gap: 8px;
 }
+
+hr.full{
+  width: 100%;
+  grid-column: span 4;
+  border: var(--color-primary-lighter) 1px solid;
+}

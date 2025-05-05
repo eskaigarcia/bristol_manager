@@ -21,8 +21,8 @@ function displayGroupDetails(group, alumnos = [], profesor = null) {
 
     // Construcción del modal para mostrar los detalles del grupo
     let div = document.createElement('div');
-    div.className = 'modal groupData';
-    div.id = 'groupDataModal';
+    div.className = 'modal';
+    div.id = 'popUpModal';
 
     div.innerHTML = `
         <div>
@@ -39,7 +39,7 @@ function displayGroupDetails(group, alumnos = [], profesor = null) {
 
             <div class="body">
                 ${doTabBar_groupDetails()}  <!-- Aquí generas la barra de navegación del modal -->
-                <div id="groupDataView">
+                <div id="modalBodyView">
                     <div class="scrollspySection" id="GDVData">
                         ${buildGroupData(group)}  <!-- Aquí generas la tabla con los datos del grupo -->
                     </div>
@@ -101,7 +101,7 @@ function buildGroupData(group) {
 
 // Función para eliminar el modal cuando se cierra
 function removeDetailsModal() {
-    const modal = document.getElementById('groupDataModal');
+    const modal = document.getElementById('popUpModal');
     if (modal) modal.remove();
 }
 

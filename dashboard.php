@@ -44,8 +44,5 @@
 
         </main>
     </div>
-
-    <!-- Scripts -->
-    <script src="render.js"></script>
 </body>
 </html>

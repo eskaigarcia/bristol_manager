@@ -8,7 +8,7 @@ function removeDetailsModal() {
     if (storage.pendingEdits) {
         _ex.ui.toast.make('Tienes cambios sin guardar.')
     } else {
-        document.getElementById('studentDataModal').remove()
+        document.getElementById('popUpModal').remove()
     }
 }
 
@@ -77,7 +77,7 @@ const quickNotes = {
 const triggerEdit = {
     mainDetails() {
         storage.pendingEdits = true;
-        const display = document.querySelector('#studentDataModal div');
+        const display = document.querySelector('#popUpModal div');
         display.innerHTML = `<div class="header">
                 <div>
                     <p>Editando alumno:</p>
@@ -167,7 +167,7 @@ const triggerEdit = {
 
     emergencyContact(id_contact = null, name = '', tel = '', rel = '') {
         storage.pendingEdits = true;
-        const display = document.querySelector('#studentDataModal div');
+        const display = document.querySelector('#popUpModal div');
         display.innerHTML = `<div class="header">
                 <div>
                     <p>Editando contacto de emergencia de:</p>
@@ -240,7 +240,7 @@ const triggerEdit = {
 
     guardian() {
         storage.pendingEdits = true;
-        const display = document.querySelector('#studentDataModal div'); 
+        const display = document.querySelector('#popUpModal div'); 
 
         if(storage.studentData.guardian == null) {
             display.innerHTML = `<div class="header">

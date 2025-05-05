@@ -2,8 +2,8 @@ function createGroup() {
     // CONSTRUCCIÓN FINAL DE LA INTERFAZ
     // storage.pendingEdits = true;
     let div = document.createElement('div');
-    div.className = 'modal studentData';
-    div.id = 'studentDataModal';
+    div.className = 'modal';
+    div.id = 'popUpModal';
 
     div.innerHTML = `
         <div>
@@ -15,7 +15,7 @@ function createGroup() {
             </div>
 
             <div class="body noMeta">
-                <div id="studentDataView" style="margin-top: 1rem;">
+                <div id="modalBodyView" style="margin-top: 1rem;">
                     <div class="scrollspySection" id="SDVData">
                         <div class="flex clear-between">
                             <h3>Datos de la clase</h3>
