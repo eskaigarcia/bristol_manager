@@ -40,6 +40,7 @@
                 <button>Ir a mantenimiento</button>
             </div>
 
+            <!-- Calendario -->
 
         </main>
     </div>

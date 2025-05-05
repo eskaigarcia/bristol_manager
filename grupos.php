@@ -7,27 +7,6 @@
     <div id="app">
         <?php include './components/navView.php'; ?>
         <main>
-        <style>
-.modal.groupData {
-    position: fixed;
-    top: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #fff;
-    border: 2px solid #333;
-    box-shadow: 0 0 20px #0003;
-    z-index: 9999;
-    padding: 2em;
-    min-width: 300px;
-    max-width: 90vw;
-}
-.iconButton {
-    cursor: pointer;
-    float: right;
-    width: 32px;
-    height: 32px;
-}
-</style>
             <header>
                 <h1>Grupos</h1>
                 <button onclick="createGroup()" class="cta">

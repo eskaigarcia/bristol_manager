@@ -11,7 +11,7 @@
 
     <button 
             class="align_left <?= basename(path: $_SERVER['PHP_SELF']) === 'notificaciones.php' ? 'active' : '' ?>"
-            onclick=""
+            onclick="window.location.href='notificaciones.php'"
         >
         <img src="img/notificacion-ondark.png" alt="">
         Notificaciones
@@ -36,8 +36,8 @@
     </button>
 
     <button 
-            class="align_left <?= basename(path: $_SERVER['PHP_SELF']) === 'calendario.php' ? 'active' : '' ?>"
-            onclick=""
+            class="align_left <?= basename(path: $_SERVER['PHP_SELF']) === 'clases.php' ? 'active' : '' ?>"
+            onclick="window.location.href='clases.php'"
         >
         <img src="img/calendario-ondark.png" alt="">
         Clases
@@ -45,7 +45,7 @@
 
     <button 
             class="align_left <?= basename(path: $_SERVER['PHP_SELF']) === 'relaciones.php' ? 'active' : '' ?>"
-            onclick=""
+            onclick="window.location.href='relaciones.php'"
         >
         <img src="img/group-ondark.png" alt="">
         Amigos
@@ -63,9 +63,17 @@
 
     <button 
             class="align_left <?= basename(path: $_SERVER['PHP_SELF']) === 'pagos.php' ? 'active' : '' ?>"
-            onclick=""
+            onclick="window.location.href='pagos.php'"
         >
         <img src="img/pagos-ondark.png" alt="">
         Pagos
+    </button>
+
+    <button 
+            class="align_left <?= basename(path: $_SERVER['PHP_SELF']) === 'payroll.php' ? 'active' : '' ?>"
+            onclick="window.location.href='payroll.php'"
+        >
+        <img src="img/payroll.png" alt="">
+        Payroll
     </button>
 </div>
