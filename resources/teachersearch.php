@@ -40,19 +40,36 @@ if (!empty($alumnos)) {
 
 $query .= " GROUP BY p.id_profesor";
 
-if ($alumnos === '0') { 
-    $query .= " HAVING total_alumnos = 0";
-} elseif (!empty($alumnos)) { 
-    $query .= " HAVING total_alumnos = " . mysqli_real_escape_string($connection, $alumnos);
+$havingConditions = [];
+
+if ($grupos === '0') { 
+    $havingConditions[] = "total_grupos = 0";
+} elseif (!empty($grupos)) { 
+    $havingConditions[] = "total_grupos = " . mysqli_real_escape_string($connection, $grupos);
 }
 
+if ($particulares === '0') { 
+    $havingConditions[] = "total_clases = 0";
+} elseif (!empty($particulares)) { 
+    $havingConditions[] = "total_clases = " . mysqli_real_escape_string($connection, $particulares);
+}
+
+if ($alumnos === '0') { 
+    $havingConditions[] = "total_alumnos = 0";
+} elseif (!empty($alumnos)) { 
+    $havingConditions[] = "total_alumnos = " . mysqli_real_escape_string($connection, $alumnos);
+}
+
+// Agregar HAVING solo si hay condiciones
+if (!empty($havingConditions)) {
+    $query .= " HAVING " . implode(" AND ", $havingConditions);
+}
 $result = mysqli_query($connection, $query);
 
 if (!$result) {
-    echo "Error al obtener los datos: " . mysqli_error($connection);
-    exit();
+    echo "Error en la consulta: " . mysqli_error($connection);
+    exit;
 }
-
 
 $count = mysqli_num_rows($result);
 
@@ -64,6 +81,7 @@ echo "<tr class='head'>
         <td style='width:13%;'>grupo</td>
         <td style='width:13%;'>clases particulares</td>
         <td>alumnos</td>
+        <td>info</td>
       </tr>";
 
 while ($row = mysqli_fetch_assoc($result)) {
@@ -73,6 +91,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             <td>{$row['total_grupos']}</td>
             <td>{$row['total_clases']}</td>
             <td>{$row['total_alumnos']}</td>
+            <td><img class='action' onclick='' src='./img/info.png'><span></span></td>
           </tr>";
 }
 
