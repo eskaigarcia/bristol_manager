@@ -27,7 +27,7 @@ function createGroup() {
                                 <input type="text" id="nombre" name="nombre" placeholder="Introduce el nombre del grupo" required>
                             </div>
                             <div class="flex gap-md">
-                                <table class="camo">
+                                <table class="camo inputMode">
                                     <tr>
                                         <td><label for="asignatura">Asignatura:</label></td>
                                         <td><input type="text" id="asignatura" name="asignatura" placeholder="Introduce la asignatura" required></td>
@@ -73,7 +73,7 @@ function createGroup() {
                                         </td>
                                     </tr>
                                 </table>
-                                <table class="camo">
+                                <table class="camo inputMode">
                                     <tr>
                                         <td><label for="id_profesor">ID del Profesor:</label></td>
                                         <td><input type="number" id="id_profesor" name="id_profesor" placeholder="Introduce el ID del profesor" required></td>

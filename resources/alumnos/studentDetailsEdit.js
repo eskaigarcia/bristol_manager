@@ -91,7 +91,7 @@ const triggerEdit = {
                 <div class="editView">
                     <h3>Modificar datos personales:</h3>
                     <form id="editStudentDetails">
-                        <table class="camo">
+                        <table class="camo inputMode">
                             <tr>
                                 <td><label for="nombre">Nombre:</label></td>
                                 <td><input type="text" id="nombre" name="nombre" value="${storage.studentData.alumno.nombre}"></td>
@@ -182,7 +182,7 @@ const triggerEdit = {
                     <div class="editView">
                         <h3>Nuevo contacto de emergencia:</h3>
                         <form id="editEmergencyContact">
-                            <table class="camo">
+                            <table class="camo inputMode">
                                 <tr>
                                     <td><label for="contact_name">Nombre:</label></td>
                                     <td><input type="text" id="contact_name" name="contact_name" required></td>
@@ -208,7 +208,7 @@ const triggerEdit = {
                     <div class="editView">
                         <h3>Nuevo contacto de emergencia:</h3>
                         <form id="editEmergencyContact">
-                            <table class="camo">
+                            <table class="camo inputMode">
                                 <tr>
                                     <td><label for="contact_name">Nombre:</label></td>
                                     <td><input type="text" id="contact_name" name="contact_name" value="${name}" required></td>
@@ -256,7 +256,7 @@ const triggerEdit = {
             <div class="editView">
                 <h3>Modificar datos del responsable legal:</h3>
                 <form id="editGuardianDetails">
-                    <table class="camo">
+                    <table class="camo inputMode">
                         <tr>
                             <td><label for="nombre">Nombre:</label></td>
                             <td><input type="text" id="nombre" name="nombre"></td>
@@ -316,7 +316,7 @@ const triggerEdit = {
             <div class="editView">
                 <h3>Modificar datos del responsable legal:</h3>
                 <form id="editGuardianDetails">
-                    <table class="camo">
+                    <table class="camo inputMode">
                         <tr>
                             <td><label for="nombre">Nombre:</label></td>
                             <td><input type="text" id="nombre" name="nombre" value="${storage.studentData.guardian.nombre}"></td>

@@ -16,8 +16,8 @@ function createPayment() {
             <div class="body noMeta">
                 <div id="modalBodyView" style="margin-top: 1rem;">
                     <div class="scrollspySection" id="SDVData">
-                        <form id="quickPayment" onchange="triggerQuickPayment()">
-                            <table class="camo full">
+                        <form id="quickPayment">
+                            <table class="camo inputMode">
                                 <tr>
                                     <td>
                                         <label for="qp_alumno">Alumno:</label>
@@ -39,22 +39,22 @@ function createPayment() {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label>Meses:</label>
+                                        <label>Mensualidades:</label>
                                     </td>
                                     <td>
-                                        <div>
-                                            <label><input type="checkbox" name="qp_mensualidades[]"> Ene</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]"> Feb</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]"> Mar</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]"> Abr</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]"> May</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]"> Jun</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]"> Jul</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]"> Ago</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]"> Sep</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]"> Oct</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]"> Nov</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]"> Dic</label>
+                                        <div class="multipicker">
+                                            <label><input type="checkbox" name="qp_mensualidades[]">Ene</label>
+                                            <label><input type="checkbox" name="qp_mensualidades[]">Feb</label>
+                                            <label><input type="checkbox" name="qp_mensualidades[]">Mar</label>
+                                            <label><input type="checkbox" name="qp_mensualidades[]">Abr</label>
+                                            <label><input type="checkbox" name="qp_mensualidades[]">May</label>
+                                            <label><input type="checkbox" name="qp_mensualidades[]">Jun</label>
+                                            <label><input type="checkbox" name="qp_mensualidades[]">Jul</label>
+                                            <label><input type="checkbox" name="qp_mensualidades[]">Ago</label>
+                                            <label><input type="checkbox" name="qp_mensualidades[]">Sep</label>
+                                            <label><input type="checkbox" name="qp_mensualidades[]">Oct</label>
+                                            <label><input type="checkbox" name="qp_mensualidades[]">Nov</label>
+                                            <label><input type="checkbox" name="qp_mensualidades[]">Dic</label>
                                         </div>
                                     </td>
                                 </tr>
@@ -123,5 +123,5 @@ function createPayment() {
         </div>`
 
     document.querySelector('body').appendChild(div);
-    document.getElementById("fecha").value = new Date().toISOString().split("T")[0]
+    document.getElementById("qp_fecha").value = new Date().toISOString().split("T")[0]
 }
