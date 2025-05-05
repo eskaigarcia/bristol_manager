@@ -11,7 +11,7 @@ $precio_max = $_GET["precio_max"] ?? '';
 $horasSemanales = $_GET["horasSemanales"] ?? '';
 $curso = $_GET["curso"] ?? '';
 $modalidad = $_GET["modalidad"] ?? '';
-$intensivo = $_GET["intensivo"] ?? '';
+$intensivo = $_GET["esIntensivo"] ?? '';
 
 // Build WHERE clause
 $where = '';
@@ -21,7 +21,7 @@ if ($precio_min !== '') $where .= ($where ? ' AND ' : '') . "precio >= " . (intv
 if ($precio_max !== '') $where .= ($where ? ' AND ' : '') . "precio <= " . (intval($precio_max) * 100);
 if ($horasSemanales !== '') $where .= ($where ? ' AND ' : '') . "horasSemanales = " . (floatval($horasSemanales) * 2);
 if ($modalidad !== '') $where .= ($where ? ' AND ' : '') . "modalidad = '$modalidad'";
-// if ($intensivo !== '') $where .= ($where ? ' AND ' : '') . "esIntensivo = " . (intval($intensivo));
+if ($intensivo !== '') $where .= ($where ? ' AND ' : '') . "esIntensivo = " . (intval($intensivo));
 
 // Curso (año académico)
 if ($curso !== '') {
@@ -34,7 +34,10 @@ if ($curso !== '') {
 
 if ($where === '') $where = '1';
 
-$query = "SELECT id_grupo, id_profesor, nombre, modalidad, creacion, horasSemanales, esActivo, esIntensivo, precio, horario FROM grupos WHERE $where LIMIT 100";
+$query = "SELECT g.id_grupo, g.id_profesor, g.nombre, g.modalidad, g.creacion, g.horasSemanales, g.esActivo, g.esIntensivo, g.precio, g.horario, p.nombre AS profesor_nombre
+          FROM grupos g
+          LEFT JOIN profesores p ON g.id_profesor = p.id_profesor
+          WHERE $where LIMIT 100";
 $result = mysqli_query($connection, $query);
 
 if (!$result) {
@@ -87,7 +90,7 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 
     echo "<tr>
             <td>{$row['nombre']}</td>
-            <td> </td>
+            <td>{$row['profesor_nombre']}</td>
             <td>$curso</td>
             <td class='mini'>{$horas}</td>
             <td class='mini'>{$precio}€</td>

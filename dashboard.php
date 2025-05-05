@@ -34,6 +34,14 @@
                 <button>Ir a notificaciones</button>
             </div>
 
+            <div class="card double stat-singleNum">
+                <h2>Backups</h2>
+                <p><span>✅</span> Copias de seguridad completas</p>
+                <button>Ir a mantenimiento</button>
+            </div>
+
+            <!-- Calendario -->
+
         </main>
     </div>
 

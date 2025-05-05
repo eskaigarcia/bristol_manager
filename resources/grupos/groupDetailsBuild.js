@@ -2,22 +2,21 @@ function getGroupDetails(id) {
     fetch(`./resources/grupos/getGroupDetails.php?id=${id}`)
         .then(response => {
             if (!response.ok) throw new Error("No se pudieron cargar los detalles del grupo");
-            return response.json(); 
+            return response.json();
         })
-        .then(group => {
-            if (group.error) {
-                alert(group.error);  
-            } else {
-                displayGroupDetails(group);
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+                return;
             }
+            displayGroupDetails(data.grupo, data.alumnos, data.profesor);
         })
         .catch(error => {
-            console.error(error);
-            alert(error.message); 
+            console.error("Error fetching group details:", error);
         });
 }
 
-function displayGroupDetails(group) {
+function displayGroupDetails(group, alumnos = [], profesor = null) {
     console.log(group); 
 
     // Construcción del modal para mostrar los detalles del grupo
@@ -49,7 +48,7 @@ function displayGroupDetails(group) {
         </div>`;
 
     document.querySelector('body').appendChild(div);
-    startScrollSpy();  // Si usas scrollspy, esta función lo activa
+    // startScrollSpy();  // Si usas scrollspy, esta función lo activa
 }
 
 // Función que crea las "chips" de información del grupo

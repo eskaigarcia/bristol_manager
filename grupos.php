@@ -9,7 +9,7 @@
         <main>
             <header>
                 <h1>Grupos</h1>
-                <button onclick="window.location.href='añadir_grupos.php'" class="cta">
+                <button onclick="createGroup()" class="cta">
                     <?php include './img/addGroup.svg'; ?>
                     Nuevo grupo
                 </button>
@@ -22,7 +22,7 @@
                     <input type="text" id="nombre" name="nombre">
 
                     <label for="profesor">Profesor:</label>
-                    <input type="text" id="profesor" name="profesor">
+                    <select id="profesor" name="profesor"></select>
 
                     <div class="full subGrid">
                         <div class="full subGrid">
@@ -74,6 +74,8 @@
                 <?php include './resources/grupos/groupSearch.php' ?>
             </div>
 
+            <script src="./resources/grupos/newGroup.js"></script>
+            <script src="./resources/grupos/getTeacherSelector.js"></script>
             <script src="./resources/grupos/groupDetailsBuild.js"></script>
             <script src="./resources/scrollspy.js"></script>
         </main>
