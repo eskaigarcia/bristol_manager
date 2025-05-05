@@ -28,8 +28,8 @@
                             <input type="text" id="prof_grupos" name="prof_grupos">
                         <label for="prof_partiulares">particulares:</label>
                             <input type="text" id="prof_particulares" name="prof_particulares">
-                        <label for="prof_dni">Asignatura:</label>
-                            <input type="text" id="prof_asignatura" name="prof_asignatura">
+                        <label for="prof_alumnos">Alumnos:</label>
+                            <input type="text" id="prof_alumnos" name="prof_alumnos"> 
                     <div class="full center">
                         <button type="submit" class="cta">
                             <?php include './img/search.svg' ?>
