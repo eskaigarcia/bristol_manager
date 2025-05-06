@@ -79,17 +79,17 @@ function createGroup() {
                                         <td><input type="number" id="id_profesor" name="id_profesor" placeholder="Introduce el ID del profesor" required></td>
                                     </tr>
                                     <tr>
-                                        <td><label for="horarioDias">Días de clase:</label></td>
+                                        <td><label for="horarioDias">Días:</label></td>
                                         <td>
-                                            <select id="horarioDias" name="horarioDias[]" multiple required>
-                                                <option value="Lunes">Lunes</option>
-                                                <option value="Martes">Martes</option>
-                                                <option value="Miércoles">Miércoles</option>
-                                                <option value="Jueves">Jueves</option>
-                                                <option value="Viernes">Viernes</option>
-                                                <option value="Sábado">Sábado</option>
-                                                <option value="Domingo">Domingo</option>
-                                            </select>
+                                    <div class="multipicker">
+                                            <label><input type="checkbox" name="horarioDias[]" value="Lunes">Lunes</label>
+                                            <label><input type="checkbox" name="horarioDias[]" value="Martes">Martes</label>
+                                            <label><input type="checkbox" name="horarioDias[]" value="Miércoles">Miércoles</label>
+                                            <label><input type="checkbox" name="horarioDias[]" value="Jueves">Jueves</label>
+                                            <label><input type="checkbox" name="horarioDias[]" value="Viernes">Viernes</label>
+                                            <label><input type="checkbox" name="horarioDias[]" value="Sábado">Sábado</label>
+                                            <label><input type="checkbox" name="horarioDias[]" value="Domingo">Domingo</label>
+                                    </div>
                                         </td>
                                     </tr>
                                     <tr>
