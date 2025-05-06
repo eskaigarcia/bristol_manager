@@ -279,13 +279,13 @@ function createGroup() {
                                         <td><label for="horarioDias">Días:</label></td>
                                         <td>
                                             <div class="multipicker">
-                                                <label><input type="checkbox" name="horarioDias[]" value="Lunes">Lunes</label>
-                                                <label><input type="checkbox" name="horarioDias[]" value="Martes">Martes</label>
-                                                <label><input type="checkbox" name="horarioDias[]" value="Miércoles">Miércoles</label>
-                                                <label><input type="checkbox" name="horarioDias[]" value="Jueves">Jueves</label>
-                                                <label><input type="checkbox" name="horarioDias[]" value="Viernes">Viernes</label>
-                                                <label><input type="checkbox" name="horarioDias[]" value="Sábado">Sábado</label>
-                                                <label><input type="checkbox" name="horarioDias[]" value="Domingo">Domingo</label>
+                                                <label><input type="checkbox" name="horarioDias[]" value="Lunes">L</label>
+                                                <label><input type="checkbox" name="horarioDias[]" value="Martes">M</label>
+                                                <label><input type="checkbox" name="horarioDias[]" value="Miércoles">X</label>
+                                                <label><input type="checkbox" name="horarioDias[]" value="Jueves">J</label>
+                                                <label><input type="checkbox" name="horarioDias[]" value="Viernes">V</label>
+                                                <label><input type="checkbox" name="horarioDias[]" value="Sábado">S</label>
+                                                <label><input type="checkbox" name="horarioDias[]" value="Domingo">D</label>
                                             </div>
                                         </td>
                                     </tr>
