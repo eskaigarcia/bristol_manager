@@ -17,13 +17,15 @@ function createPayment() {
                 <div id="modalBodyView" style="margin-top: 1rem;">
                     <div class="ticketView">
                         <form id="quickPayment" onchange="updateNewPaymentFrontend()">
+                        <input style="display: none;" id="qp_id_alumno" name="qp_id_alumno">
                             <table class="camo inputMode">
                                 <tr>
                                     <td>
                                         <label for="qp_alumno">Alumno:</label>
                                     </td>
                                     <td>
-                                        <input type="text" id="qp_alumno" name="qp_alumno">
+                                        <input type="text" id="qp_alumno" name="qp_alumno" oninput="studentTypeAhead()">
+                                        <div id="suggestions"></div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -71,7 +73,7 @@ function createPayment() {
                                         <label for="qp_descuento">Descuento extra/mes:</label>
                                     </td>
                                     <td>
-                                        <input type="number" id="qp_descuento" name="qp_descuento">
+                                        <input type="number" id="qp_descuento" name="qp_descuento" min="0" step="0.5">
                                     </td>
                                 </tr>
                                 <tr>
@@ -181,4 +183,39 @@ function updateNewPaymentFrontend() {
     p.appendChild(text);
 
     overview.appendChild(p);
+}
+
+function studentTypeAhead() {
+    const query = document.getElementById('qp_alumno').value
+    const suggestionBox = document.getElementById("suggestions");
+
+    if(query.length >= 3) {
+    fetch("./resources/pagos/studentTypeAhead.php?q=" + encodeURIComponent(query))
+        .then(response => response.json())
+        .then(data => {
+            suggestionBox.innerHTML = "";
+            if (data.results.length > 0) {
+                data.results.forEach(item => {
+                    console.log(item)
+                    const div = document.createElement("div");
+                    div.textContent = item.nombre_completo;
+                    div.style.cursor = "pointer";
+                    div.addEventListener("click", () => {
+                        document.getElementById("qp_alumno").value = item.nombre_completo;
+                        document.getElementById("qp_id_alumno").value = item.id_alumno;
+                        suggestionBox.style.display = "none";
+                    });
+                    suggestionBox.appendChild(div);
+                });
+                suggestionBox.style.display = "block";
+            } else {
+                const div = document.createElement("div");
+                div.textContent = 'Ningún resultado';
+                suggestionBox.style.display = "block";
+                suggestionBox.appendChild(div);
+            }
+        });
+    } else {
+        suggestionBox.style.display = "none";
+    }
 }
