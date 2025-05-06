@@ -15,8 +15,8 @@ function createPayment() {
 
             <div class="body noMeta">
                 <div id="modalBodyView" style="margin-top: 1rem;">
-                    <div class="scrollspySection" id="SDVData">
-                        <form id="quickPayment">
+                    <div class="ticketView">
+                        <form id="quickPayment" onchange="updateNewPaymentFrontend()">
                             <table class="camo inputMode">
                                 <tr>
                                     <td>
@@ -42,19 +42,19 @@ function createPayment() {
                                         <label>Mensualidades:</label>
                                     </td>
                                     <td>
-                                        <div class="multipicker">
-                                            <label><input type="checkbox" name="qp_mensualidades[]">Ene</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]">Feb</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]">Mar</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]">Abr</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]">May</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]">Jun</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]">Jul</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]">Ago</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]">Sep</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]">Oct</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]">Nov</label>
-                                            <label><input type="checkbox" name="qp_mensualidades[]">Dic</label>
+                                        <div class="multipicker" id="monthSelection">
+                                            <label><input type="checkbox" value="1">Ene</label>
+                                            <label><input type="checkbox" value="2">Feb</label>
+                                            <label><input type="checkbox" value="3">Mar</label>
+                                            <label><input type="checkbox" value="4">Abr</label>
+                                            <label><input type="checkbox" value="5">May</label>
+                                            <label><input type="checkbox" value="6">Jun</label>
+                                            <label><input type="checkbox" value="7">Jul</label>
+                                            <label><input type="checkbox" value="8">Ago</label>
+                                            <label><input type="checkbox" value="9">Sep</label>
+                                            <label><input type="checkbox" value="10">Oct</label>
+                                            <label><input type="checkbox" value="11">Nov</label>
+                                            <label><input type="checkbox" value="12">Dic</label>
                                         </div>
                                     </td>
                                 </tr>
@@ -68,7 +68,7 @@ function createPayment() {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label for="qp_descuento">Desc extra:</label>
+                                        <label for="qp_descuento">Descuento extra/mes:</label>
                                     </td>
                                     <td>
                                         <input type="number" id="qp_descuento" name="qp_descuento">
@@ -76,7 +76,7 @@ function createPayment() {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label for="qp_concepto">Concepto:</label>
+                                        <label for="qp_concepto">Concepto descuento:</label>
                                     </td>
                                     <td>
                                         <input type="text" id="qp_concepto" name="qp_concepto">
@@ -84,7 +84,7 @@ function createPayment() {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label for="qp_tipo">Tipo:</label>
+                                        <label for="qp_tipo">Método de pago:</label>
                                     </td>
                                     <td>
                                         <select id="qp_tipo" name="qp_tipo">
@@ -98,7 +98,7 @@ function createPayment() {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label for="qp_fecha">Fecha:</label>
+                                        <label for="qp_fecha">Fecha del pago:</label>
                                     </td>
                                     <td>
                                         <input type="date" id="qp_fecha" name="qp_fecha">
@@ -109,14 +109,21 @@ function createPayment() {
                                 </tr>
                             </table>
                             <div id="confirmationDisplay" class="full center"></div>
-                            <div id="submitButton" class="full center">
-                                <button type="button">Registrar</button>
-                            </div>
                         </form>
+                        <div>
+                            <div class="blockHighlight" id="paymentInputOverview"></div>
+                            <div>
+                                Cursos en los que estoy activo
+                                Clases futuras si las tengo
+                                Pagos recientes o pendientes
+                                Descuentos previos y correspondientesç
+                                No está inscrita en ningún grupo: inscribir en grupo en su lugar o vender bono
+                            </div>
+                        </div>
                     </div>
                     <div class="center gap-md">
-                        <button class="warn" onclick="cancelStudentInsertion()">Cancelar inserción</button>
-                        <button onclick="submitNewStudent()">Guardar alumno</button>
+                        <button class="warn" onclick="cancelStudentInsertion()">Cancelar pago</button>
+                        <button onclick="submitNewStudent()">Guardar pago</button>
                     </div>
                 </div>
             </div>
@@ -124,4 +131,54 @@ function createPayment() {
 
     document.querySelector('body').appendChild(div);
     document.getElementById("qp_fecha").value = new Date().toISOString().split("T")[0]
+}
+
+function updateNewPaymentFrontend() {
+    let name = document.getElementById('qp_alumno').value;
+    let group = document.getElementById('qp_grupo').options[document.getElementById('qp_grupo').selectedIndex].text;
+    let months = '___';
+    let money;
+    if (!isNaN(parseFloat(document.getElementById('qp_descuento').value))) {
+        money = (parseFloat(document.getElementById('qp_precio').value) - parseFloat(document.getElementById('qp_descuento').value)).toFixed(2);
+    } else {
+        money = parseFloat(document.getElementById('qp_precio').value).toFixed(2);
+    }
+    
+
+    if (name == '') name = '___';
+    else {
+        let parts = name.split('​'); // THERE IS A ZERO WIDTH SPACE HERE
+        name = parts[0] + ' ' + (parts[1] ? parts[1].trim().charAt(0) : '' + '.');
+    }
+
+    if (group == 'Seleccione un grupo') group = '___';
+
+    let selectedMonthsArray = Array.from(document.querySelectorAll('#monthSelection input[type="checkbox"]:checked'))
+        .map(checkbox => new Date(2000, checkbox.value - 1).toLocaleString('es-ES', { month: 'long' }));
+    let selectedMonths = selectedMonthsArray.length > 1 
+        ? selectedMonthsArray.slice(0, -1).join(', ') + ' y ' + selectedMonthsArray[selectedMonthsArray.length - 1] 
+        : selectedMonthsArray.join('');
+
+    if (selectedMonths) months = selectedMonths;
+
+    if (money == 'NaN') money = '___';
+    else {
+        money *= selectedMonthsArray.length
+    }
+
+    // Build the summary safely
+    const overview = document.getElementById('paymentInputOverview');
+    overview.innerHTML = ''; // Clear previous content
+
+    const p = document.createElement('p');
+    const span = document.createElement('span');
+    span.textContent = `${name} paga ${money}€`;
+    p.appendChild(span);
+
+    p.appendChild(document.createElement('br'));
+
+    const text = document.createTextNode(`por "${group}" ${months}`);
+    p.appendChild(text);
+
+    overview.appendChild(p);
 }

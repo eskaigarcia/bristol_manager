@@ -180,3 +180,9 @@ hr.full{
   grid-column: span 4;
   border: var(--color-primary-lighter) 1px solid;
 }
+
+.ticketView{
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+}
