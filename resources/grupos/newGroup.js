@@ -191,3 +191,4 @@ function saveStudentToDatabase() {
         _ex.ui.toast.make('Error al procesar la solicitud.');
     });
 }
+
