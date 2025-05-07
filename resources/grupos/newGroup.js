@@ -253,7 +253,7 @@ function createGroup() {
                                     </tr>
                                     <tr>
                                         <td><label for="precio">Precio (en euros):</label></td>
-                                        <td><input type="number" id="precio" name="precio" min="0" step="0.01"> placeholder="Introduce el precio" required></td>
+                                        <td><input type="number" id="precio" name="precio" min="0" step="0.01"></td>
                                     </tr>
                                     <tr>
                                         <td><label for="esActivo">¿Está activo?</label></td>
@@ -347,6 +347,13 @@ function submitNewGroup() {
         horarioDuraciones: form.horarioDuraciones.value
     };
 
+    // Validación para evitar precios negativos
+    if (parseFloat(data.precio) < 0) {
+        _ex.ui.toast.make('El precio no puede ser negativo.');
+        return;
+    }
+
+    // Aquí va el fetch real para guardar en la base de datos
     fetch('./resources/grupos/newGroup.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
