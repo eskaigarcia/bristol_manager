@@ -218,16 +218,13 @@ function createGroup() {
                             <h3>Datos de la clase</h3>
                             <p class="requiredAlert">Los campos marcados con <span class="requiredMark">*</span> son obligatorios</p>
                         </div>
+
                         <form name="insgrupo" id="groupForm" method="POST">
-                            <div class="flex">
-                                <label for="nombre">Nombre del grupo:</label>
-                                <input type="text" id="nombre" name="nombre" placeholder="Introduce el nombre del grupo" required>
-                            </div>
                             <div class="flex gap-md">
                                 <table class="camo inputMode">
                                     <tr>
-                                        <td><label for="asignatura">Asignatura:</label></td>
-                                        <td><input type="text" id="asignatura" name="asignatura" placeholder="Introduce la asignatura" required></td>
+                                        <td><label for="nombre">Nombre del grupo:</label></td>
+                                        <td><input type="text" id="nombre" name="nombre" placeholder="Introduce el nombre del grupo" required></td>
                                     </tr>
                                     <tr>
                                         <td><label for="modalidad">Modalidad:</label></td>
@@ -253,7 +250,7 @@ function createGroup() {
                                     </tr>
                                     <tr>
                                         <td><label for="precio">Precio (en euros):</label></td>
-                                        <td><input type="number" id="precio" name="precio" min="0" step="0.01"></td>
+                                        <td><input type="number" id="precio" name="precio" min="0" step="0.01" required></td>
                                     </tr>
                                     <tr>
                                         <td><label for="esActivo">¿Está activo?</label></td>
@@ -270,6 +267,7 @@ function createGroup() {
                                         </td>
                                     </tr>
                                 </table>
+
                                 <table class="camo inputMode">
                                     <tr>
                                         <td><label for="id_profesor">ID del Profesor:</label></td>
@@ -299,11 +297,12 @@ function createGroup() {
                                     </tr>
                                 </table>
                             </div>
+
+                            <div class="center gap-md" style="margin-top: 1rem;">
+                                <button class="warn" onclick="tryCloseGroupModal()" type="button">Cancelar inserción</button>
+                                <button onclick="submitNewGroup()" type="button">Guardar grupo</button>
+                            </div>
                         </form>
-                    </div>
-                    <div class="center gap-md">
-                        <button class="warn" onclick="tryCloseGroupModal()" type="button">Cancelar inserción</button>
-                        <button onclick="submitNewGroup()" type="button">Guardar grupo</button>
                     </div>
                 </div>
             </div>
@@ -335,7 +334,6 @@ function submitNewGroup() {
     const form = document.forms['insgrupo'];
     const data = {
         nombre: form.nombre.value,
-        asignatura: form.asignatura.value,
         modalidad: form.modalidad.value,
         horasSemanales: form.horasSemanales.value,
         precio: form.precio.value,
