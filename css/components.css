@@ -302,6 +302,29 @@ label:has(input){
   }
 }
 
+#typeAhead{
+  position: absolute;
+  background-color: var(--color-primary-lightest);
+  border: 1px solid var(--color-primary-dark);
+  border-top: none;
+  width: auto;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
+  font-family: Arial, sans-serif;
+
+  div {
+    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  div:hover {
+    background-color: var(--color-primary-lighter);
+  }
+}
+
 .unlarge input{
   width: auto !important;
 }
