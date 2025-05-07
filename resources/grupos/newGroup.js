@@ -253,7 +253,7 @@ function createGroup() {
                                     </tr>
                                     <tr>
                                         <td><label for="precio">Precio (en euros):</label></td>
-                                        <td><input type="number" id="precio" name="precio" placeholder="Introduce el precio" required></td>
+                                        <td><input type="number" id="precio" name="precio" min="0" step="0.01"> placeholder="Introduce el precio" required></td>
                                     </tr>
                                     <tr>
                                         <td><label for="esActivo">¿Está activo?</label></td>
