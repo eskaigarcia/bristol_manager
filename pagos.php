@@ -3,31 +3,6 @@
 <head> 
     <?php include './components/htmlHead.php'; ?>
 
-    <style>
-#suggestions {
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-top: none;
-    width: 100%;
-    max-height: 200px;
-    overflow-y: auto;
-    z-index: 1000;
-    display: none;
-    font-family: Arial, sans-serif;
-}
-
-#suggestions div {
-    padding: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-#suggestions div:hover {
-    background-color: #f0f0f0;
-}
-</style>
-
 </head>
 <body>
     <div id="app">

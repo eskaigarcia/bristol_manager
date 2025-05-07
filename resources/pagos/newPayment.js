@@ -25,7 +25,7 @@ function createPayment() {
                                     </td>
                                     <td>
                                         <input type="text" id="qp_alumno" name="qp_alumno" oninput="studentTypeAhead()">
-                                        <div id="suggestions"></div>
+                                        <div id="typeAhead"></div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -34,7 +34,7 @@ function createPayment() {
                                     </td>
                                     <td>
                                         <select id="qp_grupo" name="qp_grupo">
-                                            <option value="">Seleccione un grupo</option>
+                                            <option value="">Introduzca primero un alumno</option>
                                             <!-- Add options dynamically or statically here -->
                                         </select>
                                     </td>
@@ -65,15 +65,23 @@ function createPayment() {
                                         <label for="qp_precio">Precio/mes:</label>
                                     </td>
                                     <td>
-                                        <input type="number" id="qp_precio" name="qp_precio" value="60.00" readonly>
+                                        <input type="number" id="qp_precio" name="qp_precio" readonly disabled>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label for="qp_descuento">Descuento extra/mes:</label>
+                                        <label for="qp_descuento">Descuento/mes:</label>
                                     </td>
                                     <td>
-                                        <input type="number" id="qp_descuento" name="qp_descuento" min="0" step="0.5">
+                                        <input type="number" id="qp_descuento" name="qp_descuento" readonly disabled>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="qp_descuento_extra">Descuento extra/mes:</label>
+                                    </td>
+                                    <td>
+                                        <input type="number" id="qp_descuento_extra" name="qp_descuento_extra" min="0" step="0.5">
                                     </td>
                                 </tr>
                                 <tr>
@@ -139,21 +147,28 @@ function updateNewPaymentFrontend() {
     let name = document.getElementById('qp_alumno').value;
     let group = document.getElementById('qp_grupo').options[document.getElementById('qp_grupo').selectedIndex].text;
     let months = '___';
-    let money;
-    if (!isNaN(parseFloat(document.getElementById('qp_descuento').value))) {
-        money = (parseFloat(document.getElementById('qp_precio').value) - parseFloat(document.getElementById('qp_descuento').value)).toFixed(2);
-    } else {
-        money = parseFloat(document.getElementById('qp_precio').value).toFixed(2);
-    }
+
+    // Process money
+    let price = (isNaN(parseFloat(document.getElementById('qp_precio').value)))
+    ? 0 : parseFloat(document.getElementById('qp_precio').value);
+
+    let discount = (isNaN(parseFloat(document.getElementById('qp_descuento').value)))
+    ? 0 : parseFloat(document.getElementById('qp_descuento').value);
+
+    let extraDiscount = (isNaN(parseFloat(document.getElementById('qp_descuento_extra').value)))
+    ? 0 : parseFloat(document.getElementById('qp_descuento_extra').value);
+
+
+    let money = (price - discount - extraDiscount).toFixed(2);
     
 
     if (name == '') name = '___';
     else {
         let parts = name.split('​'); // THERE IS A ZERO WIDTH SPACE HERE
-        name = parts[0] + ' ' + (parts[1] ? parts[1].trim().charAt(0) : '' + '.');
+        name = parts[0] + ' ' + (parts[1] ? parts[1].trim().charAt(0) : '') + '.';
     }
 
-    if (group == 'Seleccione un grupo') group = '___';
+    if (group == '-- Seleccione un grupo --' || group == 'Introduzca primero un alumno') group = '___';
 
     let selectedMonthsArray = Array.from(document.querySelectorAll('#monthSelection input[type="checkbox"]:checked'))
         .map(checkbox => new Date(2000, checkbox.value - 1).toLocaleString('es-ES', { month: 'long' }));
@@ -163,7 +178,7 @@ function updateNewPaymentFrontend() {
 
     if (selectedMonths) months = selectedMonths;
 
-    if (money == 'NaN') money = '___';
+    if (money == 0) money = '___';
     else {
         money *= selectedMonthsArray.length
     }
@@ -186,11 +201,11 @@ function updateNewPaymentFrontend() {
 }
 
 function studentTypeAhead() {
-    const query = document.getElementById('qp_alumno').value
-    const suggestionBox = document.getElementById("suggestions");
+    const query = document.getElementById('qp_alumno').value.replace(/\u200B/g, '');
+    const suggestionBox = document.getElementById("typeAhead");
 
     if(query.length >= 3) {
-    fetch("./resources/pagos/studentTypeAhead.php?q=" + encodeURIComponent(query))
+    fetch("./resources/pagos/qp_studentTypeAhead.php?q=" + encodeURIComponent(query))
         .then(response => response.json())
         .then(data => {
             suggestionBox.innerHTML = "";
@@ -204,6 +219,8 @@ function studentTypeAhead() {
                         document.getElementById("qp_alumno").value = item.nombre_completo;
                         document.getElementById("qp_id_alumno").value = item.id_alumno;
                         suggestionBox.style.display = "none";
+                        updateNewPaymentFrontend();
+                        getStudentGroups(item.id_alumno);
                     });
                     suggestionBox.appendChild(div);
                 });
@@ -211,11 +228,54 @@ function studentTypeAhead() {
             } else {
                 const div = document.createElement("div");
                 div.textContent = 'Ningún resultado';
+                div.style.cursor = "default"; // Make it non-clickable
                 suggestionBox.style.display = "block";
                 suggestionBox.appendChild(div);
             }
         });
     } else {
         suggestionBox.style.display = "none";
+    }
+}
+
+async function getStudentGroups(id_alumno) {
+    const node = document.getElementById('qp_grupo');
+    if (!node) return;
+
+    // Remove empty option
+    const emptyOption = node.querySelector('option[value=""]');
+    if (emptyOption && emptyOption.textContent === 'Introduzca primero un alumno') {
+        node.removeChild(emptyOption);
+    }
+
+    // Add default option
+    const defaultOpt = document.createElement('option');
+    defaultOpt.value = '';
+    defaultOpt.textContent = '-- Seleccione un grupo --';
+    node.appendChild(defaultOpt);
+
+    try {
+        const response = await fetch('./resources/pagos/qp_getGroupSelector.php?q=' + encodeURIComponent(id_alumno));
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const groups = await response.json();
+        groups.forEach(group => {
+            const option = document.createElement('option');
+            option.textContent = group.nombre;
+            option.value = group.id_grupo;
+            option.dataset.precio = group.precio; // Attach the price as a data attribute
+            node.appendChild(option);
+        });
+
+        // Add event listener to update price when a group is selected
+        node.addEventListener('change', () => {
+            const selectedOption = node.options[node.selectedIndex];
+            const price = selectedOption.dataset.precio || 0;
+            document.getElementById('qp_precio').value = parseFloat(price).toFixed(2);
+            updateNewPaymentFrontend();
+        });
+    } catch (error) {
+        console.error('Error fetching group selector:', error);
     }
 }

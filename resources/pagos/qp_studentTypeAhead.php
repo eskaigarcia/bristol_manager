@@ -5,7 +5,7 @@ $q = isset($_GET['q']) ? mysqli_real_escape_string($connection, $_GET['q']) : ''
 $results = [];
 
 if ($q !== '') {
-    $sql = "SELECT id_alumno, nombre, apellidos FROM alumnos WHERE nombre LIKE '%$q%' OR apellidos LIKE '%$q%' LIMIT 15";
+    $sql = "SELECT id_alumno, nombre, apellidos FROM alumnos WHERE CONCAT(nombre, ' ', apellidos) LIKE '%$q%' LIMIT 15";
     $res = mysqli_query($connection, $sql);
 
     if ($res) {
