@@ -1,17 +1,3 @@
-const storage = {
-    activeStudent: 0,
-    pendingEdits: false,
-    studentData: null,
-}
-
-function removeDetailsModal() {
-    if (storage.pendingEdits) {
-        _ex.ui.toast.make('Tienes cambios sin guardar.')
-    } else {
-        document.getElementById('popUpModal').remove()
-    }
-}
-
 function toggleIBAN() {
     const field = document.getElementById('IBANField');
     const button = document.getElementById('IBANButton');
