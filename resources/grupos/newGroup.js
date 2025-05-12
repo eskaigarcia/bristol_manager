@@ -114,11 +114,6 @@ function createGroup() {
     document.getElementById("fecha").value = new Date().toISOString().split("T")[0]
 };
 
-
-if (typeof storage === 'undefined') window.storage = {};
-storage.pendingEdits = false;
-let groupCloseWarned = false;
-
 function createGroup() {
     storage.pendingEdits = true;
     groupCloseWarned = false;
@@ -235,9 +230,8 @@ function createGroup() {
 }
 
 function tryCloseGroupModal() {
-    if (storage.pendingEdits && !groupCloseWarned) {
+    if (storage.pendingEdits) {
         _ex.ui.toast.make('Tienes cambios sin guardar');
-        groupCloseWarned = true;
         return;
     }
     closeGroupModal();
@@ -245,7 +239,6 @@ function tryCloseGroupModal() {
 
 function closeGroupModal() {
     storage.pendingEdits = false;
-    groupCloseWarned = false;
     const modal = document.getElementById('popUpModal');
     if (modal) modal.remove();
 }

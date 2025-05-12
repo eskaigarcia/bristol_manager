@@ -239,3 +239,17 @@ const _ex = {
         }
     }
 }
+
+function removeDetailsModal() {
+    if (storage.pendingEdits) {
+        _ex.ui.toast.make('Tienes cambios sin guardar.')
+    } else {
+        document.getElementById('popUpModal').remove()
+    }
+}
+
+const storage = {
+    activeStudent: 0,
+    pendingEdits: false,
+    studentData: null,
+}
