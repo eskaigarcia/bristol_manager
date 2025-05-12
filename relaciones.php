@@ -9,10 +9,10 @@
         <main>
             <header>
                 <h1>Amigos</h1>
-                <button onclick="createFriend()" class="cta">
+                <!-- <button onclick="createFriend()" class="cta">
                     <?php include './img/addFriend.svg'; ?>
                     Nuevo amigo
-                </button>
+                </button> -->
             </header>
 
             <div class="card full">
@@ -28,7 +28,6 @@
                         <option value="">Cualquier tipo</option>
                         <option value="amigos">Amigos</option>
                         <option value="familia">Familia</option>
-                        <option value="conocidos">Conocidos</option>
                     </select>
 
                     <!-- Filtro de estado activo -->
