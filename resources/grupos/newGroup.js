@@ -1,6 +1,4 @@
 function createGroup() {
-    // CONSTRUCCIÓN FINAL DE LA INTERFAZ
-    // storage.pendingEdits = true;
     let div = document.createElement('div');
     div.className = 'modal';
     div.id = 'popUpModal';
