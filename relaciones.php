@@ -46,12 +46,12 @@
             </div>
 
             <div class="card full">
-                <?php include './resources/amigos/friendSearch.php' ?>
+                <?php include './relaciones/friendSearch.php' ?>
             </div>
 
-            <script src="./resources/amigos/newFriend.js"></script>
-            <script src="./resources/amigos/getFriendSelector.js"></script>
-            <script src="./resources/amigos/friendDetailsBuild.js"></script>
+            <script src="./resources/relaciones/newFriend.js"></script>
+            <script src="./resources/relaciones/getFriendSelector.js"></script>
+            <script src="./resources/relaciones/friendDetailsBuild.js"></script>
             <script src="./resources/scrollspy.js"></script>
         </main>
     </div>
