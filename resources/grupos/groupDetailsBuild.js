@@ -38,9 +38,11 @@ function displayGroupDetails(group, alumnos = [], profesor = null) {
                 ${doTabBar_groupDetails()}
                 <div id="modalBodyView">
                     <div class="scrollspySection" id="GDVData">
+                        <h3>Datos del grupo</h3>
                         ${buildGroupData(group)}
                     </div>
                     <div class="scrollspySection" id="GDVAlumnos">
+                        <h3>Alumnos inscritos</h3>
                         ${
                             alumnos.length > 0
                             ? `<table class="styledData" style="width:100%;margin-top:1rem;">
@@ -67,6 +69,7 @@ function displayGroupDetails(group, alumnos = [], profesor = null) {
         </div>`;
 
     document.querySelector('body').appendChild(div);
+    startScrollSpy();
 }
 
 // Función que crea las "chips" de información del grupo
@@ -125,8 +128,4 @@ function buildGroupData(group) {
 function removeDetailsModal() {
     const modal = document.getElementById('popUpModal');
     if (modal) modal.remove();
-}
-
-function startScrollSpy() {
-    // Vacío o tu lógica de pestañas si la necesitas
 }
