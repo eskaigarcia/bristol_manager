@@ -1,5 +1,5 @@
     function startScrollSpy() {
-        const view = document.querySelector('#studentDataModal .body #studentDataView')
+        const view = document.querySelector('#popUpModal .body #modalBodyView')
         view.addEventListener('scroll', activateMenuItems);
         console.log(view)
 
@@ -14,7 +14,7 @@
       // Get the scrollspy menu
       let menuItems = document.querySelectorAll('.tabs-scrollspy a');
 
-      const view = document.querySelector('#studentDataModal .body #studentDataView')
+      const view = document.querySelector('#popUpModal .body #modalBodyView')
       // Get the current scroll position
       const currentPosition = view.scrollTop + (sections[0].offsetTop);
         

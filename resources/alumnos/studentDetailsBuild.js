@@ -19,8 +19,8 @@ function displayStudentDetails(student) {
     
     // CONSTRUCCIÓN FINAL DE LA INTERFAZ
     let div = document.createElement('div');
-    div.className = 'modal studentData';
-    div.id = 'studentDataModal';
+    div.className = 'modal';
+    div.id = 'popUpModal';
 
     div.innerHTML = `
         <div>
@@ -35,7 +35,7 @@ function displayStudentDetails(student) {
 
             <div class="body">
                 ${doTabBar_studentDetails()}
-                <div id="studentDataView">
+                <div id="modalBodyView">
                     <div class="scrollspySection" id="SDVData">
                         ${buildStudentData(student.alumno)}
                     </div>

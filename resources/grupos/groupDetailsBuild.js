@@ -17,12 +17,9 @@ function getGroupDetails(id) {
 }
 
 function displayGroupDetails(group, alumnos = [], profesor = null) {
-    console.log(group); 
-
-    // Construcción del modal para mostrar los detalles del grupo
     let div = document.createElement('div');
-    div.className = 'modal groupData';
-    div.id = 'groupDataModal';
+    div.className = 'modal';
+    div.id = 'popUpModal';
 
     div.innerHTML = `
         <div>
@@ -31,24 +28,62 @@ function displayGroupDetails(group, alumnos = [], profesor = null) {
                     <p>Grupo ${group.id_grupo} - Creado el ${group.creacion || ''}</p>
                     <h2>${group.nombre}</h2>
                     <div class="spaced-items-sm">
-                        ${buildGroupChips(group)}  <!-- Esta función construye las "chips" de información -->
+                        ${buildGroupChips(group)}
                     </div>
                 </div>
                 <img onclick="removeDetailsModal()" class="iconButton" src="./img/close.png" alt="Cerrar">
             </div>
 
             <div class="body">
-                ${doTabBar_groupDetails()}  <!-- Aquí generas la barra de navegación del modal -->
-                <div id="groupDataView">
+                ${doTabBar_groupDetails()}
+                <div id="modalBodyView">
                     <div class="scrollspySection" id="GDVData">
-                        ${buildGroupData(group)}  <!-- Aquí generas la tabla con los datos del grupo -->
+                        ${buildGroupData(group)}
+                    </div>
+                    <div class="scrollspySection" id="GDVAlumnos">
+                        ${
+                            alumnos.length > 0
+                            ? `<table class="styledData" style="width:100%;margin-top:1rem;">
+                                    <thead>
+                                        <tr>
+                                            <td>Nombre</td>
+                                            <td>Apellidos</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${alumnos.map(a => `
+                                            <tr>
+                                                <td>${a.nombre}</td>
+                                                <td>${a.apellidos || ''}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>`
+                            : '<div style="margin-top:1rem;color:#888;">No hay alumnos en este grupo</div>'
+                        }
                     </div>
                 </div>
             </div>
         </div>`;
 
     document.querySelector('body').appendChild(div);
-    // startScrollSpy();  // Si usas scrollspy, esta función lo activa
+
+    // Solo muestra la pestaña activa (por defecto "Datos")
+    const sections = div.querySelectorAll('.scrollspySection');
+    sections.forEach((sec, idx) => {
+        sec.style.display = idx === 0 ? 'block' : 'none';
+    });
+
+    // Lógica de pestañas sin CSS extra
+    const tabs = div.querySelectorAll('.tabs-scrollspy a');
+    tabs.forEach((tab, idx) => {
+        tab.addEventListener('click', function(e) {
+            e.preventDefault();
+            sections.forEach((sec, sidx) => {
+                sec.style.display = idx === sidx ? 'block' : 'none';
+            });
+        });
+    });
 }
 
 // Función que crea las "chips" de información del grupo
@@ -67,6 +102,10 @@ function doTabBar_groupDetails() {
         <a href="#GDVData">
             <img src="./img/contactInfo.png" alt="Información y datos del grupo">
             <span>Datos</span>
+        </a>
+        <a href="#GDVAlumnos">
+            <img src="./img/group.png" alt="Alumnos">
+            <span>Alumnos</span>
         </a>
     </div>`;
 }
@@ -101,10 +140,10 @@ function buildGroupData(group) {
 
 // Función para eliminar el modal cuando se cierra
 function removeDetailsModal() {
-    const modal = document.getElementById('groupDataModal');
+    const modal = document.getElementById('popUpModal');
     if (modal) modal.remove();
 }
 
 function startScrollSpy() {
-    
+    // Vacío o tu lógica de pestañas si la necesitas
 }

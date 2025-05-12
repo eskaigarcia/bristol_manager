@@ -1,7 +1,7 @@
 <?php include 'components/htmlHead.php'; ?>
 <body class="insalumfondo">
     <div class="insalumatras">
-        <h1>Datos del grupo</h1><br>
+        <h1>Datos </h1><br>
         <form name="insgrupo" method="POST" class="insalum" action="resources/insertar_grupos.php">
             <table class="insalum">
                 <tr>

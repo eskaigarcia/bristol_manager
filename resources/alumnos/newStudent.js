@@ -2,8 +2,8 @@ function createStudent() {
     // CONSTRUCCIÓN FINAL DE LA INTERFAZ
     storage.pendingEdits = true;
     let div = document.createElement('div');
-    div.className = 'modal studentData';
-    div.id = 'studentDataModal';
+    div.className = 'modal';
+    div.id = 'popUpModal';
 
     div.innerHTML = `
         <div>
@@ -16,7 +16,7 @@ function createStudent() {
 
             <div class="body noMeta">
                 ${doTabBar_newStudent()}
-                <div id="studentDataView">
+                <div id="modalBodyView">
                     <div class="scrollspySection" id="SDVData">
                         <div class="flex clear-between">
                             <h3>Datos personales</h3>
@@ -73,7 +73,7 @@ function buildNewStudent() {
     return `
         <form>
             <div class="flex gap-md">
-                <table class="camo">
+                <table class="camo inputMode">
                     <tr>
                         <td><label for="fecha">Fecha de inscripción:<span class="requiredMark">*</span></label></td>
                         <td><input type="date" id="fecha" name="fecha" required></td>
@@ -89,10 +89,8 @@ function buildNewStudent() {
                     <tr>
                         <td><label>Mayor de edad:<span class="requiredMark">*</span></label></td>
                         <td class="unlarge">
-                            <input type="radio" id="adulto_si" name="adulto" value="si" onchange="buildNewGuardian(false)">
-                            <label for="adulto_si">Sí</label>
-                            <input type="radio" id="adulto_no" name="adulto" value="no" onchange="buildNewGuardian(true)">
-                            <label for="adulto_no">No</label>
+                            <label for="adulto_si"><input type="radio" id="adulto_si" name="adulto" value="si" onchange="buildNewGuardian(false)">Sí</label>
+                            <label for="adulto_no"><input type="radio" id="adulto_no" name="adulto" value="no" onchange="buildNewGuardian(true)">No</label>
                         </td>
                     </tr>
                     <tr>
@@ -108,7 +106,7 @@ function buildNewStudent() {
                         <td><input type="email" id="email" name="email"></td>
                     </tr>
                 </table>
-                <table class="camo">
+                <table class="camo inputMode">
                     <tr>
                         <td><label for="direccion">Dirección:</label></td>
                         <td><input type="text" id="direccion" name="direccion"></td>
@@ -139,7 +137,7 @@ function buildNewEmgContacts() {
     return `
         <h3>Contactos de emergencia</h3>
         <div class="flex gap-md">
-            <table class="camo">
+            <table class="camo inputMode">
                 <tr>
                     <td><label for="contact1_name">Nombre:</label></td>
                     <td><input type="text" id="contact1_name" name="contact_name" required></td>
@@ -153,7 +151,7 @@ function buildNewEmgContacts() {
                     <td><input type="text" id="contact1_relation" name="contact_relation" required></td>
                 </tr>
             </table>
-            <table class="camo">
+            <table class="camo inputMode">
                 <tr>
                     <td><label for="contact2_name">Nombre:</label></td>
                     <td><input type="text" id="contact2_name" name="contact_name" required></td>
@@ -187,7 +185,7 @@ function buildNewGuardian(active) {
         </div>
         <form>
             <div class="flex gap-md">
-                <table class="camo">
+                <table class="camo inputMode">
                     <tr>
                         <td><label for="nombre">Nombre:<span class="requiredMark">*</span></label></td>
                         <td><input type="text" id="guardian_nombre" name="guardian_nombre" required></td>
@@ -209,7 +207,7 @@ function buildNewGuardian(active) {
                         <td><input type="email" id="guardian_email" name="guardian_email" required></td>
                     </tr>
                 </table>
-                <table class="camo">
+                <table class="camo inputMode">
                     <tr>
                         <td><label for="direccion">Dirección:<span class="requiredMark">*</span></label></td>
                         <td><input type="text" id="guardian_direccion" name="guardian_direccion" required></td>
@@ -286,7 +284,7 @@ function removealerts() {
 
 function cancelStudentInsertion() {
     storage.pendingEdits = false;
-    document.getElementById('studentDataModal').remove()
+    document.getElementById('popUpModal').remove()
 }
 
 function validateNewStudent() {
@@ -474,7 +472,7 @@ function saveStudentToDatabase() {
         if (result.success) {
             // Set flag to show toast after reload
             sessionStorage.setItem('studentAdded', '1');
-            document.getElementById('studentDataModal').remove();
+            document.getElementById('popUpModal').remove();
             location.reload();
         } else {
             _ex.ui.toast.make('Error al añadir el alumno: ' + (result.message || ''));

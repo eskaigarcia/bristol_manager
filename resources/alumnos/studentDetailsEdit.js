@@ -8,7 +8,7 @@ function removeDetailsModal() {
     if (storage.pendingEdits) {
         _ex.ui.toast.make('Tienes cambios sin guardar.')
     } else {
-        document.getElementById('studentDataModal').remove()
+        document.getElementById('popUpModal').remove()
     }
 }
 
@@ -77,7 +77,7 @@ const quickNotes = {
 const triggerEdit = {
     mainDetails() {
         storage.pendingEdits = true;
-        const display = document.querySelector('#studentDataModal div');
+        const display = document.querySelector('#popUpModal div');
         display.innerHTML = `<div class="header">
                 <div>
                     <p>Editando alumno:</p>
@@ -91,7 +91,7 @@ const triggerEdit = {
                 <div class="editView">
                     <h3>Modificar datos personales:</h3>
                     <form id="editStudentDetails">
-                        <table class="camo">
+                        <table class="camo inputMode">
                             <tr>
                                 <td><label for="nombre">Nombre:</label></td>
                                 <td><input type="text" id="nombre" name="nombre" value="${storage.studentData.alumno.nombre}"></td>
@@ -167,7 +167,7 @@ const triggerEdit = {
 
     emergencyContact(id_contact = null, name = '', tel = '', rel = '') {
         storage.pendingEdits = true;
-        const display = document.querySelector('#studentDataModal div');
+        const display = document.querySelector('#popUpModal div');
         display.innerHTML = `<div class="header">
                 <div>
                     <p>Editando contacto de emergencia de:</p>
@@ -182,7 +182,7 @@ const triggerEdit = {
                     <div class="editView">
                         <h3>Nuevo contacto de emergencia:</h3>
                         <form id="editEmergencyContact">
-                            <table class="camo">
+                            <table class="camo inputMode">
                                 <tr>
                                     <td><label for="contact_name">Nombre:</label></td>
                                     <td><input type="text" id="contact_name" name="contact_name" required></td>
@@ -208,7 +208,7 @@ const triggerEdit = {
                     <div class="editView">
                         <h3>Nuevo contacto de emergencia:</h3>
                         <form id="editEmergencyContact">
-                            <table class="camo">
+                            <table class="camo inputMode">
                                 <tr>
                                     <td><label for="contact_name">Nombre:</label></td>
                                     <td><input type="text" id="contact_name" name="contact_name" value="${name}" required></td>
@@ -240,7 +240,7 @@ const triggerEdit = {
 
     guardian() {
         storage.pendingEdits = true;
-        const display = document.querySelector('#studentDataModal div'); 
+        const display = document.querySelector('#popUpModal div'); 
 
         if(storage.studentData.guardian == null) {
             display.innerHTML = `<div class="header">
@@ -256,7 +256,7 @@ const triggerEdit = {
             <div class="editView">
                 <h3>Modificar datos del responsable legal:</h3>
                 <form id="editGuardianDetails">
-                    <table class="camo">
+                    <table class="camo inputMode">
                         <tr>
                             <td><label for="nombre">Nombre:</label></td>
                             <td><input type="text" id="nombre" name="nombre"></td>
@@ -316,7 +316,7 @@ const triggerEdit = {
             <div class="editView">
                 <h3>Modificar datos del responsable legal:</h3>
                 <form id="editGuardianDetails">
-                    <table class="camo">
+                    <table class="camo inputMode">
                         <tr>
                             <td><label for="nombre">Nombre:</label></td>
                             <td><input type="text" id="nombre" name="nombre" value="${storage.studentData.guardian.nombre}"></td>

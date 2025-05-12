@@ -250,6 +250,85 @@ button{
   }
 }
 
+/* Form custom elements */
+label:has(input){
+  display: inline-flex;
+  align-items: center;
+}
+
+.multipicker{
+  display: grid;
+  align-items: center;
+  justify-content: start;
+  gap: 8px;
+  grid-template-columns: repeat(6, min-content);
+
+  input[type="checkbox"] {
+    display: none;
+  }
+
+  label{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 1.75rem;
+    width: 1.75rem;
+    padding: 8px;
+    border: 1px solid var(--color-primary-dark);
+    border-radius: 50px;
+
+    cursor: pointer;
+
+    &:hover{
+      background-color: var(--color-primary-lightest);
+      font-weight: 700;
+    }
+
+    &:has(input:checked) {
+      background-color: var(--color-primary-lighter);
+      font-weight: 700;
+    }
+  }
+}
+
+#quickNotes{
+  width: 45%;
+  margin-left: 2rem;
+
+  textarea{
+    width: 100%;
+    height: 8rem;
+  }
+}
+
+#typeAhead{
+  position: absolute;
+  background-color: var(--color-primary-lightest);
+  border: 1px solid var(--color-primary-dark);
+  border-top: none;
+  width: auto;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
+  font-family: Arial, sans-serif;
+
+  div {
+    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  div:hover {
+    background-color: var(--color-primary-lighter);
+  }
+}
+
+.unlarge input{
+  width: auto !important;
+}
+
 /* Header */
 header{
   grid-column-end: span 4;
@@ -262,107 +341,88 @@ header{
 /* Modal */
 .modal{
   position: fixed;
+  width: 100dvw;
+  height: 100dvh;
+  top: 0;
+  left: 0;
+  background-color: var(--color-primary-scrim);
 
-  &.studentData{
-    width: 100dvw;
-    height: 100dvh;
-    top: 0;
-    left: 0;
-    background-color: var(--color-primary-scrim);
+  > div{
+    opacity: 1;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70dvw;
+    height: 85dvh;
 
-    > div{
-      opacity: 1;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 70dvw;
-      height: 85dvh;
+    display: flex;
+    flex-direction: column;
 
-      display: flex;
-      flex-direction: column;
+    background-color: var(--color-primary-lightest);
+    padding: 2rem;
+    padding-bottom: 0;
+    border-radius: var(--radius-lg);
 
-      background-color: var(--color-primary-lightest);
+    h2{
+      font-size: 3rem;
+    }
+  }
+
+  .body{
+    background-color: var(--color-neutral-white);
+    border: 1px solid var(--color-primary);
+    border-bottom: none;
+    margin-top: 1rem;
+    width: 100%;
+    height: calc(100% - 8.5rem);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  
+    &.noMeta{
+      height: calc(100% - 5.2rem) !important;
+    }
+
+    display: flex;
+    flex-direction: column;
+  
+    #modalBodyView{
       padding: 2rem;
-      padding-bottom: 0;
-      border-radius: var(--radius-lg);
+      overflow-y: scroll;
 
-      h2{
-        font-size: 3rem;
+      > div {
+        padding: 0 0 1.5rem;
+
+        + div {
+          padding-top: 0.5rem;
+          border-top: black 1px solid;
+        }
       }
     }
 
-    .body{
-      background-color: var(--color-neutral-white);
-      border: 1px solid var(--color-primary);
-      border-bottom: none;
-      margin-top: 1rem;
-      width: 100%;
-      height: calc(100% - 8.5rem);
-      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-    
-      &.noMeta{
-        height: calc(100% - 5.2rem) !important;
-      }
+    .editView{
+      padding: 1rem 2rem;
+      overflow-y: scroll;
 
-      display: flex;
-      flex-direction: column;
-    
-      #studentDataView{
-        padding: 2rem;
-        overflow-y: scroll;
+      table{
+        width: 100%;
 
-        > div {
-          padding: 0 0 1.5rem;
-
-          + div {
-            padding-top: 0.5rem;
-            border-top: black 1px solid;
-          }
-        }
-
-        #quickNotes{
-          width: 45%;
-          margin-left: 2rem;
-
-          textarea{
-            width: 100%;
-            height: 8rem;
-          }
-        }
-      }
-
-      .editView{
-        padding: 1rem 2rem;
-        overflow-y: scroll;
-
-        table{
+        input{
           width: 100%;
-
-          input{
-            width: 100%;
-          }
-
-          textarea{
-            width: 100%;
-            height: 5rem;
-          }
-          
-          .unlarge{
-            input{
-              width: auto !important;
-            }
-          }
         }
 
-        .editFooter{
-          display: flex;
-          justify-content: space-around;
-          margin-top: 1rem;
+        textarea{
+          width: 100%;
+          height: 5rem;
+        }
+      }
 
-          button{
-            width: 15rem;
-          }
+      .editFooter{
+        display: flex;
+        justify-content: space-around;
+        margin-top: 1rem;
+
+        button{
+          width: 15rem;
         }
       }
     }
@@ -375,6 +435,20 @@ header{
 }
 
 /* Notifications */
+.blockHighlight{
+  padding: 0.5rem;
+  border: 1px solid var(--color-primary);
+  background-color: var(--color-primary-lighter);
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  
+  span {
+    font-weight: 700;
+    font-size: 1.25em;
+    margin-bottom: 12px;
+  }
+}
+
 .inlineFormWarning{
   padding: 1rem;
   margin-bottom: 0.5rem;
@@ -461,7 +535,7 @@ header{
 
   display: grid; 
   grid-template-columns: 6rem 1fr; 
-  grid-template-rows: repeat(4, 32px); 
+  grid-template-rows: repeat(4, auto); 
   gap: 4px 4px; 
 
   .full{
@@ -600,16 +674,32 @@ table{
 
     & tr:nth-child(even){
       background-color: var(--color-primary-lightest);
+      input, select { background-color: var(--color-primary-lightest);}
     }
 
     & td{
       border: none; 
-      vertical-align: top;
+      vertical-align: middle;
       padding: 0.4rem 1rem;
     
       &:first-child{
         font-weight: 600;
         width: 9rem;
+        vertical-align: top;
+      }
+    }
+
+    &.inputMode{
+      width: 100%;
+      input, select{
+        border: 1px solid var(--color-primary-dark);
+        border-radius: 2px;
+        width: 100%; 
+        height: 1.25rem;
+        font-size: 0.9rem;
+      }
+      select{
+        height: 1.4rem;
       }
     }
   }
@@ -685,3 +775,4 @@ table{
   font-weight: 400;
   color: var(--color-accent);
 }
+
