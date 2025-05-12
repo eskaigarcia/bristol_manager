@@ -25,7 +25,6 @@
                     <!-- Filtro de tipo de relación -->
                     <label for="tipo_relacion">Tipo de relación:</label>
                     <select id="tipo_relacion" name="tipo_relacion">
-                        <option value="">Cualquier tipo</option>
                         <option value="amigos">Amigos</option>
                         <option value="familia">Familia</option>
                     </select>
@@ -33,7 +32,6 @@
                     <!-- Filtro de estado activo -->
                     <label for="activo">Estado:</label>
                     <select id="activo" name="activo">
-                        <option value="">Cualquiera</option>
                         <option value="1">Activo</option>
                         <option value="0">Inactivo</option>
                     </select>
