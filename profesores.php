@@ -36,7 +36,7 @@
                             Buscar
                         </button>
                     </div>
-                    <div class="card full"><?php include 'resources/teachersearch.php' ?></div>
+                    <div class="card full"><?php include 'resources/profesores/teachersearch.php' ?></div>
             </form>
         </main>
     </div>
