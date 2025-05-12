@@ -67,23 +67,6 @@ function displayGroupDetails(group, alumnos = [], profesor = null) {
         </div>`;
 
     document.querySelector('body').appendChild(div);
-
-    // Solo muestra la pestaña activa (por defecto "Datos")
-    const sections = div.querySelectorAll('.scrollspySection');
-    sections.forEach((sec, idx) => {
-        sec.style.display = idx === 0 ? 'block' : 'none';
-    });
-
-    // Lógica de pestañas sin CSS extra
-    const tabs = div.querySelectorAll('.tabs-scrollspy a');
-    tabs.forEach((tab, idx) => {
-        tab.addEventListener('click', function(e) {
-            e.preventDefault();
-            sections.forEach((sec, sidx) => {
-                sec.style.display = idx === sidx ? 'block' : 'none';
-            });
-        });
-    });
 }
 
 // Función que crea las "chips" de información del grupo
