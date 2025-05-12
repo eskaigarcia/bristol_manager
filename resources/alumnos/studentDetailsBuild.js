@@ -517,7 +517,7 @@ function buildRelations(relations, student) {
         // Hacemos legible el booleano de estado
         let estado = 'Activa'
         // if (relations[i],tipoRelacion == 'familiar' && CONCURRENT ENRROLLEMENT == false) estado = 'Inactiva'
-        if (relations[i].tipoRelacion == 'amigo' && relations[i].esActivo == 0) estado = 'Finalizada'
+        if (relations[i].tipoRelacion == 'amigo' && relations[i].fechaFin == null) estado = 'Finalizada'
 
         table += `
         <tr>
