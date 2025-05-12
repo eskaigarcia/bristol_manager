@@ -82,8 +82,8 @@ try {
             nombre, asignatura, modalidad,
             horasSemanales, precio,
             esActivo, esIntensivo,
-            id_profesor, horario
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            id_profesor, horario, creacion
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())  -- Ahora se incluye la fecha automáticamente con NOW()
     ");
 
     // Si "asignatura" no está en el formulario, pasa un valor por defecto (puede ser NULL o cualquier valor que necesites)
