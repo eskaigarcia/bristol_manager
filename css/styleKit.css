@@ -22,6 +22,9 @@
   --color-accent-dark: #76020e;
   --color-accent-darkest: #200003;
 
+  --color-positive-light: #43EF88;
+  --color-positive: #10B552;
+
 
   /* Fonts */
   --font-display: Montserrat, system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -154,6 +157,10 @@ main{
     justify-content: space-between;
     align-items: baseline;
   }
+}
+
+.gap-xs{
+  gap: 4px;
 }
 
 .gap-md {
