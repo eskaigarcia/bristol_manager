@@ -61,17 +61,19 @@ echo "<tr class='head'>
         <td>Hasta</td>
     </tr>";
 
-while ($row = mysqli_fetch_assoc($result)) {
-    $estado = (is_null($row['fechaFin']) || $row['fechaFin'] > date('Y-m-d')) ? 'Activo' : 'Inactivo';
-    echo "<tr>
-            <td>{$row['nombre1']}</td>
-            <td>{$row['nombre2']}</td>
-            <td>{$row['tipoRelacion']}</td>
-            <td>$estado</td>
-            <td>{$row['fechaInicio']}</td>
-            <td>{$row['fechaFin'] ?? '---'}</td>
-        </tr>";
-}
+    while ($row = mysqli_fetch_assoc($result)) {
+        $estado = (is_null($row['fechaFin']) || $row['fechaFin'] > date('Y-m-d')) ? 'Activo' : 'Inactivo';
+        $fechaFin = $row['fechaFin'] ? $row['fechaFin'] : '---';
+    
+        echo "<tr>
+                <td>{$row['nombre1']}</td>
+                <td>{$row['nombre2']}</td>
+                <td>{$row['tipoRelacion']}</td>
+                <td>$estado</td>
+                <td>{$row['fechaInicio']}</td>
+                <td>$fechaFin</td>
+            </tr>";
+    }    
 
 echo '</table>';
 
