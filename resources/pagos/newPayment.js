@@ -1,3 +1,9 @@
+const paymentStorage = {
+    id_alumno: 0,
+    amonestado: false,
+    monthSelection: null,
+}
+
 function createPayment() {
     // storage.pendingEdits = true;
     let div = document.createElement('div');
@@ -70,10 +76,14 @@ function createPayment() {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label for="qp_descuento">Descuento/mes:</label>
+                                        <label for="qp_descuento">Descuentos:</label>
                                     </td>
-                                    <td>
-                                        <input type="number" id="qp_descuento" name="qp_descuento" readonly disabled>
+                                    <td class="flex gap-xs center">
+                                        <span id="discountChip-amigo" class="discountChip" title="">Amigo</span>
+                                        <span id="discountChip-familiar" class="discountChip" title="">Familiar</span>
+                                        <span id="discountChip-multi" class="discountChip" title=""> Adelantado</span>
+                                        <span id="discountChip-adelantado" class="discountChip" title="">Multi-grupo</span>
+                                        <img id="amonestacion" class="iconButton mini" onclick="triggerAmonestacion()" src="./img/amonestar.png">
                                     </td>
                                 </tr>
                                 <tr>
@@ -121,7 +131,10 @@ function createPayment() {
                             <div id="confirmationDisplay" class="full center"></div>
                         </form>
                         <div>
-                            <div class="blockHighlight" id="paymentInputOverview"></div>
+                            <div class="blockHighlight" id="paymentInputOverview">
+                                <p class="qp_previewHighlight"><span id="previewName">___</span> paga <span id="qp_previewPrice">___</span>€</p>
+                                <p>por '<span id="previewGroup">___</span>' <span id="qp_previewMonths">___</span>.</p>
+                            </div>
                             <div>
                                 Cursos en los que estoy activo
                                 Clases futuras si las tengo
@@ -143,30 +156,41 @@ function createPayment() {
     document.getElementById("qp_fecha").value = new Date().toISOString().split("T")[0]
 }
 
+const paymentPreview = {
+    renderFull(){
+        document.getElementById('qp_previewName').innerText = paymentPreview.getName();
+        document.getElementById('qp_previewPrice').innerText = paymentPreview.getPrice();
+        document.getElementById('qp_previewGroup').innerText = paymentPreview.getGroup();
+        document.getElementById('qp_previewMonths').innerText = paymentPreview.getMonths();
+    },
+    
+    getName() {
+        let name = document.getElementById('qp_alumno').value;
+        if (name == '') name = '___';
+        else {
+            let parts = name.split('​'); // THERE IS A ZERO WIDTH SPACE HERE
+            name = parts[0] + ' ' + (parts[1] ? parts[1].trim().charAt(0) : '') + '.';
+        }
+        return name;
+    },
+
+    getPrice() {
+        // use calculateMonthlyPricing() but multiply by the amount of months (?) 
+        // Or make months be into cMP() and save that to the global object
+    },
+
+    getGroup() {
+
+    },
+
+    getMonths() {
+
+    }
+}
+
 function updateNewPaymentFrontend() {
-    let name = document.getElementById('qp_alumno').value;
     let group = document.getElementById('qp_grupo').options[document.getElementById('qp_grupo').selectedIndex].text;
     let months = '___';
-
-    // Process money
-    let price = (isNaN(parseFloat(document.getElementById('qp_precio').value)))
-    ? 0 : parseFloat(document.getElementById('qp_precio').value);
-
-    let discount = (isNaN(parseFloat(document.getElementById('qp_descuento').value)))
-    ? 0 : parseFloat(document.getElementById('qp_descuento').value);
-
-    let extraDiscount = (isNaN(parseFloat(document.getElementById('qp_descuento_extra').value)))
-    ? 0 : parseFloat(document.getElementById('qp_descuento_extra').value);
-
-
-    let money = (price - discount - extraDiscount).toFixed(2);
-    
-
-    if (name == '') name = '___';
-    else {
-        let parts = name.split('​'); // THERE IS A ZERO WIDTH SPACE HERE
-        name = parts[0] + ' ' + (parts[1] ? parts[1].trim().charAt(0) : '') + '.';
-    }
 
     if (group == '-- Seleccione un grupo --' || group == 'Introduzca primero un alumno') group = '___';
 
@@ -176,11 +200,13 @@ function updateNewPaymentFrontend() {
         ? selectedMonthsArray.slice(0, -1).join(', ') + ' y ' + selectedMonthsArray[selectedMonthsArray.length - 1] 
         : selectedMonthsArray.join('');
 
-    if (selectedMonths) months = selectedMonths;
+    if (selectedMonths) paymentStorage.monthSelection = selectedMonths;
 
-    if (money == 0) money = '___';
+    // Process pricing
+    let price = calculateMonthlyPricing()
+    if (price == 0) price = '___';
     else {
-        money *= selectedMonthsArray.length
+        price *= selectedMonthsArray.length
     }
 
     // Build the summary safely
@@ -189,7 +215,7 @@ function updateNewPaymentFrontend() {
 
     const p = document.createElement('p');
     const span = document.createElement('span');
-    span.textContent = `${name} paga ${money}€`;
+    span.textContent = `${name} paga ${price}€`;
     p.appendChild(span);
 
     p.appendChild(document.createElement('br'));
@@ -219,8 +245,10 @@ function studentTypeAhead() {
                         document.getElementById("qp_alumno").value = item.nombre_completo;
                         document.getElementById("qp_id_alumno").value = item.id_alumno;
                         suggestionBox.style.display = "none";
-                        updateNewPaymentFrontend();
                         getStudentGroups(item.id_alumno);
+                        getStudentCurrentRelationalDiscounts(item.id_alumno);
+                        getStudentDiscountHistory(item.id_alumno);
+                        updateNewPaymentFrontend();
                     });
                     suggestionBox.appendChild(div);
                 });
@@ -260,6 +288,9 @@ async function getStudentGroups(id_alumno) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const groups = await response.json();
+        
+        // Must validate if groups are active before applying the discount
+
         groups.forEach(group => {
             const option = document.createElement('option');
             option.textContent = group.nombre;
@@ -278,4 +309,64 @@ async function getStudentGroups(id_alumno) {
     } catch (error) {
         console.error('Error fetching group selector:', error);
     }
+}
+
+function getStudentCurrentRelationalDiscounts(id_alumno) {
+    fetch("./resources/pagos/qp_getStudentRelations.php?q=" + encodeURIComponent(id_alumno))
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            data.results.forEach(relation => {
+                if(relation.tipoRelacion == 'familiar') {
+                    // Check if familiar is active
+                    // Apply discount
+                }
+                if(relation.tipoRelacion == 'amigo' && relation.fechaFin == null) {
+                    // Check if friend is active
+                    // if( active ) {
+                        // Apply discount
+                    // }
+                }
+            });
+        });
+}
+
+function getStudentDiscountHistory(id_alumno) {
+
+}
+
+function triggerAmonestacion() {
+    if (true) {
+        let text = 'Puedes amonestar un alumno por problemas de comportamiento o en sus pagos. Un alumno amonestado no podrá beneficiarse de ningún tipo de descuento';
+        let action = performAmonestacion()
+        _ex.ui.dialog.make('Amonestar alumno', text, action, 'Amonestar', true)
+    } else {
+        let text = 'Este alumno fue amonestado previamente y no puede beneficiarse de ningún tipo de descuento. Puedes retirar la amonestación para devolverle el acceso a los descuentos.';
+        let action = undoAmonestacion()
+        _ex.ui.dialog.make('Alumno amonestado', text, action, 'Retirar amonestación', true)
+    }
+}
+
+function performAmonestacion() {
+
+}
+
+function undoAmonestacion() {
+
+}
+
+function calculateMonthlyPricing() {
+    // Process money
+    let price = (isNaN(parseFloat(document.getElementById('qp_precio').value)))
+    ? 0 : parseFloat(document.getElementById('qp_precio').value);
+
+    let discount = 0
+
+    // Process discountshhh
+
+    let extraDiscount = (isNaN(parseFloat(document.getElementById('qp_descuento_extra').value)))
+    ? 0 : parseFloat(document.getElementById('qp_descuento_extra').value);
+
+
+    return (price - discount - extraDiscount).toFixed(2);
 }
