@@ -26,11 +26,11 @@ function mostrarDatosProfe(id) {
                     <p>Aquí van los datos del profesor.</p>
                 </div>
                 <div id="alumnos">
-                    <h3>Alumnos relacionados</h3>
+                    <h3>Alumnos relacionados de prueba</h3>
                     <p>Lista de alumnos asociados a este profesor.</p>
                 </div>
                 <div id="otros">
-                    <h3>Otros datos</h3><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                    <h3>Otros datos</h3>
                     <p>Información adicional sobre el profesor.</p>
                 </div>
             </div>
