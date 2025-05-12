@@ -80,8 +80,8 @@ function createPayment() {
                                     <td class="flex gap-xs center">
                                         <span id="discountChip-amigo" class="discountChip" title="">Amigo</span>
                                         <span id="discountChip-familiar" class="discountChip" title="">Familiar</span>
-                                        <span id="discountChip-multi" class="discountChip" title=""> Adelantado</span>
-                                        <span id="discountChip-adelantado" class="discountChip" title="">Multi-grupo</span>
+                                        <span id="discountChip-adelantado" class="discountChip" title=""> Adelantado</span>
+                                        <span id="discountChip-multi" class="discountChip" title="">Multi-grupo</span>
                                         <img id="amonestacion" class="iconButton mini" onclick="triggerAmonestacion()" src="./img/amonestar.png">
                                     </td>
                                 </tr>
@@ -195,7 +195,7 @@ function studentTypeAhead() {
     }
 }
 
-async function getStudentGroups() {
+function getStudentGroups() {
     const node = document.getElementById('qp_grupo');
     if (!node) return;
 
@@ -217,12 +217,16 @@ async function getStudentGroups() {
     node.appendChild(defaultOpt);
 
     try {
-        const response = await fetch('./resources/pagos/qp_getGroupSelector.php?q=' + encodeURIComponent(paymentPreview.currentStudent));
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', './resources/pagos/qp_getGroupSelector.php?q=' + encodeURIComponent(paymentPreview.currentStudent), false); // false for synchronous
+        xhr.send(null);
+
+        if (xhr.status !== 200) {
+            throw new Error(`HTTP error! status: ${xhr.status}`);
         }
-        const groups = await response.json();
-        
+
+        const groups = JSON.parse(xhr.responseText);
+
         // Must validate if groups are active before applying the discount
 
         paymentPreview.ongoingCourses = 0;
@@ -311,7 +315,72 @@ const paymentPreview = {
     },
 
     renderDiscounts() {
+        let alreadyDiscounted = false;
 
+        document.getElementById('discountChip-amigo').classList.remove('active');
+        document.getElementById('discountChip-familiar').classList.remove('active');
+        document.getElementById('discountChip-adelantado').classList.remove('active');
+        document.getElementById('discountChip-multi').classList.remove('active');
+        document.getElementById('discountChip-adelantado').classList.remove('idle');
+        document.getElementById('discountChip-multi').classList.remove('idle');
+        document.getElementById('discountChip-amigo').classList.remove('restricted');
+        document.getElementById('discountChip-familiar').classList.remove('restricted');
+        document.getElementById('discountChip-adelantado').classList.remove('restricted');
+        document.getElementById('discountChip-multi').classList.remove('restricted');
+
+
+        if (paymentPreview.discounts.family) document.getElementById('discountChip-familiar').classList.add('active');
+
+        if (paymentPreview.discounts.friend) {
+            document.getElementById('discountChip-amigo').classList.add('active');
+            alreadyDiscounted = true;
+        }
+
+        if (paymentPreview.discounts.advancedPay) {
+            if (alreadyDiscounted) document.getElementById('discountChip-adelantado').classList.add('idle');
+            else document.getElementById('discountChip-adelantado').classList.add('active');
+            alreadyDiscounted = true;
+        }
+
+        if (paymentPreview.discounts.multiCourse) {
+            if (alreadyDiscounted) document.getElementById('discountChip-multi').classList.add('idle');
+            else document.getElementById('discountChip-multi').classList.add('active');
+        }
+
+        if (paymentPreview.amonestado) {
+            if (document.getElementById('discountChip-amigo').classList.contains('active') || 
+                document.getElementById('discountChip-amigo').classList.contains('idle')) {
+                document.getElementById('discountChip-amigo').classList.remove('active', 'idle');
+                document.getElementById('discountChip-amigo').classList.add('restricted');
+            }
+            if (document.getElementById('discountChip-familiar').classList.contains('active') || 
+                document.getElementById('discountChip-familiar').classList.contains('idle')) {
+                document.getElementById('discountChip-familiar').classList.remove('active', 'idle');
+                document.getElementById('discountChip-familiar').classList.add('restricted');
+            }
+            if (document.getElementById('discountChip-adelantado').classList.contains('active') || 
+                document.getElementById('discountChip-adelantado').classList.contains('idle')) {
+                document.getElementById('discountChip-adelantado').classList.remove('active', 'idle');
+                document.getElementById('discountChip-adelantado').classList.add('restricted');
+            }
+            if (document.getElementById('discountChip-multi').classList.contains('active') || 
+                document.getElementById('discountChip-multi').classList.contains('idle')) {
+                document.getElementById('discountChip-multi').classList.remove('active', 'idle');
+                document.getElementById('discountChip-multi').classList.add('restricted');
+            }
+        }
+    }
+}
+
+function triggerAmonestacion() {
+    if (true) {
+        let text = 'Puedes amonestar un alumno por problemas de comportamiento o en sus pagos. Un alumno amonestado no podrá beneficiarse de ningún tipo de descuento';
+        let action = performAmonestacion()
+        _ex.ui.dialog.make('Amonestar alumno', text, action, 'Amonestar', true)
+    } else {
+        let text = 'Este alumno fue amonestado previamente y no puede beneficiarse de ningún tipo de descuento. Puedes retirar la amonestación para devolverle el acceso a los descuentos.';
+        let action = undoAmonestacion()
+        _ex.ui.dialog.make('Alumno amonestado', text, action, 'Retirar amonestación', true)
     }
 }
 
@@ -340,22 +409,6 @@ function processStudentDiscounts() {
     else paymentPreview.discounts.multiCourse = false;
 }
 
-function getStudentDiscountHistory() {
-
-}
-
-function triggerAmonestacion() {
-    if (true) {
-        let text = 'Puedes amonestar un alumno por problemas de comportamiento o en sus pagos. Un alumno amonestado no podrá beneficiarse de ningún tipo de descuento';
-        let action = performAmonestacion()
-        _ex.ui.dialog.make('Amonestar alumno', text, action, 'Amonestar', true)
-    } else {
-        let text = 'Este alumno fue amonestado previamente y no puede beneficiarse de ningún tipo de descuento. Puedes retirar la amonestación para devolverle el acceso a los descuentos.';
-        let action = undoAmonestacion()
-        _ex.ui.dialog.make('Alumno amonestado', text, action, 'Retirar amonestación', true)
-    }
-}
-
 function performAmonestacion() {
 
 }
@@ -371,7 +424,7 @@ function calculateMonthlyPricing() {
 
     let discount = 0
 
-    // Process discountshhh
+    // Process discounts
 
     let extraDiscount = (isNaN(parseFloat(document.getElementById('qp_descuento_extra').value)))
     ? 0 : parseFloat(document.getElementById('qp_descuento_extra').value);
