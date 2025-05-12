@@ -1,16 +1,21 @@
 <?php
 require_once __DIR__ . '/../dbConnect.php';
 
+header('Content-Type: application/json'); // Always set JSON header
+
 $q = isset($_GET['q']) ? mysqli_real_escape_string($connection, $_GET['q']) : '';
 $results = [];
+$esAmonestado = null;
 
 if ($q !== '') {
-    $sql = "SELECT * FROM relaciones WHERE id_alumno1 = $q OR id_alumno2 = $q";
-    $res = mysqli_query($connection, $sql);
+    // First query to get the relations
+    $sql_relations = "SELECT r.* 
+                      FROM relaciones r 
+                      WHERE r.id_alumno1 = $q OR r.id_alumno2 = $q";
+    $res_relations = mysqli_query($connection, $sql_relations);
 
-    if ($res) {
-        while ($row = mysqli_fetch_assoc($res)) {
-            // Return id and full name
+    if ($res_relations) {
+        while ($row = mysqli_fetch_assoc($res_relations)) {
             $results[] = [
                 'id_relacion' => $row['id_relacion'],
                 'id_alumno1' => $row['id_alumno1'],
@@ -20,18 +25,35 @@ if ($q !== '') {
                 'tipoRelacion' => $row['tipoRelacion'],
             ];
         }
-        header('Content-Type: application/json');
-        echo json_encode(['results' => $results]);
-        exit;
     } else {
-        // Query error
         http_response_code(500);
-        header('Content-Type: application/json');
         echo json_encode(['error' => mysqli_error($connection)]);
         exit;
     }
+
+    // Second query to get the esAmonestado value
+    $sql_esAmonestado = "SELECT a.esAmonestado 
+                         FROM alumnos a 
+                         WHERE a.id_alumno = $q";
+    $res_esAmonestado = mysqli_query($connection, $sql_esAmonestado);
+
+    if ($res_esAmonestado) {
+        $row = mysqli_fetch_assoc($res_esAmonestado);
+        if ($row) {
+            $esAmonestado = $row['esAmonestado'];
+        }
+    } else {
+        http_response_code(500);
+        echo json_encode(['error' => mysqli_error($connection)]);
+        exit;
+    }
+
+    echo json_encode([
+        'results' => $results,
+        'esAmonestado' => $esAmonestado
+    ]);
+    exit;
 }
 
 // If no query provided, return empty results
-header('Content-Type: application/json');
-echo json_encode(['results' => []]);
+echo json_encode(['results' => [], 'esAmonestado' => null]);
