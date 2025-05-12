@@ -1,6 +1,6 @@
-<?php //alomejor tiar de un contador boton abajo que me mande a la informacion completa sobre todo
-require "dbConnect.php";
 
+<?php //alomejor tiar de un contador boton abajo que me mande a la informacion completa sobre todo
+require "./resources/dbConnect.php";
 $nombre = $_POST['prof_nombre'] ?? '';
 $grupos = $_POST['prof_grupos'] ?? '';
 $particulares = $_POST['prof_particulares'] ?? '';
@@ -91,9 +91,12 @@ while ($row = mysqli_fetch_assoc($result)) {
             <td>{$row['total_grupos']}</td>
             <td>{$row['total_clases']}</td>
             <td>{$row['total_alumnos']}</td>
-            <td><img class='action' onclick='' src='./img/info.png'><span></span></td>
-          </tr>";
+            <td><img class='action' onclick='mostrarDatosProfe({$row['id_profesor']})' src='./img/info.png'></td>
+          </tr>";//relllenar el onclick con el archivo que despues haga
+          //investigar con los archivos de alumnos que hacer despues para que la info salga 
+          
 }
 
 echo "</table>";
 ?>
+<script src="/bristol_alumnos/resources/profesores/teacherview.js"></script>
