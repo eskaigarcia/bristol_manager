@@ -31,8 +31,9 @@ if (!$data) {
 // ----------------------------------------
 // 3. Validar que todos los campos estén presentes
 // ----------------------------------------
+// Si "asignatura" no está en el formulario, no se marca como obligatorio.
 $campos_obligatorios = [
-    'nombre', 'asignatura', 'modalidad',
+    'nombre', 'modalidad',
     'horasSemanales', 'precio', 'esActivo', 'esIntensivo',
     'id_profesor', 'horarioDias', 'horarioHoras', 'horarioDuraciones'
 ];
@@ -85,9 +86,12 @@ try {
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     ");
 
+    // Si "asignatura" no está en el formulario, pasa un valor por defecto (puede ser NULL o cualquier valor que necesites)
+    $asignatura = isset($data['asignatura']) ? $data['asignatura'] : null;
+
     $stmt->execute([
         $data['nombre'],
-        $data['asignatura'],
+        $asignatura,  // Puede ser NULL si no se proporciona
         $data['modalidad'],
         $data['horasSemanales'],
         $data['precio'],
