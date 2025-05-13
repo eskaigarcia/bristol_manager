@@ -46,7 +46,7 @@
             </div>
 
             <div class="card full">
-                <?php include './relaciones/friendSearch.php' ?>
+                <?php include './resources/relaciones/friendSearch.php' ?>
             </div>
 
             <script src="./resources/relaciones/newFriend.js"></script>
