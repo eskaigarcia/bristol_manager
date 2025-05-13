@@ -9,10 +9,10 @@
         <main>
             <header>
                 <h1>Amigos</h1>
-                <!-- <button onclick="createFriend()" class="cta">
-                    <?php include './img/addFriend.svg'; ?>
+                <button onclick="createFriend()" class="cta">
+                    <?php include './img/addStudent.svg'; ?>
                     Nuevo amigo
-                </button> -->
+                </button>
             </header>
 
             <div class="card full">
