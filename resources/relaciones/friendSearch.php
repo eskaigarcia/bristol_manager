@@ -33,13 +33,14 @@ $query = "
         am.tipoRelacion, 
         am.fechaInicio, 
         am.fechaFin
-    FROM amigo am
+    FROM relaciones am
     INNER JOIN alumnos a1 ON am.id_alumno1 = a1.id_alumno
     INNER JOIN alumnos a2 ON am.id_alumno2 = a2.id_alumno
     $where_sql
     ORDER BY am.fechaInicio DESC
     LIMIT 100
 ";
+
 
 $result = mysqli_query($connection, $query);
 
