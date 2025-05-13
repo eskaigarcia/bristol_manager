@@ -4,7 +4,7 @@ const paymentStorage = {
     monthSelection: null,
 }
 
-function createPayment() {
+function createMonthlyPayment() {
     // storage.pendingEdits = true;
     let div = document.createElement('div');
     div.className = 'modal';
@@ -254,7 +254,7 @@ function getStudentGroups() {
         node.addEventListener('change', () => {
             const selectedOption = node.options[node.selectedIndex];
             const price = selectedOption.dataset.precio || 0;
-            document.getElementById('qp_precio').value = parseFloat(price).toFixed(2);
+            document.getElementById('qp_precio').value = (parseFloat(price) / 100).toFixed(2);
             paymentPreview.renderAll();
         });
     } catch (error) {
@@ -282,6 +282,7 @@ function courseStepper(direction) {
             document.getElementById('qp_course').value = (parseInt(current[0]) - 1) + '/' + (parseInt(current[1]) - 1);
             break;
     }
+    paymentPreview.renderMonths()
 }
 
 
@@ -330,11 +331,11 @@ const paymentPreview = {
 
         if (paymentPreview.esAmonestado) finalPrice = defaultPrice - descuento;
         
-        if (defaultPrice != finalPrice && !isNaN(finalPrice)) document.getElementById('qp_previewOPrice').innerText = defaultPrice + '€';
+        if (defaultPrice != finalPrice && !isNaN(finalPrice)) document.getElementById('qp_previewOPrice').innerText = (defaultPrice).toFixed(2) + '€';
         else document.getElementById('qp_previewOPrice').innerText = '';
 
         if (isNaN(finalPrice)) finalPrice = '__';
-        else document.getElementById('qp_previewPrice').innerText = finalPrice;
+        else document.getElementById('qp_previewPrice').innerText = (finalPrice).toFixed(2);
     },
 
     renderGroup() {
@@ -471,34 +472,43 @@ function triggerAmonestacion() {
     }
 }
 
-function processStudentDiscounts() {
+async function processStudentDiscounts() {
     // Relational discounts
-    fetch("./resources/pagos/qp_getStudentRelations.php?q=" + encodeURIComponent(paymentPreview.currentStudent))
-        .then(response => response.json())
-        .then(data => {
-            console.log(data)
-            if(data.esAmonestado == 1) paymentPreview.esAmonestado = true;
-            else paymentPreview.esAmonestado = false;
+    const response = await fetch("./resources/pagos/qp_getStudentRelations.php?q=" + encodeURIComponent(paymentPreview.currentStudent));
+    const data = await response.json();
+    console.log(data)
+    if(data.esAmonestado == 1) paymentPreview.esAmonestado = true;
+    else paymentPreview.esAmonestado = false;
 
-            paymentPreview.renderAll();
+    paymentPreview.discounts.family = false;
+    paymentPreview.discounts.friend = false;
 
-            data.results.forEach(relation => {
-                if(relation.tipoRelacion == 'familiar') {
-                    // Check if familiar is active
-                    // Apply discount
-                }
-                if(relation.tipoRelacion == 'amigo' && relation.fechaFin == null) {
-                    // Check if friend is active
-                    // if( active ) {
-                        // Apply discount
-                    // }
-                }
-            });
-        });
+    for (const item of data.results) {
+        let id1 = item.id_alumno1;
+        let id2 = item.id_alumno2;
+        let otherStudent = (paymentPreview.currentStudent == id1) ? id2 : id1;
+        console.log('Student: ' + otherStudent + ' ' + item.tipoRelacion + ' ' + item.fechaFin);
+
+        if(item.tipoRelacion == 'familiar') {
+            let test = await _ex.relMgr.testIsActiveStudent(otherStudent);
+            if (test) paymentPreview.discounts.family = true;
+            console.log('Family: ' + test);
+        }   
+        if(item.tipoRelacion == 'amigo' && (item.fechaFin == null || new Date(item.fechaFin) > new Date())) {
+            let test = await _ex.relMgr.testIsActiveStudent(otherStudent);
+            if (test) paymentPreview.discounts.friend = true;
+            console.log('Friends: ' + test);
+            if(item.tipoRelacion == 'amigo' && item.fechaFin == null && !test){
+                _ex.relMgr.endFriendshipRelationship(item.id_relacion)
+            }
+        }
+    }
 
     // Multicourse
     if (paymentPreview.ongoingCourses >= 2) paymentPreview.discounts.multiCourse = true;
     else paymentPreview.discounts.multiCourse = false;
+
+    paymentPreview.renderAll();
 }
 
 function performAmonestacion() {
@@ -515,20 +525,4 @@ function undoAmonestacion() {
         .then( _ex.ui.toast.make('Amonestación retirada correctamente', 'Aceptar', false))
         .then(paymentPreview.esAmonestado = false)
         .then(paymentPreview.renderAll());
-}
-
-function calculateMonthlyPricing() {
-    // Process money
-    let price = (isNaN(parseFloat(document.getElementById('qp_precio').value)))
-    ? 0 : parseFloat(document.getElementById('qp_precio').value);
-
-    let discount = 0
-
-    // Process discounts
-
-    let extraDiscount = (isNaN(parseFloat(document.getElementById('qp_descuento_extra').value)))
-    ? 0 : parseFloat(document.getElementById('qp_descuento_extra').value);
-
-
-    return (price - discount - extraDiscount).toFixed(2);
 }

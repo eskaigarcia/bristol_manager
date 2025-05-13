@@ -8,24 +8,23 @@
     <div id="app">
         <?php include './components/navView.php'; ?>
         <main>
-        <header>
+            <header>
                 <h1>Pagos</h1>
-                <button class="cta" onclick="createPayment()">
-                    <?php include './img/addStudent.svg'; ?>
-                    Nuevo cobro
-                </button>
             </header>
-
 
             <div class="card double stat-singleNum">
                 <h2>Pagos pendientes</h2>
                 <p><span>✅</span> Todos los pagos al día</p>
-                <button>Ir a pagos pendientes</button>
+                <p style="font-size: 1rem; margin-top: -40px;" >Ultima comprobación: 1/1/2014</p>
+                <button>Ver pagos pendientes</button>
             </div>
 
             <div class="card double">
                 <h2>Nuevo cobro</h2>
-                
+                        <button class="cardLink align_left" onclick="createMonthlyPayment()"><img src="img/groupAdd-onlight.png" alt="">Pago de mensualidad</button>
+                        <button class="cardLink align_left"><img src="img/groupAdd-onlight.png" alt="">Pago de grupo intensivo</button>
+                        <button class="cardLink align_left"><img src="img/groupAdd-onlight.png" alt="">Pago de bono de clases individuales</button>
+
             </div>
 
             <hr class="full">
@@ -57,6 +56,6 @@
     </div>
 
     <!-- Scripts -->
-    <script src="./resources/pagos/newPayment.js"></script>
+    <script src="./resources/pagos/newMonthlyPayment.js"></script>
 </body>
 </html>
