@@ -11,13 +11,13 @@ $where = [];
 if ($nombre !== '') {
     $where[] = "(a1.nombre LIKE '%$nombre%' OR a2.nombre LIKE '%$nombre%')";
 }
-if ($tipo_relacion !== '') {
+if ($tipo_relacion !== '' && $tipo_relacion !== 'cualquiera') {
     $where[] = "am.tipoRelacion = '$tipo_relacion'";
 }
-if ($activo !== '') {
+if ($activo !== '' && $activo !== 'cualquiera2') {
     if ($activo == '1') {
         $where[] = "(am.fechaFin IS NULL OR am.fechaFin > CURDATE())";
-    } else {
+    } elseif ($activo == '0') {
         $where[] = "am.fechaFin <= CURDATE()";
     }
 }
@@ -41,7 +41,6 @@ $query = "
     LIMIT 100
 ";
 
-
 $result = mysqli_query($connection, $query);
 
 if (!$result) {
@@ -62,19 +61,19 @@ echo "<tr class='head'>
         <td>Hasta</td>
     </tr>";
 
-    while ($row = mysqli_fetch_assoc($result)) {
-        $estado = (is_null($row['fechaFin']) || $row['fechaFin'] > date('Y-m-d')) ? 'Activo' : 'Inactivo';
-        $fechaFin = $row['fechaFin'] ? $row['fechaFin'] : '---';
-    
-        echo "<tr>
-                <td>{$row['nombre1']}</td>
-                <td>{$row['nombre2']}</td>
-                <td>{$row['tipoRelacion']}</td>
-                <td>$estado</td>
-                <td>{$row['fechaInicio']}</td>
-                <td>$fechaFin</td>
-            </tr>";
-    }    
+while ($row = mysqli_fetch_assoc($result)) {
+    $estado = (is_null($row['fechaFin']) || $row['fechaFin'] > date('Y-m-d')) ? 'Activo' : 'Inactivo';
+    $fechaFin = $row['fechaFin'] ? $row['fechaFin'] : '---';
+
+    echo "<tr>
+            <td style='width: 120px; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;' title='{$row['nombre1']}'>{$row['nombre1']}</td>
+            <td>{$row['nombre2']}</td>
+            <td>{$row['tipoRelacion']}</td>
+            <td>$estado</td>
+            <td style='white-space: nowrap;'>{$row['fechaInicio']}</td>
+            <td style='white-space: nowrap;'>$fechaFin</td>
+        </tr>";
+}
 
 echo '</table>';
 
