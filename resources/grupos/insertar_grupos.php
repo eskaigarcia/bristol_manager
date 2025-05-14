@@ -6,15 +6,7 @@ $nombre = $_POST['nombre'];
 $asignatura = $_POST['asignatura'];
 $modalidad = $_POST['modalidad'];
 $horasSemanales = $_POST['horasSemanales'];
-$esActivo = isset($_POST['esActivo']) ? 1 : 0;
 $precio = $_POST['precio'];
-
-$horario = [
-    'dias' => json_decode($_POST['horarioDias'], true),
-    'horas' => json_decode($_POST['horarioHoras'], true),
-    'duraciones' => json_decode($_POST['horarioDuraciones'], true)
-];
-$horarioJson = json_encode($horario);
 
 $id_profesor = $_POST['id_profesor'];
 

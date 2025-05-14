@@ -1,120 +1,4 @@
 function createGroup() {
-    let div = document.createElement('div');
-    div.className = 'modal';
-    div.id = 'popUpModal';
-
-    div.innerHTML = `
-        <div>
-            <div class="header">
-                <div>
-                    <h2>Nuevo Grupo</h2>
-                </div>
-                <img onclick="removeDetailsModal()" class="iconButton" src="./img/close.png" alt="Cerrar">
-            </div>
-
-            <div class="body noMeta">
-                <div id="modalBodyView" style="margin-top: 1rem;">
-                    <div class="scrollspySection" id="SDVData">
-                        <div class="flex clear-between">
-                            <h3>Datos de la clase</h3>
-                            <p class="requiredAlert">Los campos marcados con <span class="requiredMark">*</span> son obligatorios</p>
-                        </div>
-                        <form name="insgrupo" method="POST">
-                            <div class="flex">
-                                <label for="nombre">Nombre del grupo:</label>
-                                <input type="text" id="nombre" name="nombre" placeholder="Introduce el nombre del grupo" required>
-                            </div>
-                            <div class="flex gap-md">
-                                <table class="camo inputMode">
-                                    <tr>
-                                        <td><label for="asignatura">Asignatura:</label></td>
-                                        <td><input type="text" id="asignatura" name="asignatura" placeholder="Introduce la asignatura" required></td>
-                                    </tr>
-                                    <tr>
-                                        <td><label for="modalidad">Modalidad:</label></td>
-                                        <td>
-                                            <select id="modalidad" name="modalidad" required>
-                                                <option value="presencial">Presencial</option>
-                                                <option value="online">Online</option>
-                                                <option value="hibrido">Híbrido</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><label for="horasSemanales">Horas semanales:</label></td>
-                                        <td>
-                                            <select id="horasSemanales" name="horasSemanales" required>
-                                                <option value="1">1 Hora</option>
-                                                <option value="1.5">1.5 Hora</option>
-                                                <option value="2">2 Horas</option>
-                                                <option value="3">3 Horas</option>
-                                                <option value="4">4 Horas</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><label for="precio">Precio (en euros):</label></td>
-                                        <td><input type="number" id="precio" name="precio" placeholder="Introduce el precio" required></td>
-                                    </tr>
-                                    <tr>
-                                        <td><label for="esActivo">¿Está activo?</label></td>
-                                        <td>
-                                            <input type="checkbox" id="esActivo" name="esActivo" value="1">
-                                            <label for="esActivo">Activo</label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><label for="esIntensivo">¿Es intensivo?</label></td>
-                                        <td>
-                                            <input type="checkbox" id="esIntensivo" name="esIntensivo" value="1">
-                                            <label for="esIntensivo">Intensivo</label>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <table class="camo inputMode">
-                                    <tr>
-                                        <td><label for="id_profesor">ID del Profesor:</label></td>
-                                        <td><input type="number" id="id_profesor" name="id_profesor" placeholder="Introduce el ID del profesor" required></td>
-                                    </tr>
-                                    <tr>
-                                        <td><label for="horarioDias">Días:</label></td>
-                                        <td>
-                                    <div class="multipicker">
-                                            <label><input type="checkbox" name="horarioDias[]" value="Lunes">Lunes</label>
-                                            <label><input type="checkbox" name="horarioDias[]" value="Martes">Martes</label>
-                                            <label><input type="checkbox" name="horarioDias[]" value="Miércoles">Miércoles</label>
-                                            <label><input type="checkbox" name="horarioDias[]" value="Jueves">Jueves</label>
-                                            <label><input type="checkbox" name="horarioDias[]" value="Viernes">Viernes</label>
-                                            <label><input type="checkbox" name="horarioDias[]" value="Sábado">Sábado</label>
-                                            <label><input type="checkbox" name="horarioDias[]" value="Domingo">Domingo</label>
-                                    </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><label for="horarioHoras">Horas de clase:</label></td>
-                                        <td><input type="text" id="horarioHoras" name="horarioHoras" placeholder="Ejemplo: 09:00, 11:00" required></td>
-                                    </tr>
-                                    <tr>
-                                        <td><label for="horarioDuraciones">Duraciones de clase:</label></td>
-                                        <td><input type="text" id="horarioDuraciones" name="horarioDuraciones" placeholder="Ejemplo: 60, 90" required></td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="center gap-md">
-                        <button class="warn" onclick="cancelStudentInsertion()">Cancelar inserción</button>
-                        <button onclick="submitNewStudent()">Guardar alumno</button>
-                    </div>
-                </div>
-            </div>
-        </div>`
-
-    document.querySelector('body').appendChild(div);
-    document.getElementById("fecha").value = new Date().toISOString().split("T")[0]
-};
-
-function createGroup() {
     storage.pendingEdits = true;
     groupCloseWarned = false;
     let div = document.createElement('div');
@@ -138,16 +22,25 @@ function createGroup() {
                         </div>
 
                         <form name="insgrupo" id="groupForm" method="POST">
+                            <table class="camo inputMode">
+                                <tr>
+                                    <td><label for="ng_nombre">Nombre del grupo:</label></td>
+                                    <td><input type="text" id="ng_nombre" name="ng_nombre" placeholder="Introduce el nombre del grupo" required></td>
+                                </tr>
+                            </table>
                             <div class="flex gap-md">
                                 <table class="camo inputMode">
                                     <tr>
-                                        <td><label for="nombre">Nombre del grupo:</label></td>
-                                        <td><input type="text" id="nombre" name="nombre" placeholder="Introduce el nombre del grupo" required></td>
+                                        <td><label for="ng_profesor">Profesor:</label></td>
+                                        <td>
+                                            <select id="ng_profesor" name="ng_profesor"></select>
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td><label for="modalidad">Modalidad:</label></td>
+                                        <td><label for="ng_modalidad">Modalidad:</label></td>
                                         <td>
-                                            <select id="modalidad" name="modalidad" required>
+                                            <select id="ng_modalidad" name="ng_modalidad" required>
+                                                <option value="">-- Selecciona modalidad --</option>
                                                 <option value="presencial">Presencial</option>
                                                 <option value="online">Online</option>
                                                 <option value="hibrido">Híbrido</option>
@@ -155,63 +48,44 @@ function createGroup() {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><label for="horasSemanales">Horas semanales:</label></td>
+                                        <td><label for="ng_precio">Precio (en euros):</label></td>
+                                        <td><input type="number" id="ng_precio" name="ng_precio" min="0" step="0.01" required></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="ng_esIntensivo">Intensivo</label></td>
                                         <td>
-                                            <select id="horasSemanales" name="horasSemanales" required>
-                                                <option value="1">1 Hora</option>
-                                                <option value="1.5">1.5 Hora</option>
-                                                <option value="2">2 Horas</option>
-                                                <option value="3">3 Horas</option>
-                                                <option value="4">4 Horas</option>
-                                            </select>
+                                            <input type="checkbox" id="ng_esIntensivo" name="ng_esIntensivo" value="1">
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><label for="precio">Precio (en euros):</label></td>
-                                        <td><input type="number" id="precio" name="precio" min="0" step="0.01" required></td>
-                                    </tr>
-                                    <tr>
-                                        <td><label for="esActivo">¿Está activo?</label></td>
+                                        <td><label for="ng_creacion" id="creacion" name="creacion">Fecha de creación</td>
                                         <td>
-                                            <input type="checkbox" id="esActivo" name="esActivo" value="1">
-                                            <label for="esActivo">Activo</label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><label for="esIntensivo">¿Es intensivo?</label></td>
-                                        <td>
-                                            <input type="checkbox" id="esIntensivo" name="esIntensivo" value="1">
-                                            <label for="esIntensivo">Intensivo</label>
+                                            <input type="date" id="ng_fecha" name="ng_fecha">
                                         </td>
                                     </tr>
                                 </table>
 
                                 <table class="camo inputMode">
                                     <tr>
-                                        <td><label for="id_profesor">ID del Profesor:</label></td>
-                                        <td><input type="number" id="id_profesor" name="id_profesor" placeholder="Introduce el ID del profesor" required></td>
-                                    </tr>
-                                    <tr>
-                                        <td><label for="horarioDias">Días:</label></td>
+                                        <td><label for="ng_horasSemanales">Horas semanales:</label></td>
                                         <td>
-                                            <div class="multipicker">
-                                                <label><input type="checkbox" name="horarioDias[]" value="Lunes">L</label>
-                                                <label><input type="checkbox" name="horarioDias[]" value="Martes">M</label>
-                                                <label><input type="checkbox" name="horarioDias[]" value="Miércoles">X</label>
-                                                <label><input type="checkbox" name="horarioDias[]" value="Jueves">J</label>
-                                                <label><input type="checkbox" name="horarioDias[]" value="Viernes">V</label>
-                                                <label><input type="checkbox" name="horarioDias[]" value="Sábado">S</label>
-                                                <label><input type="checkbox" name="horarioDias[]" value="Domingo">D</label>
-                                            </div>
+                                            <input type="number" id="ng_horasSemanales" name="ng_horasSemanales" required>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><label for="horarioHoras">Horas de clase:</label></td>
-                                        <td><input type="text" id="horarioHoras" name="horarioHoras" placeholder="Ejemplo: 09:00, 11:00" required></td>
+                                        <td><label>Días:</label></td>
+                                        <td>
+                                            <div class="multipicker" onchange="updateDaysDisplay()">
+                                                <label><input type="checkbox" value="Lunes">L</label>
+                                                <label><input type="checkbox" value="Martes">M</label>
+                                                <label><input type="checkbox" value="Miércoles">X</label>
+                                                <label><input type="checkbox" value="Jueves">J</label>
+                                                <label><input type="checkbox" value="Viernes">V</label>
+                                                <label><input type="checkbox" value="Sábado">S</label>
+                                            </div>
+                                        </td>
                                     </tr>
-                                    <tr>
-                                        <td><label for="horarioDuraciones">Duraciones de clase:</label></td>
-                                        <td><input type="text" id="horarioDuraciones" name="horarioDuraciones" placeholder="Ejemplo: 60, 90" required></td>
+                                    <tr id="scheduleBuilder">
                                     </tr>
                                 </table>
                             </div>
@@ -227,6 +101,8 @@ function createGroup() {
         </div>`;
 
     document.body.appendChild(div);
+    document.getElementById("ng_fecha").value = new Date().toISOString().split("T")[0]
+    getTeachersForNG()
 }
 
 function tryCloseGroupModal() {
