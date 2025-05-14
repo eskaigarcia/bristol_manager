@@ -18,11 +18,9 @@
             <div class="card full">
                 <h2>Buscar amigos</h2>
                 <form action='<?php echo $_SERVER["PHP_SELF"]?>' method="get" id="searchBar">
-                    <!-- Filtro de nombre -->
                     <label for="nombre">Nombre:</label>
                     <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($_GET['nombre'] ?? ''); ?>">
 
-                    <!-- Filtro de tipo de relación -->
                     <label for="tipo_relacion">Tipo de relación:</label>
                     <select id="tipo_relacion" name="tipo_relacion">
                         <option value="cualquiera" <?php echo ($_GET['tipo_relacion'] ?? '') == 'cualquiera' ? 'selected' : ''; ?>>Cualquiera</option>
@@ -30,7 +28,6 @@
                         <option value="familia" <?php echo ($_GET['tipo_relacion'] ?? '') == 'familia' ? 'selected' : ''; ?>>Familia</option>
                     </select>
 
-                    <!-- Filtro de estado activo -->
                     <label for="activo">Estado:</label>
                     <select id="activo" name="activo">
                         <option value="cualquiera" <?php echo ($_GET['activo'] ?? '') == 'cualquiera' ? 'selected' : ''; ?>>Cualquiera</option>
