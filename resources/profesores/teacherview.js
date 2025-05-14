@@ -5,6 +5,7 @@ function mostrarDatosProfe(id) {
     if (!fila) return alert("Profesor no encontrado.");
 
     const nombre = fila.children[1].textContent;
+    
 
     let div = document.createElement('div');
     div.className = 'modal studentData';
@@ -35,10 +36,6 @@ function mostrarDatosProfe(id) {
 </div>
         <div class="body" id="studentDataView">
             <div class="scrollspySection">
-                <div id="datos">
-                    <h3>Información del profesor</h3>
-                    <p>Aquí van los datos del profesor.</p>
-                </div>
                 <div id="alumnos">
                     <h3>Alumnos relacionados</h3>
                     <p>Lista de alumnos asociados a este profesor.</p>
