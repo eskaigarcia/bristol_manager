@@ -41,12 +41,11 @@ function createFriend() {
                                     <tr>
                                         <td><label for="tipoRelacion">Tipo de relación:</label></td>
                                         <td>
-                                            <select id="tipoRelacion" name="tipoRelacion" required>
-                                                <option value="amigos">Amigos</option>
-                                                <option value="familia">Familia</option>
-                                                <option value="conocidos">Conocidos</option>
-                                            </select>
-                                        </td>
+                                           <select id="tipoRelacion" name="tipoRelacion" required>
+                                            <option value="amigo">Amigo</option>
+                                            <option value="familiar">Familiar</option>
+                                           </select>
+
                                     </tr>
                                 </table>
                             </div>
