@@ -4,7 +4,7 @@ const paymentStorage = {
     monthSelection: null,
 }
 
-function createPayment() {
+function createMonthlyPayment() {
     // storage.pendingEdits = true;
     let div = document.createElement('div');
     div.className = 'modal';
@@ -45,11 +45,26 @@ function createPayment() {
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td><label>Curso:</label></td>
+                                    <td>
+                                        <p class="stepper">
+                                            <span onclick="courseStepper('prev')"><-</span>
+                                            <input id="qp_course" name="qp_course" type="text" value="${courseStepper('init')}" readonly>
+                                            <span onclick="courseStepper('next')">-></span>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td>
                                         <label>Mensualidades:</label>
                                     </td>
                                     <td>
                                         <div class="multipicker" id="monthSelection" onchange="paymentPreview.renderAll();">
+                                            <label><input type="checkbox" value="8">Ago</label>
+                                            <label><input type="checkbox" value="9">Sep</label>
+                                            <label><input type="checkbox" value="10">Oct</label>
+                                            <label><input type="checkbox" value="11">Nov</label>
+                                            <label><input type="checkbox" value="12">Dic</label>
                                             <label><input type="checkbox" value="1">Ene</label>
                                             <label><input type="checkbox" value="2">Feb</label>
                                             <label><input type="checkbox" value="3">Mar</label>
@@ -57,11 +72,6 @@ function createPayment() {
                                             <label><input type="checkbox" value="5">May</label>
                                             <label><input type="checkbox" value="6">Jun</label>
                                             <label><input type="checkbox" value="7">Jul</label>
-                                            <label><input type="checkbox" value="8">Ago</label>
-                                            <label><input type="checkbox" value="9">Sep</label>
-                                            <label><input type="checkbox" value="10">Oct</label>
-                                            <label><input type="checkbox" value="11">Nov</label>
-                                            <label><input type="checkbox" value="12">Dic</label>
                                         </div>
                                     </td>
                                 </tr>
@@ -87,10 +97,10 @@ function createPayment() {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label for="qp_descuento_extra">Descuento extra/mes:</label>
+                                        <label for="qp_descuento_extra">Descuento extra:</label>
                                     </td>
                                     <td>
-                                        <input type="number" id="qp_descuento_extra" name="qp_descuento_extra" min="0" step="0.5">
+                                        <input type="number" id="qp_descuento_extra" name="qp_descuento_extra" min="0" step="0.5" oninput="paymentPreview.renderAll()">
                                     </td>
                                 </tr>
                                 <tr>
@@ -131,7 +141,7 @@ function createPayment() {
                         </form>
                         <div>
                             <div class="blockHighlight" id="paymentInputOverview">
-                                <p class="qp_previewHighlight"><span id="qp_previewName">___</span> paga <span id="qp_previewPrice">___</span>€</p>
+                                <p class="qp_previewHighlight"><span id="qp_previewName">___</span> paga <span id="qp_previewOPrice"></span><span id="qp_previewPrice">___</span>€</p>
                                 <p>por '<span id="qp_previewGroup">___</span>' <span id="qp_previewMonths">___</span>.</p>
                             </div>
                             <div>
@@ -171,12 +181,12 @@ function studentTypeAhead() {
                     div.textContent = item.nombre_completo;
                     div.style.cursor = "pointer";
                     div.addEventListener("click", () => {
-                        document.getElementById("qp_alumno").value = item.nombre_completo;
-                        document.getElementById("qp_id_alumno").value = item.id_alumno;
-                        suggestionBox.style.display = "none";
                         paymentPreview.currentStudent = item.id_alumno;
                         getStudentGroups();
                         processStudentDiscounts();
+                        document.getElementById("qp_alumno").value = item.nombre_completo;
+                        document.getElementById("qp_id_alumno").value = item.id_alumno;
+                        suggestionBox.style.display = "none";
                         paymentPreview.renderAll();
                     });
                     suggestionBox.appendChild(div);
@@ -244,12 +254,35 @@ function getStudentGroups() {
         node.addEventListener('change', () => {
             const selectedOption = node.options[node.selectedIndex];
             const price = selectedOption.dataset.precio || 0;
-            document.getElementById('qp_precio').value = parseFloat(price).toFixed(2);
+            document.getElementById('qp_precio').value = (parseFloat(price) / 100).toFixed(2);
             paymentPreview.renderAll();
         });
     } catch (error) {
         console.error('Error fetching group selector:', error);
     }
+}
+
+function courseStepper(direction) {
+    let current;
+    switch (direction) {
+        case 'init':
+            const currentDate = new Date();
+            const currentYear = currentDate.getFullYear();
+            if (currentDate.getMonth() >= 7) { // Months are 0-indexed, so 7 is August
+                return `${currentYear}/${currentYear + 1}`;
+            } else {
+                return `${currentYear - 1}/${currentYear}`;
+            }
+        case 'next':
+            current = document.getElementById('qp_course').value.split('/');
+            document.getElementById('qp_course').value = (parseInt(current[0]) + 1) + '/' + (parseInt(current[1]) + 1);
+            break;
+        case 'prev':
+            current = document.getElementById('qp_course').value.split('/');
+            document.getElementById('qp_course').value = (parseInt(current[0]) - 1) + '/' + (parseInt(current[1]) - 1);
+            break;
+    }
+    paymentPreview.renderMonths()
 }
 
 
@@ -282,7 +315,27 @@ const paymentPreview = {
     },
 
     renderPrice() {
-        return
+        let basePrice = document.getElementById('qp_precio').value;
+        let descuento = document.getElementById('qp_descuento_extra').value;
+
+        let monthlyPrice = basePrice;
+        if (paymentPreview.discounts.family) monthlyPrice -= 5;
+
+        let defaultPrice = basePrice * paymentPreview.selectedMonths.length;
+        let finalPrice = monthlyPrice * paymentPreview.selectedMonths.length;
+        
+        if (paymentPreview.discounts.friend || paymentPreview.discounts.multiCourse) finalPrice *= 0.9;
+        else if (paymentPreview.discounts.advancedPay) finalPrice *= 0.95;
+
+        finalPrice -= descuento;
+
+        if (paymentPreview.esAmonestado) finalPrice = defaultPrice - descuento;
+        
+        if (defaultPrice != finalPrice && !isNaN(finalPrice)) document.getElementById('qp_previewOPrice').innerText = (defaultPrice).toFixed(2) + '€';
+        else document.getElementById('qp_previewOPrice').innerText = '';
+
+        if (isNaN(finalPrice)) finalPrice = '__';
+        else document.getElementById('qp_previewPrice').innerText = (finalPrice).toFixed(2);
     },
 
     renderGroup() {
@@ -294,8 +347,19 @@ const paymentPreview = {
     renderMonths() {
         let months = '___';
 
-        let selectedMonthsArray = Array.from(document.querySelectorAll('#monthSelection input[type="checkbox"]:checked'))
-            .map(checkbox => new Date(2000, checkbox.value - 1).toLocaleString('es-ES', { month: 'long' }));
+        // Get course years
+        let courseValue = document.getElementById('qp_course').value;
+        let [year1, year2] = courseValue.split('/').map(Number);
+
+        // Get selected months and annotate with year
+        let selectedCheckboxes = Array.from(document.querySelectorAll('#monthSelection input[type="checkbox"]:checked'));
+        let selectedMonthsArray = selectedCheckboxes.map(checkbox => {
+            let monthNum = Number(checkbox.value);
+            let monthName = new Date(2000, monthNum - 1).toLocaleString('es-ES', { month: 'long' });
+            let year = (monthNum >= 8) ? year1 : year2;
+            return `${monthName} ${year}`;
+        });
+
         let selectedMonths = selectedMonthsArray.length > 1 
             ? selectedMonthsArray.slice(0, -1).join(', ') + ' y ' + selectedMonthsArray[selectedMonthsArray.length - 1] 
             : selectedMonthsArray.join('');
@@ -317,6 +381,9 @@ const paymentPreview = {
     renderDiscounts() {
         let alreadyDiscounted = false;
 
+        if (paymentPreview.esAmonestado) document.getElementById('amonestacion').src = './img/amonestar-true.png';
+        else document.getElementById('amonestacion').src = './img/amonestar.png';
+
         document.getElementById('discountChip-amigo').classList.remove('active');
         document.getElementById('discountChip-familiar').classList.remove('active');
         document.getElementById('discountChip-adelantado').classList.remove('active');
@@ -327,108 +394,135 @@ const paymentPreview = {
         document.getElementById('discountChip-familiar').classList.remove('restricted');
         document.getElementById('discountChip-adelantado').classList.remove('restricted');
         document.getElementById('discountChip-multi').classList.remove('restricted');
+        document.getElementById('discountChip-amigo').title = '';
+        document.getElementById('discountChip-familiar').title = '';
+        document.getElementById('discountChip-adelantado').title = '';
+        document.getElementById('discountChip-multi').title = '';
 
-
-        if (paymentPreview.discounts.family) document.getElementById('discountChip-familiar').classList.add('active');
+        if (paymentPreview.discounts.family) {
+            document.getElementById('discountChip-familiar').classList.add('active');
+            document.getElementById('discountChip-familiar').title = 'El descuento de familiares está activo. Se descontarán 5€ de cada mensualidad.';
+        }
 
         if (paymentPreview.discounts.friend) {
             document.getElementById('discountChip-amigo').classList.add('active');
-            alreadyDiscounted = true;
-        }
-
-        if (paymentPreview.discounts.advancedPay) {
-            if (alreadyDiscounted) document.getElementById('discountChip-adelantado').classList.add('idle');
-            else document.getElementById('discountChip-adelantado').classList.add('active');
+            document.getElementById('discountChip-amigo').title = 'El descuento de amigo está activo. Se descontará un 10% del precio final.';
             alreadyDiscounted = true;
         }
 
         if (paymentPreview.discounts.multiCourse) {
-            if (alreadyDiscounted) document.getElementById('discountChip-multi').classList.add('idle');
-            else document.getElementById('discountChip-multi').classList.add('active');
+            if (alreadyDiscounted) {
+                document.getElementById('discountChip-multi').classList.add('idle');
+                document.getElementById('discountChip-multi').title = 'El descuento por estar inscrito en varios grupos no se aplica porque ya está activo el descuento por traer a un amigo.'
+            } else {
+                document.getElementById('discountChip-multi').classList.add('active');
+                document.getElementById('discountChip-multi').title = 'El alumno está inscrito en varios grupos, se aplica un 10% de descuento sobre el precio final.'
+            }
+            alreadyDiscounted = true;
         }
 
-        if (paymentPreview.amonestado) {
+        if (paymentPreview.discounts.advancedPay) {
+            if (alreadyDiscounted) {
+                document.getElementById('discountChip-adelantado').classList.add('idle');
+                document.getElementById('discountChip-adelantado').title = 'El descuento de pago por adelantado no se aplica porque ya está activo el descuento por traer un amigo o por estar inscrito en múltiples grupos.'
+            } else {
+                document.getElementById('discountChip-adelantado').classList.add('active');
+                document.getElementById('discountChip-adelantado').title = 'Se está pagando un trimestre por adelantado, se aplica un 5% de descuento sobre el precio final.'
+            }
+        }
+
+        if (paymentPreview.esAmonestado) {
             if (document.getElementById('discountChip-amigo').classList.contains('active') || 
                 document.getElementById('discountChip-amigo').classList.contains('idle')) {
                 document.getElementById('discountChip-amigo').classList.remove('active', 'idle');
                 document.getElementById('discountChip-amigo').classList.add('restricted');
+                document.getElementById('discountChip-amigo').title = 'El descuento por traer a un amigo está inhabilitado porque el estudiante está amonestado.';
             }
             if (document.getElementById('discountChip-familiar').classList.contains('active') || 
-                document.getElementById('discountChip-familiar').classList.contains('idle')) {
+            document.getElementById('discountChip-familiar').classList.contains('idle')) {
                 document.getElementById('discountChip-familiar').classList.remove('active', 'idle');
                 document.getElementById('discountChip-familiar').classList.add('restricted');
+                document.getElementById('discountChip-familiar').title = 'El descuento por estudiar con familiares está inhabilitado porque el estudiante está amonestado.';
             }
             if (document.getElementById('discountChip-adelantado').classList.contains('active') || 
-                document.getElementById('discountChip-adelantado').classList.contains('idle')) {
+            document.getElementById('discountChip-adelantado').classList.contains('idle')) {
                 document.getElementById('discountChip-adelantado').classList.remove('active', 'idle');
                 document.getElementById('discountChip-adelantado').classList.add('restricted');
+                document.getElementById('discountChip-adelantado').title = 'El descuento por pagar un trimestre por adelantado está inhabilitado porque el estudiante está amonestado.';
             }
             if (document.getElementById('discountChip-multi').classList.contains('active') || 
-                document.getElementById('discountChip-multi').classList.contains('idle')) {
+            document.getElementById('discountChip-multi').classList.contains('idle')) {
                 document.getElementById('discountChip-multi').classList.remove('active', 'idle');
                 document.getElementById('discountChip-multi').classList.add('restricted');
+                document.getElementById('discountChip-multi').title = 'El descuento por estar inscrito en múltiples grupos está inhabilitado porque el estudiante está amonestado.';
             }
         }
     }
 }
 
 function triggerAmonestacion() {
-    if (true) {
+    if (!paymentPreview.esAmonestado) {
         let text = 'Puedes amonestar un alumno por problemas de comportamiento o en sus pagos. Un alumno amonestado no podrá beneficiarse de ningún tipo de descuento';
-        let action = performAmonestacion()
+        let action = performAmonestacion
         _ex.ui.dialog.make('Amonestar alumno', text, action, 'Amonestar', true)
     } else {
         let text = 'Este alumno fue amonestado previamente y no puede beneficiarse de ningún tipo de descuento. Puedes retirar la amonestación para devolverle el acceso a los descuentos.';
-        let action = undoAmonestacion()
+        let action = undoAmonestacion
         _ex.ui.dialog.make('Alumno amonestado', text, action, 'Retirar amonestación', true)
     }
 }
 
-function processStudentDiscounts() {
+async function processStudentDiscounts() {
     // Relational discounts
-    fetch("./resources/pagos/qp_getStudentRelations.php?q=" + encodeURIComponent(paymentPreview.currentStudent))
-        .then(response => response.json())
-        .then(data => {
-            console.log(data)
-            data.results.forEach(relation => {
-                if(relation.tipoRelacion == 'familiar') {
-                    // Check if familiar is active
-                    // Apply discount
-                }
-                if(relation.tipoRelacion == 'amigo' && relation.fechaFin == null) {
-                    // Check if friend is active
-                    // if( active ) {
-                        // Apply discount
-                    // }
-                }
-            });
-        });
+    const response = await fetch("./resources/pagos/qp_getStudentRelations.php?q=" + encodeURIComponent(paymentPreview.currentStudent));
+    const data = await response.json();
+    console.log(data)
+    if(data.esAmonestado == 1) paymentPreview.esAmonestado = true;
+    else paymentPreview.esAmonestado = false;
+
+    paymentPreview.discounts.family = false;
+    paymentPreview.discounts.friend = false;
+
+    for (const item of data.results) {
+        let id1 = item.id_alumno1;
+        let id2 = item.id_alumno2;
+        let otherStudent = (paymentPreview.currentStudent == id1) ? id2 : id1;
+        console.log('Student: ' + otherStudent + ' ' + item.tipoRelacion + ' ' + item.fechaFin);
+
+        if(item.tipoRelacion == 'familiar') {
+            let test = await _ex.relMgr.testIsActiveStudent(otherStudent);
+            if (test) paymentPreview.discounts.family = true;
+            console.log('Family: ' + test);
+        }   
+        if(item.tipoRelacion == 'amigo' && (item.fechaFin == null || new Date(item.fechaFin) > new Date())) {
+            let test = await _ex.relMgr.testIsActiveStudent(otherStudent);
+            if (test) paymentPreview.discounts.friend = true;
+            console.log('Friends: ' + test);
+            if(item.tipoRelacion == 'amigo' && item.fechaFin == null && !test){
+                _ex.relMgr.endFriendshipRelationship(item.id_relacion)
+            }
+        }
+    }
 
     // Multicourse
     if (paymentPreview.ongoingCourses >= 2) paymentPreview.discounts.multiCourse = true;
     else paymentPreview.discounts.multiCourse = false;
+
+    paymentPreview.renderAll();
 }
 
 function performAmonestacion() {
-
+    fetch("./resources/pagos/amonestarEstudiante.php?q=" + encodeURIComponent(paymentPreview.currentStudent))
+        .then(response => response.json())
+        .then(_ex.ui.toast.make('Amonestación aplicada correctamente', 'Aceptar', false))
+        .then(paymentPreview.esAmonestado = true)
+        .then(paymentPreview.renderAll());
 }
 
 function undoAmonestacion() {
-
-}
-
-function calculateMonthlyPricing() {
-    // Process money
-    let price = (isNaN(parseFloat(document.getElementById('qp_precio').value)))
-    ? 0 : parseFloat(document.getElementById('qp_precio').value);
-
-    let discount = 0
-
-    // Process discounts
-
-    let extraDiscount = (isNaN(parseFloat(document.getElementById('qp_descuento_extra').value)))
-    ? 0 : parseFloat(document.getElementById('qp_descuento_extra').value);
-
-
-    return (price - discount - extraDiscount).toFixed(2);
+    fetch("./resources/pagos/desamonestarEstudiante.php?q=" + encodeURIComponent(paymentPreview.currentStudent))
+        .then(response => response.json())
+        .then( _ex.ui.toast.make('Amonestación retirada correctamente', 'Aceptar', false))
+        .then(paymentPreview.esAmonestado = false)
+        .then(paymentPreview.renderAll());
 }

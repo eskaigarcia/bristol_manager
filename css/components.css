@@ -328,6 +328,31 @@ label:has(input){
   }
 }
 
+.stepper{
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+
+  span{
+    padding: 4px 10px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    border-radius: 8px;
+
+    &:hover{
+      border-color: var(--color-primary-dark);
+      background-color: var(--color-primary-lighter);
+    }
+  }
+
+  input{
+    border: none !important;
+    outline: none !important;
+    text-align: center;
+  }
+}
+
 #typeAhead{
   position: absolute;
   background-color: var(--color-primary-lightest);
@@ -472,6 +497,12 @@ header{
     font-weight: 700;
     font-size: 1.25em;
     margin-bottom: 12px;
+  }
+
+  & #qp_previewOPrice{
+    font-weight: 400;
+    font-size: 0.9rem;
+    text-decoration: line-through;
   }
 }
 

@@ -114,6 +114,27 @@ const _ex = {
                     'durations': durations};
         },
     },
+    
+    relMgr: {
+        async testIsActiveStudent(id_alumno) {
+            // Add a cache-busting nonce as a separate query param
+            const nonce = Date.now() + '-' + Math.random();
+            return fetch("./components/libraries/testActiveStudent.php?q=" + encodeURIComponent(id_alumno) + "&nonce=" + nonce)
+                .then(response => response.json())
+                .then(data => {
+                    let activeStudent = false;
+                    data.forEach(group => {
+                        if (!group.fechaFin || new Date(group.fechaFin) > new Date()){
+                            activeStudent = true;
+                        }
+                    });
+                    return activeStudent;
+                });
+        },
+        endFriendRelationship(id_relacion) {
+            fetch("./components/libraries/setExperiedFriendship.php?q=" + encodeURIComponent(id_relacion))
+        }
+    },
 
     ui: {
         dialog: {
@@ -238,4 +259,18 @@ const _ex = {
             }
         }
     }
+}
+
+function removeDetailsModal() {
+    if (storage.pendingEdits) {
+        _ex.ui.toast.make('Tienes cambios sin guardar.')
+    } else {
+        document.getElementById('popUpModal').remove()
+    }
+}
+
+const storage = {
+    activeStudent: 0,
+    pendingEdits: false,
+    studentData: null,
 }
