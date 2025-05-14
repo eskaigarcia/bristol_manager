@@ -4,6 +4,7 @@ require __DIR__ . '/../dbConnect.php';
 
 // Recibir datos JSON
 $data = json_decode(file_get_contents("php://input"), true);
+file_put_contents("debug.log", print_r($data, true));  // Temporal para depuración
 
 // Validar que se recibieron correctamente
 if (
