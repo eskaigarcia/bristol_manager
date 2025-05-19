@@ -1,7 +1,7 @@
 const relMgr = {
     async testIsActiveStudent(id_relacion) {
         // Llamada AJAX para conseguir los IDs de alumnos
-        const response = await fetch(`./resources/amigos/getFriendDetails.php?id=${id_relacion}`);
+const response = await fetch(`./resources/relaciones/getFriendDetails.php?id=${id_relacion}`);
         const data = await response.json();
 
         const alumnos = data.alumnos;

@@ -61,11 +61,10 @@ echo "<tr class='head'>
         <td>Estado</td>
         <td>Desde</td>
         <td>Hasta</td>
-  
+        <td>Acciones</td>
     </tr>";
 
 while ($row = mysqli_fetch_assoc($result)) {
-    // Determinar el estado de la relación
     $estado = (is_null($row['fechaFin']) || $row['fechaFin'] > date('Y-m-d')) ? 'Activo' : 'Inactivo';
     $fechaFin = $row['fechaFin'] ? $row['fechaFin'] : '---';
 
@@ -76,6 +75,14 @@ while ($row = mysqli_fetch_assoc($result)) {
             <td>$estado</td>
             <td style='white-space: nowrap;'>{$row['fechaInicio']}</td>
             <td style='white-space: nowrap;'>$fechaFin</td>
+            <td>
+                <div style='margin-bottom: 4px;'>
+                    <button onclick='relMgr.testIsActiveStudentPrompt({$row["id_relacion"]})'>Ver estado</button>
+                </div>
+                <div>
+                    <button onclick='relMgr.endFriendRelationshipConfirm({$row["id_relacion"]})'>Finalizar</button>
+                </div>
+            </td>
         </tr>";
 }
 
