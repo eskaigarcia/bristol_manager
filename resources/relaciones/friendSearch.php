@@ -61,7 +61,7 @@ echo "<tr class='head'>
         <td>Estado</td>
         <td>Desde</td>
         <td>Hasta</td>
-        <td>Info</td>
+  
     </tr>";
 
 while ($row = mysqli_fetch_assoc($result)) {
@@ -76,12 +76,6 @@ while ($row = mysqli_fetch_assoc($result)) {
             <td>$estado</td>
             <td style='white-space: nowrap;'>{$row['fechaInicio']}</td>
             <td style='white-space: nowrap;'>$fechaFin</td>
-            <td>
-                <p class='tooltip'>
-                    <img class='action' onclick='getFriendDetails({$row['id_relacion']})' src='./img/info.png'>
-                    <span>Detalles</span>
-                </p>
-            </td>
         </tr>";
 }
 
