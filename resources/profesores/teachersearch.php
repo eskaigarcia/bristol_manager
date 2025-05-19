@@ -9,8 +9,7 @@ $alumnos = $_POST['prof_alumnos'] ?? '';
 $query = "SELECT p.id_profesor, p.nombre, 
                  COALESCE(COUNT(DISTINCT g.id_grupo), 0) AS total_grupos,
                  COALESCE(COUNT(DISTINCT c.id_clase), 0) AS total_clases,
-                 COALESCE(COUNT(DISTINCT ag.id_alumno), 0) + 
-                 COALESCE(COUNT(DISTINCT c.id_clase), 0) AS total_alumnos
+                 COALESCE(COUNT(DISTINCT ag.id_alumno), 0) AS total_alumnos
           FROM profesores p
           LEFT JOIN grupos g ON p.id_profesor = g.id_profesor
           LEFT JOIN alumnosgrupos ag ON g.id_grupo = ag.id_grupo
