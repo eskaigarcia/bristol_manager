@@ -318,6 +318,12 @@ label:has(input){
   }
 }
 
+#scheduleBuilder{
+  input{
+    width: 7rem;
+  }
+}
+
 #quickNotes{
   width: 45%;
   margin-left: 2rem;

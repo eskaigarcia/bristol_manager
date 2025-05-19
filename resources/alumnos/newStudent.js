@@ -397,7 +397,7 @@ function submitNewStudent() {
     let checks = validateNewStudent()
     if (checks.some(check => check)) {
         if (storage.warnings) {
-            _ex.ui.dialog.make('Alumno con posibles errores', 'El alumno que intentas añadir tiene errores en su ficha. Pulsa vovler para volver a revisar la ficha o pulsa continuar de todas formas si quieres añadir el alumno a pesar de los errores.', saveStudentToDatabase, 'Continuar de todas formas', true, 'Volver');
+            _ex.ui.dialog.make('Alumno con posibles errores', 'El alumno que intentas añadir tiene errores en su ficha. Pulsa volver para revisar la ficha o pulsa continuar de todas formas si quieres añadir el alumno a pesar de los errores.', saveStudentToDatabase, 'Continuar de todas formas', true, 'Volver');
         } else {
             storage.warnings = true;
         }
