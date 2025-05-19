@@ -78,7 +78,6 @@ function buildGroupChips(group) {
     chips += group.esActivo ? '<span class="chip">Activo</span>' : '<span class="chip warn">Inactivo</span>';
     chips += group.esIntensivo ? '<span class="chip warn">Intensivo</span>' : '';
     chips += group.modalidad ? `<span class="chip">${group.modalidad}</span>` : '';
-    chips += group.horario ? `<span class="chip">${group.horario}</span>` : '';
     return chips;
 }
 
@@ -98,6 +97,7 @@ function doTabBar_groupDetails() {
 
 // Función para generar los detalles del grupo en una tabla
 function buildGroupData(group) {
+    console.log(group)
     return `
         <table class="camo">
             <tr>
@@ -118,7 +118,9 @@ function buildGroupData(group) {
             </tr>
             <tr>
                 <td>Horario:</td>
-                <td>${group.horario || ''}</td>
+                <td>
+                    ${_ex.schedule.formatArray(_ex.schedule.decode(group.horario))}
+                </td>
             </tr>
         </table>
     `;
