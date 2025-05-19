@@ -27,7 +27,19 @@ const _ex = {
     },
 
     schedule: {
-        decode (schedule) {
+        // {days:['L', 'X', 'V'],durations:[90, 45, 105],times:['09:00', '11:15', '15:00']}
+        decode (input) {
+
+            // Step 1: Add quotes around keys
+            let fixedStr = input.replace(/([a-zA-Z_]+):/g, '"$1":');
+
+            // Step 2: Replace single-quoted strings with double-quoted strings
+            fixedStr = fixedStr.replace(/'([^']*)'/g, '"$1"');
+
+            if (fixedStr == null || fixedStr == '') return 0;
+
+            const schedule = JSON.parse(fixedStr);
+
             // Decode day names
             const dayMap = {
                 L: 'Lunes',
@@ -67,6 +79,16 @@ const _ex = {
             return output;
         },
 
+        formatArray(array) {
+            if (array == 0) return 'Horario no definido.';
+            let output = ''
+            for (item of array) {
+                output += `<p><strong>${item[0]}</strong>, de ${item[1]} a ${item[2]}</p>`;
+            }
+            return output;
+        },
+
+        // [['Lunes', '09:00', '10:30'],['Miércoles', '11:15', '12:00']]
         encode (array) {
             // Encode day names into single digits
             const dayMap = {
@@ -110,7 +132,7 @@ const _ex = {
             }
 
             return {'days': days,
-                    'tiems': times,
+                    'times': times,
                     'durations': durations};
         },
     },
@@ -132,7 +154,9 @@ const _ex = {
                 });
         },
         endFriendRelationship(id_relacion) {
-            fetch("./components/libraries/setExperiedFriendship.php?q=" + encodeURIComponent(id_relacion))
+            fetch("./components/libraries/setExpiredFriendship.php?q=" + encodeURIComponent(id_relacion))
+                .then(response => response.json())
+                .then(data => console.log(data))
         }
     },
 
