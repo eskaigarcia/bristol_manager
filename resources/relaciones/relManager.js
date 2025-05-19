@@ -31,7 +31,7 @@ const response = await fetch(`./resources/relaciones/getFriendDetails.php?id=${i
     async endFriendRelationshipConfirm(id_relacion) {
         const confirmEnd = confirm("¿Estás seguro de que quieres finalizar esta relación?");
         if (confirmEnd) {
-            await fetch("./components/libraries/setExperiedFriendship.php?q=" + encodeURIComponent(id_relacion));
+            await fetch("./resources/relaciones/setExpiredFriendship.php?q=" + encodeURIComponent(id_relacion));
             alert("Relación finalizada.");
             location.reload();
         }
