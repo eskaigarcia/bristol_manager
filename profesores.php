@@ -15,7 +15,7 @@
         <main>
             <header>
                 <h1>Profesor</h1>
-                <button class="cta" onclick="window.location.href='../bristol_alumnos/annadir_profesor.php' ">
+                <button class="cta" onclick="createTeacher()">
                     Nuevo profesor
                 </button>
             </header>
@@ -36,9 +36,13 @@
                             Buscar
                         </button>
                     </div>
-                    <div class="card full"><?php include 'resources/profesores/teachersearch.php' ?></div>
-            </form>
+                    </form>
+                </div>
+
+            <div class="card full"><?php include 'resources/profesores/teachersearch.php' ?></div>
         </main>
     </div>
+
+    <script src="./resources/profesores/newTeacher.js"></script>
 </body>
 </html>
