@@ -60,7 +60,7 @@ function createGroup() {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><label for="ng_creacion" id="creacion" name="creacion">Fecha de creación:</td>
+                                        <td><label for="ng_fecha" id="creacion" name="creacion">Fecha de creación:</td>
                                         <td>
                                             <input type="date" id="ng_fecha" name="ng_fecha">
                                         </td>
@@ -213,10 +213,10 @@ function saveGroupToDatabase() {
         nombre_grupo: document.getElementById('ng_nombre').value,
         id_profesor: document.getElementById('ng_profesor').value,
         modalidad: document.getElementById('ng_modalidad').value,
-        precio: document.getElementById('ng_precio').value,
+        precio: parseInt(parseFloat(document.getElementById('ng_precio').value) / 100),
         esIntensivo: document.getElementById('ng_esIntensivo').checked ? 1 : 0,
         fecha: document.getElementById('ng_fecha').value,
-        horasSemanales:  document.getElementById('ng_horasSemanales').value * 2,
+        horasSemanales:  parseInt(document.getElementById('ng_horasSemanales').value) * 2,
     };
 
     const dayCheckboxes = document.querySelectorAll('#dayMultipicker input[type="checkbox"]:checked');
@@ -237,9 +237,42 @@ function saveGroupToDatabase() {
         horariosFin[idx] || ''
     ]);
     
-    console.log(horariosUnificados)
+    data.horario = JSON.stringify(_ex.schedule.encode(horariosUnificados));
 
-
+    // Push to database 
+    fetch('./resources/grupos/newGroup.php', {
+        method: 'POST',
+        headers:
+         {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(async response => {
+        const result = await response.json();
+        if (!response.ok) {
+            throw new Error(result.message || 'Error desconocido');
+        }
+        return result;
+    })
+    .then(result => {
+        if (result.success) {
+            _ex.ui.toast.make('Grupo guardado correctamente', 'Ok', false);
+        } else {
+            console.error('Error al guardar:', result.message);
+            _ex.ui.toast.make('Error al guardar el grupo: ' + (result.message || ''));
+        }
+    })
+    .catch(err => {
+        try {
+            const phpError = JSON.parse(err.message);
+            console.error('Error SQL:', phpError);
+            _ex.ui.toast.make('Error de base de datos: ' + phpError.error);
+        } catch {
+            console.error('Error completo:', err);
+            _ex.ui.toast.make('Error de conexión al guardar el grupo');
+        }
+    });
 
     closeGroupModal()
 }

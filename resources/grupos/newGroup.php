@@ -1,111 +1,63 @@
 <?php
-// Habilitar errores (para desarrollo)
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
-// Devolver respuestas en formato JSON
 header('Content-Type: application/json');
+require __DIR__.'/../dbConnect.php';
 
-// ----------------------------------------
-// 1. Conexión con la base de datos (PDO)
-// ----------------------------------------
-try {
-    $pdo = new PDO('mysql:host=localhost;dbname=bristol_alumnos;charset=utf8', 'root', '');
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (Exception $e) {
-    echo json_encode(['success' => false, 'message' => 'Error de conexión: ' . $e->getMessage()]);
+// Custom error handler to return JSON errors
+set_exception_handler(function($e) {
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
     exit;
-}
+});
+set_error_handler(function($errno, $errstr, $errfile, $errline) {
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => "$errstr in $errfile on line $errline"]);
+    exit;
+});
 
-// ----------------------------------------
-// 2. Recibir y decodificar los datos JSON
-// ----------------------------------------
 $input = file_get_contents('php://input');
 $data = json_decode($input, true);
 
 if (!$data) {
-    echo json_encode(['success' => false, 'message' => 'No se recibió ningún dato válido.']);
+    echo json_encode(['success' => false, 'message' => 'No data received or JSON invalid.']);
     exit;
 }
 
-// ----------------------------------------
-// 3. Validar que todos los campos estén presentes
-// ----------------------------------------
-// Si "asignatura" no está en el formulario, no se marca como obligatorio.
-$campos_obligatorios = [
-    'nombre', 'modalidad',
-    'horasSemanales', 'precio', 'esActivo', 'esIntensivo',
-    'id_profesor', 'horarioDias', 'horarioHoras', 'horarioDuraciones'
-];
+// Sanitize and prepare group data
+$nombre_grupo = !empty(trim($data['nombre_grupo'] ?? '')) ? trim($data['nombre_grupo']) : null;
+$id_profesor = !empty($data['id_profesor']) ? intval($data['id_profesor']) : null;
+$modalidad = !empty(trim($data['modalidad'] ?? '')) ? trim($data['modalidad']) : null;
+$precio = isset($data['precio']) ? floatval($data['precio']) : null;
+$esIntensivo = !empty($data['esIntensivo']) ? intval($data['esIntensivo']) : 0;
+$fecha = !empty($data['fecha']) ? $data['fecha'] : null;
+$horasSemanales = isset($data['horasSemanales']) ? floatval($data['horasSemanales']) : null;
+$horario = !empty($data['horario']) ? $data['horario'] : null;
 
-foreach ($campos_obligatorios as $campo) {
-    if (!isset($data[$campo])) {
-        echo json_encode([
-            'success' => false,
-            'message' => "Falta el campo obligatorio: '$campo'."
-        ]);
-        exit;
-    }
-}
-
-// ----------------------------------------
-// 4. Comprobar que el profesor existe
-// ----------------------------------------
 try {
-    $stmt_check = $pdo->prepare("SELECT COUNT(*) FROM profesores WHERE id_profesor = ?");
-    $stmt_check->execute([$data['id_profesor']]);
-
-    if ($stmt_check->fetchColumn() == 0) {
-        echo json_encode(['success' => false, 'message' => 'El profesor no existe.']);
-        exit;
+    // Insert group
+    $stmt = $connection->prepare("INSERT INTO grupos (nombre, id_profesor, modalidad, precio, esIntensivo, creacion, horasSemanales, horario) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    if (!$stmt) throw new Exception($connection->error);
+    $stmt->bind_param(
+        'sisdisss',
+        $nombre_grupo, $id_profesor, $modalidad, $precio, $esIntensivo, $fecha, $horasSemanales, $horario
+    );
+    if (!$stmt->execute()) {
+        $error = [
+            'error' => $stmt->error,
+            'errno' => $stmt->errno,
+            'sqlstate' => $stmt->sqlstate,
+            'params' => [
+                $nombre_grupo, $id_profesor, $modalidad, $precio, 
+                $esIntensivo, $fecha, $horasSemanales, $horario
+            ]
+        ];
+        throw new Exception(json_encode($error));
     }
+    $id_grupo = $stmt->insert_id;
+    $stmt->close();
+
+    echo json_encode(['success' => true, 'id' => $id_grupo]);
 } catch (Exception $e) {
-    echo json_encode(['success' => false, 'message' => 'Error verificando profesor: ' . $e->getMessage()]);
-    exit;
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 }
-
-// ----------------------------------------
-// 5. Construir el campo horario como JSON
-// ----------------------------------------
-$horario = json_encode([
-    'dias' => $data['horarioDias'],
-    'horas' => $data['horarioHoras'],
-    'duraciones' => $data['horarioDuraciones']
-]);
-
-// ----------------------------------------
-// 6. Insertar el grupo
-// ----------------------------------------
-try {
-    $stmt = $pdo->prepare("
-        INSERT INTO grupos (
-            nombre, asignatura, modalidad,
-            horasSemanales, precio,
-            esActivo, esIntensivo,
-            id_profesor, horario, creacion
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())  -- Ahora se incluye la fecha automáticamente con NOW()
-    ");
-
-    // Si "asignatura" no está en el formulario, pasa un valor por defecto (puede ser NULL o cualquier valor que necesites)
-    $asignatura = isset($data['asignatura']) ? $data['asignatura'] : null;
-
-    $stmt->execute([
-        $data['nombre'],
-        $asignatura,  // Puede ser NULL si no se proporciona
-        $data['modalidad'],
-        $data['horasSemanales'],
-        $data['precio'],
-        (int) $data['esActivo'],
-        (int) $data['esIntensivo'],
-        $data['id_profesor'],
-        $horario
-    ]);
-
-    echo json_encode(['success' => true, 'message' => 'Grupo creado correctamente.']);
-} catch (Exception $e) {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Error al insertar el grupo: ' . $e->getMessage()
-    ]);
-}
-?>
+$connection->close();
