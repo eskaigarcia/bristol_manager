@@ -8,11 +8,13 @@
         <?php include './components/navView.php'; ?>
         <main>
             <header>
-                <h1>Profesor</h1>
-                <button class="cta" onclick="createTeacher()">
+                <h1>Profesores</h1>
+                <button onclick="createTeacher()" class="cta">
+                    <?php include './img/addTeacher.svg'; ?>
                     Nuevo profesor
                 </button>
             </header>
+
                 <div class="card full">
                     <h2>Buscar maestro</h2>
                     <form id="searchBar" method="POST">

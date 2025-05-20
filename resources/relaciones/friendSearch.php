@@ -77,10 +77,10 @@ while ($row = mysqli_fetch_assoc($result)) {
             <td style='white-space: nowrap;'>$fechaFin</td>
             <td>
                 <div style='margin-bottom: 4px;'>
-                    <button onclick='relMgr.testIsActiveStudentPrompt({$row["id_relacion"]})'>Ver estado</button>
+                    <p class='tooltip'><img class='action' onclick='relMgr.testIsActiveStudentPrompt({$row["id_relacion"]})' src='./img/checkTest.png'><span>Comprobar estado</span></p>
                 </div>
                 <div>
-                    <button onclick='relMgr.endFriendRelationshipConfirm({$row["id_relacion"]})'>Finalizar</button>
+                    <p class='tooltip'><img class='action' onclick='relMgr.endFriendRelationshipConfirm({$row["id_relacion"]})' src='./img/deleteWarning.png'><span>Finalizar</span></p>
                 </div>
             </td>
         </tr>";
