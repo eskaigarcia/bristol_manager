@@ -50,8 +50,21 @@
 
             <script src="./resources/relaciones/newFriend.js"></script>
             <script src="./resources/relaciones/friendDetailsBuild.js"></script>
-            <script src="./resources/relaciones/relManager.js"></script>
             <script src="./resources/scrollspy.js"></script>
+            <script src="./components/libraries/library.js"></script>
+            <script>
+            // Esto hace accesible relMgr si no lo está globalmente
+            if (typeof relMgr === 'undefined' && typeof _ex !== 'undefined' && _ex.relMgr) {
+                var relMgr = _ex.relMgr;
+            }
+            </script>
+            <script>
+  function testIsActiveStudentPrompt(id_relacion) {
+    alert("Comprobando estado de los alumnos...");
+    relMgr.testIsActiveStudent(id_relacion);
+  }
+</script>
+
         </main>
     </div>
 </body>
