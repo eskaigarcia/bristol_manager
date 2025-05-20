@@ -10,7 +10,7 @@
             <header>
                 <h1>Amigos</h1>
                 <button onclick="createFriend()" class="cta">
-                    <?php include './img/addGroup.svg'; ?>
+                    <?php include './img/addStudent.svg'; ?>
                     Nuevo amigo
                 </button>
             </header>
@@ -51,20 +51,6 @@
             <script src="./resources/relaciones/newFriend.js"></script>
             <script src="./resources/relaciones/friendDetailsBuild.js"></script>
             <script src="./resources/scrollspy.js"></script>
-            <script src="./components/libraries/library.js"></script>
-            <script>
-            // Esto hace accesible relMgr si no lo está globalmente
-            if (typeof relMgr === 'undefined' && typeof _ex !== 'undefined' && _ex.relMgr) {
-                var relMgr = _ex.relMgr;
-            }
-            </script>
-            <script>
-  function testIsActiveStudentPrompt(id_relacion) {
-    alert("Comprobando estado de los alumnos...");
-    relMgr.testIsActiveStudent(id_relacion);
-  }
-</script>
-
         </main>
     </div>
 </body>
