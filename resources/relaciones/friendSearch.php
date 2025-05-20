@@ -76,17 +76,14 @@ while ($row = mysqli_fetch_assoc($result)) {
             <td style='white-space: nowrap;'>{$row['fechaInicio']}</td>
             <td style='white-space: nowrap;'>$fechaFin</td>
             <td>
-            echo <tr>
-        <td>
-            <div style='margin-bottom: 4px;'>
-<button onclick='_ex.relMgr.testIsActiveStudent(123)'>Ver estado</button>
-
-            </div>
-            <div>
-                <button onclick=\"if(confirm('¿Estás seguro de que quieres finalizar esta relación?')) relMgr.endFriendRelationship({$row['id_relacion']})\">Finalizar</button>
-            </div>
-        </td>
-    </tr>";
+                <div style='margin-bottom: 4px;'>
+                    <button onclick='relMgr.testIsActiveStudentPrompt({$row["id_relacion"]})'>Ver estado</button>
+                </div>
+                <div>
+                    <button onclick='relMgr.endFriendRelationshipConfirm({$row["id_relacion"]})'>Finalizar</button>
+                </div>
+            </td>
+        </tr>";
 }
 
 echo '</table>';
