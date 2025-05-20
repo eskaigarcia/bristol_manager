@@ -1,7 +1,6 @@
 let selectedDays;
 
 function createTeacher() {
-    storage.pendingEdits = true;
     let div = document.createElement('div');
     div.className = 'modal';
     div.id = 'popUpModal';
@@ -13,7 +12,7 @@ function createTeacher() {
                 <div>
                     <h2>Nuevo Profesor</h2>
                 </div>
-                <img onclick="tryCloseGroupModal()" class="iconButton" src="./img/close.png" alt="Cerrar">
+                <img onclick="closeTeacherModal()" class="iconButton" src="./img/close.png" alt="Cerrar">
             </div>
             <div class="body noMeta">
                 <div id="modalBodyView" style="margin-top: 1rem;">
@@ -23,13 +22,17 @@ function createTeacher() {
                             <p class="requiredAlert">Los campos marcados con <span class="requiredMark">*</span> son obligatorios</p>
                         </div>
 
-                        <form name="insgrupo" id="groupForm" method="POST">
+                        <form name="insgrupo" id="teacherForm" method="POST">
                             <table class="camo inputMode">
                                 <tr>
-                                    <td><label for="ng_nombre">Nombre del prfesro:<span class="requiredMark">*</span></label></td>
-                                    <td><input type="text" id="ng_nombre" name="ng_nombre" placeholder="Introduce el nombre del grupo" required></td>
+                                    <td><label for="nt_nombre">Profesor:<span class="requiredMark">*</span></label></td>
+                                    <td><input type="text" id="nt_nombre" name="nt_nombre" placeholder="Introduce el nombre del profesor" required></td>
                                 </tr>
                             </table>
+                            <div class="center gap-md" style="margin-top: 1rem;">
+                                <button class="warn" onclick="closeTeacherModal()" type="button">Cancelar inserción</button>
+                                <button onclick="validateTeacher()" type="button">Guardar profesor</button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -37,90 +40,24 @@ function createTeacher() {
         </div>`;
 
     document.body.appendChild(div);
-    document.getElementById("ng_fecha").value = new Date().toISOString().split("T")[0]
-    getTeachersForNG()
 }
 
-function tryCloseGroupModal() {
-    if (storage.pendingEdits) {
-        _ex.ui.toast.make('Tienes cambios sin guardar');
-        return;
-    }
-    closeGroupModal();
-}
-
-function closeGroupModal() {
-    storage.pendingEdits = false;
+function closeTeacherModal() {
     const modal = document.getElementById('popUpModal');
     if (modal) modal.remove();
 }
 
-function updateScheduleInput () {
-    const display = document.getElementById('scheduleBuilder');
-    const dayPicker = document.getElementById('dayMultipicker');
-    const currentPick = Array.from(dayPicker.querySelectorAll('input[type="checkbox"]'))
-        .filter(checkbox => checkbox.checked)
-        .map(checkbox => checkbox.value);
-
-    // Find days to add and remove
-    const daysToAdd = currentPick.filter(day => !selectedDays.includes(day));
-    const daysToRemove = selectedDays.filter(day => !currentPick.includes(day));
-
-    // Remove rows for unchecked days
-    daysToRemove.forEach(day => {
-        const existingRow = display.querySelector(`tr[data-day="${day}"]`);
-        if (existingRow) existingRow.remove();
-    });
-
-    // Add rows for newly checked days
-    daysToAdd.forEach(day => {
-        // Map full day names to their short codes
-        const dayMap = {
-            'Lunes': 'L',
-            'Martes': 'M',
-            'Miércoles': 'X',
-            'Jueves': 'J',
-            'Viernes': 'V',
-            'Sábado': 'S'
-        };
-        const shortDay = dayMap[day] || day;
-
-        const row = document.createElement('tr');
-        row.setAttribute('data-day', day);
-        row.innerHTML = `
-        <td>
-            <label for="scheduleStart_${shortDay}">${shortDay} de: </label>
-            <input type="text" id="scheduleStart_${shortDay}" name="horarioHoras[]" placeholder="00:00"><br>
-        </td>
-        <td>
-            <label for="scheduleEnd_${shortDay}"><b>a:</b></label>
-            <input type="text" id="scheduleEnd_${shortDay}" name="horarioHorasFin[]" placeholder="00:00">
-        </td>
-        `;
-        display.appendChild(row);
-    });
-
-    selectedDays = currentPick;
-}
-
-function validateGroup() {
+function validateTeacher() {
     const existingAlert = document.getElementById('alertMissingData');
     if (existingAlert) {
         existingAlert.remove();
     }
 
-    const requiredFields = [
-        document.getElementById('ng_nombre'),
-        document.getElementById('ng_profesor'),
-        document.getElementById('ng_precio')
-    ];
-    let missingValues = requiredFields.some(field => !field || !field.value.trim());
+    const input = document.getElementById('nt_nombre').value;
+    let missingValues = (input == '') ? true : false;
 
-    if(missingValues && storage.warnings) {
-        _ex.ui.dialog.make('Grupo con posibles errores', 'El grupo que intentas añadir tiene errores. Pulsa volver para revisar los datos o pulsa continuar de todas formas si quieres añadir el grupo a pesar de los errores.', saveGroupToDatabase, 'Continuar de todas formas', true, 'Volver');
-    } else if (missingValues) {
-        storage.warnings = true;
-        const groupForm = document.getElementById('groupForm');
+    if (missingValues) {
+        const groupForm = document.getElementById('teacherForm');
         const warningDiv = document.createElement('div');
         warningDiv.className = 'inlineFormWarning';
         warningDiv.id="alertMissingData"
@@ -130,53 +67,22 @@ function validateGroup() {
         `;
         groupForm.insertBefore(warningDiv, groupForm.querySelector('div').nextSibling);
     } else {
-        saveGroupToDatabase()
+        saveTeacherToDatabase()
     }
 }
 
-function saveGroupToDatabase() {
-    storage.warnings = false;
+function saveTeacherToDatabase() {
 
-
-    // Get values from the form using .value and .checked
-    const data = {
-        nombre_grupo: document.getElementById('ng_nombre').value,
-        id_profesor: document.getElementById('ng_profesor').value,
-        modalidad: document.getElementById('ng_modalidad').value,
-        precio: parseInt(parseFloat(document.getElementById('ng_precio').value) / 100),
-        esIntensivo: document.getElementById('ng_esIntensivo').checked ? 1 : 0,
-        fecha: document.getElementById('ng_fecha').value,
-        horasSemanales:  parseInt(document.getElementById('ng_horasSemanales').value) * 2,
-    };
-
-    const dayCheckboxes = document.querySelectorAll('#dayMultipicker input[type="checkbox"]:checked');
-    const diasSeleccionados = Array.from(dayCheckboxes).map(cb => cb.labels[0].textContent.trim());
-    const horariosInicio = [];
-    const horariosFin = [];
-
-    diasSeleccionados.forEach(dia => {
-        const startInput = document.getElementById(`scheduleStart_${dia}`);
-        const endInput = document.getElementById(`scheduleEnd_${dia}`);
-        horariosInicio.push(startInput ? startInput.value : '');
-        horariosFin.push(endInput ? endInput.value : '');
-    });
-
-    const horariosUnificados = diasSeleccionados.map((dia, idx) => [
-        dia,
-        horariosInicio[idx] || '',
-        horariosFin[idx] || ''
-    ]);
-    
-    data.horario = JSON.stringify(_ex.schedule.encode(horariosUnificados));
+    const nombre = document.getElementById('nt_nombre').value;
 
     // Push to database 
-    fetch('./resources/grupos/newGroup.php', {
+    fetch('./resources/profesores/newTeacher.php', {
         method: 'POST',
         headers:
          {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify({ nombre })
     })
     .then(async response => {
         const result = await response.json();
@@ -187,10 +93,10 @@ function saveGroupToDatabase() {
     })
     .then(result => {
         if (result.success) {
-            _ex.ui.toast.make('Grupo guardado correctamente', 'Ok', false);
+            _ex.ui.toast.make('Profesor guardado correctamente', 'Ok', false);
         } else {
             console.error('Error al guardar:', result.message);
-            _ex.ui.toast.make('Error al guardar el grupo: ' + (result.message || ''));
+            _ex.ui.toast.make('Error al guardar el profesor: ' + (result.message || ''));
         }
     })
     .catch(err => {
@@ -204,5 +110,5 @@ function saveGroupToDatabase() {
         }
     });
 
-    closeGroupModal()
+    closeTeacherModal()
 }
