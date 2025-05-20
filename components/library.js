@@ -137,28 +137,50 @@ const _ex = {
         },
     },
     
-    relMgr: {
-        async testIsActiveStudent(id_alumno) {
-            // Add a cache-busting nonce as a separate query param
-            const nonce = Date.now() + '-' + Math.random();
-            return fetch("./components/libraries/testActiveStudent.php?q=" + encodeURIComponent(id_alumno) + "&nonce=" + nonce)
-                .then(response => response.json())
-                .then(data => {
-                    let activeStudent = false;
-                    data.forEach(group => {
-                        if (!group.fechaFin || new Date(group.fechaFin) > new Date()){
-                            activeStudent = true;
-                        }
-                    });
-                    return activeStudent;
+   relMgr: {
+    async testIsActiveStudent(id_alumno) {
+        const nonce = Date.now() + '-' + Math.random();
+        return fetch("./components/libraries/testActiveStudent.php?q=" + encodeURIComponent(id_alumno) + "&nonce=" + nonce)
+            .then(response => response.json())
+            .then(data => {
+                let activeStudent = false;
+                data.forEach(group => {
+                    if (!group.fechaFin || new Date(group.fechaFin) > new Date()){
+                        activeStudent = true;
+                    }
                 });
-        },
-        endFriendRelationship(id_relacion) {
-            fetch("./components/libraries/setExpiredFriendship.php?q=" + encodeURIComponent(id_relacion))
-                .then(response => response.json())
-                .then(data => console.log(data))
-        }
+                return activeStudent;
+            });
     },
+
+    endFriendRelationship(id_relacion) {
+        fetch("./components/libraries/setExpiredFriendship.php?q=" + encodeURIComponent(id_relacion))
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if(data.success) {
+                    _ex.ui.toast.make('Relación finalizada correctamente', 'Ok', false);
+                } else {
+                    _ex.ui.toast.make('Error al finalizar relación: ' + (data.message || 'Error desconocido'));
+                }
+            })
+            .catch(() => {
+                _ex.ui.toast.make('Error de red al finalizar relación');
+            });
+    },
+
+    async testIsActiveStudentPrompt(id_alumno) {
+        const active = await this.testIsActiveStudent(id_alumno);
+        alert(active ? 'El alumno está activo.' : 'El alumno no está activo.');
+    },
+
+    endFriendRelationshipConfirm(id_relacion) {
+        if (confirm('¿Seguro que querés finalizar esta relación?')) {
+            this.endFriendRelationship(id_relacion);
+        }
+    }
+},
+
 
     ui: {
         dialog: {
@@ -298,3 +320,6 @@ const storage = {
     pendingEdits: false,
     studentData: null,
 }
+
+window.relMgr = _ex.relMgr;
+

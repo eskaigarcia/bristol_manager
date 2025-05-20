@@ -100,3 +100,4 @@ function removeDetailsModal() {
     const modal = document.getElementById('popUpModal');
     if (modal) modal.remove();
 }
+
