@@ -170,9 +170,14 @@ const _ex = {
     },
 
     async testIsActiveStudentPrompt(id_alumno) {
-        const active = await this.testIsActiveStudent(id_alumno);
-        alert(active ? 'El alumno está activo.' : 'El alumno no está activo.');
-    },
+    const active = await this.testIsActiveStudent(id_alumno);
+    _ex.ui.toast.make(
+        active ? 'El alumno está activo.' : 'El alumno no está activo.',
+        'Ok',
+        !active // si no está activo, mostrar como advertencia
+    );
+},
+
 
     endFriendRelationshipConfirm(id_relacion) {
         if (confirm('¿Seguro que querés finalizar esta relación?')) {

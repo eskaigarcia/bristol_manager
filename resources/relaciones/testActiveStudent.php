@@ -10,7 +10,6 @@ if (!isset($_GET['q'])) {
 
 $id_alumno = intval($_GET['q']);
 
-// Consulta para obtener los grupos en los que está el alumno
 $query = "
     SELECT g.fechaFin
     FROM grupos_alumnos ga
@@ -37,6 +36,5 @@ while ($row = $result->fetch_assoc()) {
 $stmt->close();
 $connection->close();
 
-// Devolver los grupos (cada uno con fechaFin) para que JS decida si está activo
 echo json_encode($grupos);
 ?>
