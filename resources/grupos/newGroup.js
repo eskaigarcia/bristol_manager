@@ -213,7 +213,7 @@ function saveGroupToDatabase() {
         nombre_grupo: document.getElementById('ng_nombre').value,
         id_profesor: document.getElementById('ng_profesor').value,
         modalidad: document.getElementById('ng_modalidad').value,
-        precio: parseInt(parseFloat(document.getElementById('ng_precio').value) / 100),
+        precio: parseInt(parseFloat(document.getElementById('ng_precio').value) * 100),
         esIntensivo: document.getElementById('ng_esIntensivo').checked ? 1 : 0,
         fecha: document.getElementById('ng_fecha').value,
         horasSemanales:  parseInt(document.getElementById('ng_horasSemanales').value) * 2,

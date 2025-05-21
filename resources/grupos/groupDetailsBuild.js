@@ -43,26 +43,7 @@ function displayGroupDetails(group, alumnos = [], profesor = null) {
                     </div>
                     <div class="scrollspySection" id="GDVAlumnos">
                         <h3>Alumnos inscritos</h3>
-                        ${
-                            alumnos.length > 0
-                            ? `<table class="styledData" style="width:100%;margin-top:1rem;">
-                                    <thead>
-                                        <tr>
-                                            <td>Nombre</td>
-                                            <td>Apellidos</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        ${alumnos.map(a => `
-                                            <tr>
-                                                <td>${a.nombre}</td>
-                                                <td>${a.apellidos || ''}</td>
-                                            </tr>
-                                        `).join('')}
-                                    </tbody>
-                                </table>`
-                            : '<div style="margin-top:1rem;color:#888;">No hay alumnos en este grupo</div>'
-                        }
+                        ${buildGroupStudents(alumnos)}
                     </div>
                 </div>
             </div>
@@ -132,3 +113,23 @@ function removeDetailsModal() {
     if (modal) modal.remove();
 }
 
+function buildGroupStudents() {
+    if(alumnos.length == 0) return '<div style="margin-top:1rem;color:#888;">No hay alumnos en este grupo</div>'
+    else return `
+    <table class="styledData" style="width:100%;margin-top:1rem;">
+        <thead>
+            <tr>
+                <td>Nombre</td>
+                <td>Apellidos</td>
+            </tr>
+        </thead>
+        <tbody>
+            ${alumnos.map(a => `
+                <tr>
+                    <td>${a.nombre}</td>
+                    <td>${a.apellidos || ''}</td>
+                </tr>
+            `).join('')}
+        </tbody>
+    </table>`
+}
