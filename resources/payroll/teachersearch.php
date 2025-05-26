@@ -3,7 +3,18 @@
 require __DIR__.'/../dbConnect.php';
 require __DIR__.'/../graphics.php';
 
-// Complex query: get profesores, count of active groups and unique students, split by esIntensivo
+// Get search input
+$searchName = isset($_POST['prof_nombre']) ? trim($_POST['prof_nombre']) : '';
+
+// Build WHERE clause
+$where = "1";
+$params = [];
+if ($searchName !== '') {
+    $where = "p.nombre LIKE ?";
+    $params[] = "%$searchName%";
+}
+
+// Prepare query with dynamic WHERE
 $query = "
 SELECT 
     p.id_profesor,
@@ -27,11 +38,20 @@ LEFT JOIN clasesparticulares cp
     ON p.id_profesor = cp.id_profesor
 LEFT JOIN bonos b
     ON cp.id_bono = b.id_bono
+WHERE $where
 GROUP BY p.id_profesor, p.nombre
 ORDER BY p.nombre
 ";
 
-$result = mysqli_query($connection, $query);
+// Use prepared statements for safety
+if ($searchName !== '') {
+    $stmt = mysqli_prepare($connection, $query);
+    mysqli_stmt_bind_param($stmt, "s", $params[0]);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+} else {
+    $result = mysqli_query($connection, $query);
+}
 
 if (!$result) {
     echo "Error en la consulta: " . mysqli_error($connection);
