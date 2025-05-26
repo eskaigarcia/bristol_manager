@@ -109,49 +109,62 @@ function buildTeacherStats_groups(data) {
     const groupData = document.createElement('div');
     groupData.id = 'TS_groupData';
 
-    for (group in groupButtons) {
+    for (let group = 0; group < groupButtons.length; group++) {
         let btn = document.createElement('button');
         btn.innerText = groupButtons[group];
-        btn.onclick = function() { updateDisplayedList_groups([group]); };
-        groupList.appendChild(btn);
+        groupList.appendChild(btn)
 
         // Create group info div
         const details = groupDetails[group];
         const infoDiv = document.createElement('div');
-        infoDiv.id = 'listOfGroups_' + [group]
+        infoDiv.id = 'groupItem_' + [group]
         infoDiv.innerHTML = `
-            <h4>${details.nombre}</h4>
-            <p><strong>Horario:</strong> ${_ex.schedule.decode(details.horario)}</p>
+            <p class="titleName">${details.nombre}</p>
             <p><strong>Modalidad:</strong> ${details.modalidad}</p>
+            <p>${_ex.schedule.formatArray(_ex.schedule.decode(details.horario))}</p>
+            <hr>
+            <p><strong>Alumnos: </strong></p>
         `;
 
         // Create students table
         const table = document.createElement('table');
         table.className = 'camo';
-        const thead = document.createElement('thead');
-        thead.innerHTML = '<tr><th>Alumno</th></tr>';
-        table.appendChild(thead);
-
-        const tbody = document.createElement('tbody');
         details.alumnos.forEach(alumno => {
             const tr = document.createElement('tr');
-            tr.innerHTML = `<td>${alumno}</td>`;
-            tbody.appendChild(tr);
+            tr.innerHTML = `<td>${alumno.nombre} ${alumno.apellidos}</td>`;
+            table.appendChild(tr);
         });
-        table.appendChild(tbody);
 
         // Append info and table to groupData
+        if (table.hasChildNodes()) infoDiv.appendChild(table);
+        else {
+            const message = document.createElement('p')
+            message.innerText = 'Ningún alumno registrado.'
+            infoDiv.appendChild(message);
+        }
         groupData.appendChild(infoDiv);
-        groupData.appendChild(table);
         
     }
 
     container.appendChild(groupList);
     container.appendChild(groupData);
 
+    setTimeout(() => {
+        let buttons = document.querySelectorAll('#TS_groupList button')
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].addEventListener('click', function() {
+                updateDisplayedList_groups(i)
+            });
+        }
+    }, 100);
+
     return container.outerHTML;
 }
 
 function updateDisplayedList_groups(index) {
-
+    const all = document.querySelectorAll('#TS_groupData div')
+    all.forEach(div => {
+        div.classList.remove('shown')
+    });
+    document.getElementById(`groupItem_${index}`).classList.add('shown')
 }
