@@ -123,7 +123,7 @@ function buildTeacherStats_groups(data) {
             <p><strong>Modalidad:</strong> ${details.modalidad}</p>
             <p>${_ex.schedule.formatArray(_ex.schedule.decode(details.horario))}</p>
             <hr>
-            <p><strong>Alumnos: </strong></p>
+            <p><strong>${details.alumnos.length} alumnos</strong></p>
         `;
 
         // Create students table

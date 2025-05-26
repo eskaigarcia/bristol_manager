@@ -533,7 +533,7 @@ header{
       width: 100% !important;
 
       td {
-        padding: 0;
+        padding: 3px;
         width: 100%;
         font-weight: 400 !important;
       }
