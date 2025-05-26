@@ -25,7 +25,7 @@ $profesor = mysqli_fetch_assoc($result_prof);
 // Obtener grupos activos (normales e intensivos) y sus alumnos
 $query_groups = "
     SELECT 
-        g.id_grupo, g.nombre AS grupo_nombre, g.modalidad, g.esIntensivo,
+        g.id_grupo, g.nombre AS grupo_nombre, g.modalidad, g.esIntensivo, g.horario,
         a.id_alumno, a.nombre AS alumno_nombre, a.apellidos
     FROM grupos g
     LEFT JOIN alumnosgrupos ag ON g.id_grupo = ag.id_grupo
@@ -44,6 +44,7 @@ while ($row = mysqli_fetch_assoc($result_groups)) {
             'nombre' => $row['grupo_nombre'],
             'modalidad' => $row['modalidad'],
             'esIntensivo' => $row['esIntensivo'],
+            'horario' => $row['horario'],
             'alumnos' => []
         ];
     }

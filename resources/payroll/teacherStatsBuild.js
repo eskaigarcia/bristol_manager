@@ -37,7 +37,7 @@ function displayTeacherStats(data) {
                 <div id="modalBodyView">
                     <div class="scrollspySection" id="TDVGroups">
                         <h3>Grupos recurrentes</h3>
-                        ${buildTeacherStats_Groups()}
+                        ${buildTeacherStats_groups(data)}
                     </div>
                     <div class="scrollspySection" id="TDVIntensivos">
                         <h3>Cursos intensivos</h3>
@@ -83,32 +83,75 @@ function removeDetailsModal() {
     if (modal) modal.remove();
 }
 
-// Función para generar los detalles del grupo en una tabla
-function buildTeacherStats_Groups(group) {
-        <table class="styledData">
-            <tr>
-                <td>Nombre:</td>
-                <td>${group.nombre}</td>
-            </tr>
-            <tr>
-                <td>Modalidad:</td>
-                <td>${group.modalidad || ''}</td>
-            </tr>
-            <tr>
-                <td>Intensivo:</td>
-                <td>${group.esIntensivo ? 'Sí' : 'No'}</td>
-            </tr>
-            <tr>
-                <td>Activo:</td>
-                <td>${group.esActivo ? 'Sí' : 'No'}</td>
-            </tr>
-            <tr>
-                <td>Horario:</td>
-                <td>
-                    ${_ex.schedule.formatArray(_ex.schedule.decode(group.horario))}
-                </td>
-            </tr>
-        </table>
-    `;
+function buildTeacherStats_groups(data) {
+
+    let groupButtons = []
+    let groupDetails = []
+
+    data.grupos.forEach(group => {
+        if(group.esIntensivo == 0){
+            groupButtons.push(group.nombre)
+            groupDetails.push({
+                nombre: group.nombre,
+                modalidad: group.modalidad,
+                horario: group.horario,
+                alumnos: group.alumnos
+            })
+        }
+    });
+
+    const container = document.createElement('div');
+    container.className = 'TP_listExplorer';
+
+    const groupList = document.createElement('div');
+    groupList.id = 'TS_groupList';
+
+    const groupData = document.createElement('div');
+    groupData.id = 'TS_groupData';
+
+    for (group in groupButtons) {
+        let btn = document.createElement('button');
+        btn.innerText = groupButtons[group];
+        btn.onclick = function() { updateDisplayedList_groups([group]); };
+        groupList.appendChild(btn);
+
+        // Create group info div
+        const details = groupDetails[group];
+        const infoDiv = document.createElement('div');
+        infoDiv.id = 'listOfGroups_' + [group]
+        infoDiv.innerHTML = `
+            <h4>${details.nombre}</h4>
+            <p><strong>Horario:</strong> ${_ex.schedule.decode(details.horario)}</p>
+            <p><strong>Modalidad:</strong> ${details.modalidad}</p>
+        `;
+
+        // Create students table
+        const table = document.createElement('table');
+        table.className = 'camo';
+        const thead = document.createElement('thead');
+        thead.innerHTML = '<tr><th>Alumno</th></tr>';
+        table.appendChild(thead);
+
+        const tbody = document.createElement('tbody');
+        details.alumnos.forEach(alumno => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${alumno}</td>`;
+            tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+
+        // Append info and table to groupData
+        groupData.appendChild(infoDiv);
+        groupData.appendChild(table);
+        
+    }
+
+    container.appendChild(groupList);
+    container.appendChild(groupData);
+
+    return container.outerHTML;
 }
 
+function updateDisplayedList_groups(index) {
+
+}
