@@ -39,8 +39,9 @@ function displayTeacherStats(data) {
                         <h3>Grupos recurrentes</h3>
                         ${buildTeacherStats_groups(data)}
                     </div>
-                    <div class="scrollspySection" id="TDVIntensivos">
+                    <div class="scrollspySection" id="TDVIntensives">
                         <h3>Cursos intensivos</h3>
+                        ${buildTeacherStats_intensivos(data)}
                     </div>
                     <div class="scrollspySection" id="TDVIndividuals">
                         <h3>Clases individuales</h3>
@@ -167,4 +168,90 @@ function updateDisplayedList_groups(index) {
         div.classList.remove('shown')
     });
     document.getElementById(`groupItem_${index}`).classList.add('shown')
+}
+
+function buildTeacherStats_intensivos(data) {
+
+    let groupButtons = []
+    let groupDetails = []
+
+    data.grupos.forEach(group => {
+        if(group.esIntensivo == 1){
+            groupButtons.push(group.nombre)
+            groupDetails.push({
+                nombre: group.nombre,
+                modalidad: group.modalidad,
+                horario: group.horario,
+                alumnos: group.alumnos
+            })
+        }
+    });
+
+    const container = document.createElement('div');
+    container.className = 'TP_listExplorer';
+
+    const intensivoList = document.createElement('div');
+    intensivoList.id = 'TS_intensivoList';
+
+    const intensivoData = document.createElement('div');
+    intensivoData.id = 'TS_intensivoData';
+
+    for (let group = 0; group < groupButtons.length; group++) {
+        let btn = document.createElement('button');
+        btn.innerText = groupButtons[group];
+        intensivoList.appendChild(btn)
+
+        // Create group info div
+        const details = groupDetails[group];
+        const infoDiv = document.createElement('div');
+        infoDiv.id = 'intensivoItem_' + [group]
+        infoDiv.innerHTML = `
+            <p class="titleName">${details.nombre}</p>
+            <p><strong>Modalidad:</strong> ${details.modalidad}</p>
+            <p>${_ex.schedule.formatArray(_ex.schedule.decode(details.horario))}</p>
+            <hr>
+            <p><strong>${details.alumnos.length} alumnos</strong></p>
+        `;
+
+        // Create students table
+        const table = document.createElement('table');
+        table.className = 'camo';
+        details.alumnos.forEach(alumno => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${alumno.nombre} ${alumno.apellidos}</td>`;
+            table.appendChild(tr);
+        });
+
+        // Append info and table to intensivoData
+        if (table.hasChildNodes()) infoDiv.appendChild(table);
+        else {
+            const message = document.createElement('p')
+            message.innerText = 'Ningún alumno registrado.'
+            infoDiv.appendChild(message);
+        }
+        intensivoData.appendChild(infoDiv);
+        
+    }
+
+    container.appendChild(intensivoList);
+    container.appendChild(intensivoData);
+
+    setTimeout(() => {
+        let buttons = document.querySelectorAll('#TS_intensivoList button')
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].addEventListener('click', function() {
+                updateDisplayedList_intensivos(i)
+            });
+        }
+    }, 100);
+
+    return container.outerHTML;
+}
+
+function updateDisplayedList_intensivos(index) {
+    const all = document.querySelectorAll('#TS_intensivoData div')
+    all.forEach(div => {
+        div.classList.remove('shown')
+    });
+    document.getElementById(`intensivoItem_${index}`).classList.add('shown')
 }

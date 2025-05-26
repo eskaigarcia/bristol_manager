@@ -515,7 +515,7 @@ header{
     }
   }
 
-  #TS_groupData{
+  > div:last-child{
     padding: 1rem;
 
     div{ 
