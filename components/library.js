@@ -137,78 +137,77 @@ const _ex = {
         },
     },
     
-   relMgr: {
+    relMgr: {
     async testIsActiveStudent(id_alumno) {
         const nonce = Date.now() + '-' + Math.random();
-        const url = "./components/libraries/testActiveStudent.php?q=" + encodeURIComponent(id_alumno) + "&nonce=" + nonce;
+        console.log('=== Inicio Debug testIsActiveStudent ===');
+        console.log('Verificando alumno ID:', id_alumno);
+        
+        const url = `./resources/relaciones/testActiveStudent.php?q=${encodeURIComponent(id_alumno)}&nonce=${nonce}`;
+        console.log('URL de la petición:', url);
 
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (Array.isArray(data)) {
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            const activeStudent = data.some(record => !record.fechaFin || new Date(record.fechaFin + 'T23:59:59') >= today);
-
-            return activeStudent;
-        } else {
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            console.log('Respuesta PHP:', data);
+            return !!data.activo;
+        } catch (e) {
+            console.error('Error comprobando relación activa', e);
             return false;
         }
     },
 
-    endFriendRelationship(id_relacion) {
-        fetch("./components/libraries/setExpiredFriendship.php?q=" + encodeURIComponent(id_relacion))
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    _ex.ui.toast.make('Relación finalizada correctamente', 'Ok', false);
-                } else {
-                    _ex.ui.toast.make('Error al finalizar relación: ' + (data.message || 'Error desconocido'));
-                }
-            })
-            .catch(() => {
-                _ex.ui.toast.make('Error de red al finalizar relación');
-            });
+    async endFriendRelationship(id_relacion) {
+        try {
+            const response = await fetch(`./resources/relaciones/setExpiredFriendship.php?q=${encodeURIComponent(id_relacion)}`);
+            const data = await response.json();
+
+            if (data.success) {
+                _ex.ui.toast.make('Relación finalizada correctamente', 'Ok', false);
+            } else {
+                _ex.ui.toast.make('Error al finalizar relación: ' + (data.message || 'Error desconocido'));
+            }
+        } catch {
+            _ex.ui.toast.make('Error de red al finalizar relación');
+        }
     },
 
     async testIsActiveStudentPrompt(id_alumno) {
         const active = await this.testIsActiveStudent(id_alumno);
         _ex.ui.toast.make(
-            active ? 'El alumno está activo.' : 'El alumno no está activo.',
+            active ? 'La relación está activa.' : 'La relación no está activa.',
             'Ok',
             !active
         );
     },
 
-    testIsActiveStudentPromptFromRelacion(buttonEl) {
-        const id1 = buttonEl.dataset.idalumno1;
-        const id2 = buttonEl.dataset.idalumno2;
+    async testIsActiveStudentPromptFromRelacion(buttonEl) {
+        const id = buttonEl.dataset.idalumno1;
+        
+        try {
+            const isActive = await this.testIsActiveStudent(id);
+            _ex.ui.toast.make(
+                isActive ? 'La relación está activa.' : 'La relación no está activa.',
+                'Ok',
+                !isActive
+            );
+        } catch {
+            _ex.ui.toast.make('Error al comprobar el estado de la relación.', 'Cerrar');
+        }
+    },
 
-        Promise.all([
-            this.testIsActiveStudent(id1),
-            this.testIsActiveStudent(id2)
-        ]).then(([isActive1, isActive2]) => {
-            let message = '';
-
-            if (isActive1 && isActive2) {
-                message = 'Ambos alumnos están activos.';
-            } else if (isActive1) {
-                message = 'El Alumno 1 está activo, el Alumno 2 no.';
-            } else if (isActive2) {
-                message = 'El Alumno 2 está activo, el Alumno 1 no.';
-            } else {
-                message = 'Ninguno de los alumnos está activo.';
-            }
-
-            _ex.ui.toast.make(message, 'Ok', !(isActive1 || isActive2));
-        }).catch(() => {
-            _ex.ui.toast.make('Error al comprobar el estado de los alumnos.', 'Cerrar');
-        });
+    async isRelationshipActive(id_alumno1, id_alumno2) {
+        try {
+            const active = await this.testIsActiveStudent(id_alumno1);
+            return active;
+        } catch (e) {
+            console.error('Error comprobando relación activa', e);
+            return false;
+        }
     },
 
     endFriendRelationshipConfirm(id_relacion) {
-        if (typeof _ex !== 'undefined' && _ex.ui && _ex.ui.dialog && typeof _ex.ui.dialog.make === 'function') {
+        if (_ex?.ui?.dialog?.make) {
             _ex.ui.dialog.make(
                 '¿Seguro que quieres finalizar esta relación?',
                 '',
@@ -224,6 +223,8 @@ const _ex = {
         }
     }
 },
+
+
 
 
 

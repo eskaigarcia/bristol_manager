@@ -2,7 +2,6 @@
 header('Content-Type: application/json');
 require_once __DIR__ . '/../dbConnect.php';
 
-// Validar el parámetro 'q'
 if (!isset($_GET['q'])) {
     echo json_encode(['error' => 'Falta el parámetro q']);
     exit;
@@ -10,10 +9,12 @@ if (!isset($_GET['q'])) {
 
 $id_alumno = intval($_GET['q']);
 
+// Modificamos la consulta para verificar relaciones activas
 $query = "
-    SELECT fechaFin
-    FROM relaciones
-    WHERE id_alumno1 = ? OR id_alumno2 = ?
+    SELECT r.id_relacion
+    FROM relaciones r
+    WHERE (r.id_alumno1 = ? OR r.id_alumno2 = ?)
+    AND (r.fechaFin IS NULL OR r.fechaFin > CURRENT_DATE())
 ";
 
 $stmt = $connection->prepare($query);
@@ -27,13 +28,10 @@ $stmt->bind_param("ii", $id_alumno, $id_alumno);
 $stmt->execute();
 $result = $stmt->get_result();
 
-$relaciones = [];
-while ($row = $result->fetch_assoc()) {
-    $relaciones[] = $row;
-}
+$activo = $result->num_rows > 0;
+
+echo json_encode(['activo' => $activo]);
 
 $stmt->close();
 $connection->close();
-
-echo json_encode($relaciones);
 ?>
