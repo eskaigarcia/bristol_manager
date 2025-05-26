@@ -68,12 +68,4 @@
         <img src="img/pagos-ondark.png" alt="">
         Pagos
     </button>
-
-    <button 
-            class="align_left <?= basename(path: $_SERVER['PHP_SELF']) === 'payroll.php' ? 'active' : '' ?>"
-            onclick="window.location.href='payroll.php'"
-        >
-        <img src="img/payroll.png" alt="">
-        Payroll
-    </button>
 </div>
