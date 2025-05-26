@@ -30,6 +30,8 @@ $where_sql = count($where) > 0 ? 'WHERE ' . implode(' AND ', $where) : '';
 $query = "
     SELECT 
         am.id_relacion, 
+        am.id_alumno1,
+        am.id_alumno2,
         a1.nombre AS nombre1, 
         a2.nombre AS nombre2, 
         am.tipoRelacion, 
@@ -42,6 +44,7 @@ $query = "
     ORDER BY am.fechaInicio DESC
     LIMIT 100
 ";
+
 
 $result = mysqli_query($connection, $query);
 
@@ -69,22 +72,23 @@ while ($row = mysqli_fetch_assoc($result)) {
     $fechaFin = $row['fechaFin'] ? $row['fechaFin'] : '---';
 
     echo "<tr>
-            <td style='width: 120px; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;' title='{$row['nombre1']}'>{$row['nombre1']}</td>
-            <td>{$row['nombre2']}</td>
-            <td>{$row['tipoRelacion']}</td>
+            <td style='width: 120px; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;' title='" . htmlspecialchars($row['nombre1']) . "'>" . htmlspecialchars($row['nombre1']) . "</td>
+            <td>" . htmlspecialchars($row['nombre2']) . "</td>
+            <td>" . htmlspecialchars($row['tipoRelacion']) . "</td>
             <td>$estado</td>
-            <td style='white-space: nowrap;'>{$row['fechaInicio']}</td>
+            <td style='white-space: nowrap;'>" . htmlspecialchars($row['fechaInicio']) . "</td>
             <td style='white-space: nowrap;'>$fechaFin</td>
             <td>
                 <div style='margin-bottom: 4px;'>
-                    <button onclick='relMgr.testIsActiveStudentPrompt({$row["id_relacion"]})'>Ver estado</button>
+                    <button onclick='relMgr.testIsActiveStudentPrompt(" . intval($row["id_alumno1"]) . ")'>Ver estado</button>
                 </div>
                 <div>
-                    <button onclick='relMgr.endFriendRelationshipConfirm({$row["id_relacion"]})'>Finalizar</button>
+                    <button onclick='relMgr.endFriendRelationshipConfirm(" . intval($row["id_relacion"]) . ")'>Finalizar</button>
                 </div>
             </td>
         </tr>";
 }
+
 
 echo '</table>';
 

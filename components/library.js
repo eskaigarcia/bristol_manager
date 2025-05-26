@@ -145,7 +145,7 @@ const _ex = {
             .then(data => {
                 let activeStudent = false;
                 data.forEach(group => {
-                    if (!group.fechaFin || new Date(group.fechaFin) > new Date()){
+                    if (!group.fechaFin || new Date(group.fechaFin) > new Date()) {
                         activeStudent = true;
                     }
                 });
@@ -158,7 +158,7 @@ const _ex = {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                if(data.success) {
+                if (data.success) {
                     _ex.ui.toast.make('Relación finalizada correctamente', 'Ok', false);
                 } else {
                     _ex.ui.toast.make('Error al finalizar relación: ' + (data.message || 'Error desconocido'));
@@ -170,21 +170,59 @@ const _ex = {
     },
 
     async testIsActiveStudentPrompt(id_alumno) {
-    const active = await this.testIsActiveStudent(id_alumno);
-    _ex.ui.toast.make(
-        active ? 'El alumno está activo.' : 'El alumno no está activo.',
-        'Ok',
-        !active // si no está activo, mostrar como advertencia
-    );
-},
+        const active = await this.testIsActiveStudent(id_alumno);
+        _ex.ui.toast.make(
+            active ? 'El alumno está activo.' : 'El alumno no está activo.',
+            'Ok',
+            !active // mostrar advertencia si no está activo
+        );
+    },
 
+    testIsActiveStudentPromptFromRelacion(buttonEl) {
+        const id1 = buttonEl.dataset.idalumno1;
+        const id2 = buttonEl.dataset.idalumno2;
+
+        Promise.all([
+            this.testIsActiveStudent(id1),
+            this.testIsActiveStudent(id2)
+        ]).then(([isActive1, isActive2]) => {
+            let message = '';
+
+            if (isActive1 && isActive2) {
+                message = 'Ambos alumnos están activos.';
+            } else if (isActive1) {
+                message = 'El Alumno 1 está activo, el Alumno 2 no.';
+            } else if (isActive2) {
+                message = 'El Alumno 2 está activo, el Alumno 1 no.';
+            } else {
+                message = 'Ninguno de los alumnos está activo.';
+            }
+
+            _ex.ui.toast.make(message, 'Ok', !(isActive1 || isActive2));
+        }).catch(() => {
+            _ex.ui.toast.make('Error al comprobar el estado de los alumnos.', 'Cerrar');
+        });
+    },
 
     endFriendRelationshipConfirm(id_relacion) {
-        if (confirm('¿Seguro que querés finalizar esta relación?')) {
-            this.endFriendRelationship(id_relacion);
+        if (typeof _ex !== 'undefined' && _ex.ui && _ex.ui.dialog && typeof _ex.ui.dialog.make === 'function') {
+            _ex.ui.dialog.make(
+                '¿Seguro que quieres finalizar esta relación?',
+                {
+                    aceptar: () => this.endFriendRelationship(id_relacion),
+                    cancelar: () => {
+                        // No hacer nada
+                    }
+                }
+            );
+        } else {
+            if (confirm('¿Seguro que quieres finalizar esta relación?')) {
+                this.endFriendRelationship(id_relacion);
+            }
         }
     }
-},
+
+   },
 
 
     ui: {
