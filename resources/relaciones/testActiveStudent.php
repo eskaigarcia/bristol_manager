@@ -11,10 +11,9 @@ if (!isset($_GET['q'])) {
 $id_alumno = intval($_GET['q']);
 
 $query = "
-    SELECT g.fechaFin
-    FROM grupos_alumnos ga
-    JOIN grupos g ON ga.id_grupo = g.id_grupo
-    WHERE ga.id_alumno = ?
+    SELECT fechaFin
+    FROM relaciones
+    WHERE id_alumno1 = ? OR id_alumno2 = ?
 ";
 
 $stmt = $connection->prepare($query);
@@ -24,17 +23,17 @@ if (!$stmt) {
     exit;
 }
 
-$stmt->bind_param("i", $id_alumno);
+$stmt->bind_param("ii", $id_alumno, $id_alumno);
 $stmt->execute();
 $result = $stmt->get_result();
 
-$grupos = [];
+$relaciones = [];
 while ($row = $result->fetch_assoc()) {
-    $grupos[] = $row;
+    $relaciones[] = $row;
 }
 
 $stmt->close();
 $connection->close();
 
-echo json_encode($grupos);
+echo json_encode($relaciones);
 ?>
