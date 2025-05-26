@@ -38,5 +38,6 @@
 
     <script src="./resources/payroll/newTeacher.js"></script>
     <script src="./resources/payroll/teacherStatsBuild.js"></script>
+    <script src="./resources/scrollspy.js"></script>
 </body>
 </html>
