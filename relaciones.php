@@ -23,10 +23,10 @@
 
                     <label for="tipo_relacion">Tipo de relación:</label>
                     <select id="tipo_relacion" name="tipo_relacion">
-                        <option value="cualquiera" <?php echo ($_GET['tipo_relacion'] ?? '') == 'cualquiera' ? 'selected' : ''; ?>>Cualquiera</option>
-                        <option value="amigos" <?php echo ($_GET['tipo_relacion'] ?? '') == 'amigos' ? 'selected' : ''; ?>>Amigos</option>
-                        <option value="familia" <?php echo ($_GET['tipo_relacion'] ?? '') == 'familia' ? 'selected' : ''; ?>>Familia</option>
-                    </select>
+    <option value="cualquiera" <?php echo ($_GET['tipo_relacion'] ?? '') == 'cualquiera' ? 'selected' : ''; ?>>Cualquiera</option>
+    <option value="amigo" <?php echo ($_GET['tipo_relacion'] ?? '') == 'amigo' ? 'selected' : ''; ?>>Amigos</option>
+    <option value="familiar" <?php echo ($_GET['tipo_relacion'] ?? '') == 'familiar' ? 'selected' : ''; ?>>Familia</option>
+</select>
 
                     <label for="activo">Estado:</label>
                     <select id="activo" name="activo">
