@@ -39,30 +39,11 @@ function displayGroupDetails(group, alumnos = [], profesor = null) {
                 <div id="modalBodyView">
                     <div class="scrollspySection" id="GDVData">
                         <h3>Datos del grupo</h3>
-                        ${buildGroupData(group)}
+                        ${buildGroupData(group, profesor)}
                     </div>
                     <div class="scrollspySection" id="GDVAlumnos">
                         <h3>Alumnos inscritos</h3>
-                        ${
-                            alumnos.length > 0
-                            ? `<table class="styledData" style="width:100%;margin-top:1rem;">
-                                    <thead>
-                                        <tr>
-                                            <td>Nombre</td>
-                                            <td>Apellidos</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        ${alumnos.map(a => `
-                                            <tr>
-                                                <td>${a.nombre}</td>
-                                                <td>${a.apellidos || ''}</td>
-                                            </tr>
-                                        `).join('')}
-                                    </tbody>
-                                </table>`
-                            : '<div style="margin-top:1rem;color:#888;">No hay alumnos en este grupo</div>'
-                        }
+                        ${buildGroupStudents(alumnos)}
                     </div>
                 </div>
             </div>
@@ -96,13 +77,18 @@ function doTabBar_groupDetails() {
 }
 
 // Función para generar los detalles del grupo en una tabla
-function buildGroupData(group) {
+function buildGroupData(group, profesor) {
     console.log(group)
+    console.log(profesor)
     return `
         <table class="camo">
             <tr>
                 <td>Nombre:</td>
                 <td>${group.nombre}</td>
+            </tr>
+            <tr>
+                <td>Profesor:</td>
+                <td>${profesor.nombre}</td>
             </tr>
             <tr>
                 <td>Modalidad:</td>
@@ -132,3 +118,23 @@ function removeDetailsModal() {
     if (modal) modal.remove();
 }
 
+function buildGroupStudents(alumnos) {
+    if(alumnos.length == 0) return '<div style="margin-top:1rem;color:#888;">No hay alumnos en este grupo</div>'
+    else return `
+    <table class="styledData" style="width:100%;margin-top:1rem;">
+        <thead>
+            <tr>
+                <td>Nombre</td>
+                <td>Apellidos</td>
+            </tr>
+        </thead>
+        <tbody>
+            ${alumnos.map(a => `
+                <tr>
+                    <td>${a.nombre}</td>
+                    <td>${a.apellidos || ''}</td>
+                </tr>
+            `).join('')}
+        </tbody>
+    </table>`
+}

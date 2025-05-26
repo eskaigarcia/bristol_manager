@@ -674,6 +674,14 @@ header{
     &.mini{
       width: 75px;
     }
+
+    &.longData{
+      width: 200px;
+    }
+
+    strong{
+      font-size: 1.2em;
+    }
   }
 
   img{
