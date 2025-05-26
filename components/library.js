@@ -140,24 +140,27 @@ const _ex = {
    relMgr: {
     async testIsActiveStudent(id_alumno) {
         const nonce = Date.now() + '-' + Math.random();
-        return fetch("./components/libraries/testActiveStudent.php?q=" + encodeURIComponent(id_alumno) + "&nonce=" + nonce)
-            .then(response => response.json())
-            .then(data => {
-                let activeStudent = false;
-                data.forEach(group => {
-                    if (!group.fechaFin || new Date(group.fechaFin) > new Date()) {
-                        activeStudent = true;
-                    }
-                });
-                return activeStudent;
-            });
+        const url = "./components/libraries/testActiveStudent.php?q=" + encodeURIComponent(id_alumno) + "&nonce=" + nonce;
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (Array.isArray(data)) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const activeStudent = data.some(record => !record.fechaFin || new Date(record.fechaFin + 'T23:59:59') >= today);
+
+            return activeStudent;
+        } else {
+            return false;
+        }
     },
 
     endFriendRelationship(id_relacion) {
         fetch("./components/libraries/setExpiredFriendship.php?q=" + encodeURIComponent(id_relacion))
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 if (data.success) {
                     _ex.ui.toast.make('Relación finalizada correctamente', 'Ok', false);
                 } else {
@@ -174,7 +177,7 @@ const _ex = {
         _ex.ui.toast.make(
             active ? 'El alumno está activo.' : 'El alumno no está activo.',
             'Ok',
-            !active // mostrar advertencia si no está activo
+            !active
         );
     },
 
@@ -208,12 +211,11 @@ const _ex = {
         if (typeof _ex !== 'undefined' && _ex.ui && _ex.ui.dialog && typeof _ex.ui.dialog.make === 'function') {
             _ex.ui.dialog.make(
                 '¿Seguro que quieres finalizar esta relación?',
-                {
-                    aceptar: () => this.endFriendRelationship(id_relacion),
-                    cancelar: () => {
-                        // No hacer nada
-                    }
-                }
+                '',
+                () => this.endFriendRelationship(id_relacion),
+                'Finalizar',
+                true,
+                'Cancelar'
             );
         } else {
             if (confirm('¿Seguro que quieres finalizar esta relación?')) {
@@ -221,8 +223,8 @@ const _ex = {
             }
         }
     }
+},
 
-   },
 
 
     ui: {
@@ -297,9 +299,12 @@ const _ex = {
             },
 
             dismiss() {
-                document.getElementById('dialogBox').remove();
-            }
-        }, 
+                const dialog = document.getElementById('dialogBox');
+                if (dialog) {
+            dialog.remove();
+                    }
+                }
+            }, 
 
         toast: {
             timer: null,

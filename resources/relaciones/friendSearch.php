@@ -68,8 +68,11 @@ echo "<tr class='head'>
     </tr>";
 
 while ($row = mysqli_fetch_assoc($result)) {
-    $estado = (is_null($row['fechaFin']) || $row['fechaFin'] > date('Y-m-d')) ? 'Activo' : 'Inactivo';
+$estado = (is_null($row['fechaFin']) || $row['fechaFin'] >= date('Y-m-d')) ? 'Activo' : 'Inactivo';
     $fechaFin = $row['fechaFin'] ? $row['fechaFin'] : '---';
+
+    $estadoRelacion = (is_null($row['fechaFin']) || $row['fechaFin'] > date('Y-m-d')) ? '1' : '0';
+
 
     echo "<tr>
             <td style='width: 120px; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;' title='" . htmlspecialchars($row['nombre1']) . "'>" . htmlspecialchars($row['nombre1']) . "</td>
