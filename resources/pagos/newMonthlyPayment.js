@@ -476,7 +476,6 @@ async function processStudentDiscounts() {
     // Relational discounts
     const response = await fetch("./resources/pagos/qp_getStudentRelations.php?q=" + encodeURIComponent(paymentPreview.currentStudent));
     const data = await response.json();
-    console.log(data)
     if(data.esAmonestado == 1) paymentPreview.esAmonestado = true;
     else paymentPreview.esAmonestado = false;
 

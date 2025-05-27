@@ -1,23 +1,5 @@
 <div id="navView">
-    <img class="align_left logo" src="img/logo.webp" alt="Logotipo">
-
-    <button 
-            class="align_left <?= basename(path: $_SERVER['PHP_SELF']) === 'dashboard.php' ? 'active' : '' ?>"
-            onclick="window.location.href='dashboard.php'"
-        >
-        <img src="img/dashboard-ondark.png" alt="">
-        Panel de control
-    </button>
-
-    <button 
-            class="align_left <?= basename(path: $_SERVER['PHP_SELF']) === 'notificaciones.php' ? 'active' : '' ?>"
-            onclick="window.location.href='notificaciones.php'"
-        >
-        <img src="img/notificacion-ondark.png" alt="">
-        Notificaciones
-    </button>
-
-    <hr>
+    <img class="align_left logo" src="img/logo.webp" alt="Logotipo" onclick="window.location.href='index.php'">
 
     <button 
             class="align_left <?= basename(path: $_SERVER['PHP_SELF']) === 'alumnos.php' ? 'active' : '' ?>"
@@ -58,8 +40,6 @@
         <img src="img/teacher-ondark.png" alt="">
         Profesores
     </button>
-
-    <hr>
 
     <button 
             class="align_left <?= basename(path: $_SERVER['PHP_SELF']) === 'pagos.php' ? 'active' : '' ?>"

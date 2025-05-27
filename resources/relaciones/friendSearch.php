@@ -115,4 +115,3 @@ while ($row = mysqli_fetch_assoc($result)) {
 echo '</table>';
 
 mysqli_close($connection);
-?>

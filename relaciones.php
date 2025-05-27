@@ -50,7 +50,6 @@
 
             <script src="./resources/relaciones/newFriend.js"></script>
             <script src="./resources/relaciones/friendDetailsBuild.js"></script>
-            <script src="./components/libraries/library.js"></script>
             <script src="./resources/scrollspy.js"></script>
         </main>
     </div>

@@ -138,104 +138,29 @@ const _ex = {
     },
     
     relMgr: {
-    async testIsActiveStudent(id_alumno) {
-        const nonce = Date.now() + '-' + Math.random();
-        console.log('=== Inicio Debug testIsActiveStudent ===');
-        console.log('Verificando alumno ID:', id_alumno);
-        
-        const url = `./resources/relaciones/testActiveStudent.php?q=${encodeURIComponent(id_alumno)}&nonce=${nonce}`;
-        console.log('URL de la petición:', url);
-
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            console.log('Respuesta PHP:', data);
-            return !!data.activo;
-        } catch (e) {
-            console.error('Error comprobando relación activa', e);
-            return false;
-        }
-    },
-
-    async endFriendRelationship(id_relacion) {
-    try {
-        const response = await fetch(`./resources/relaciones/setExpiredFriendship.php?q=${encodeURIComponent(id_relacion)}`);
-        const data = await response.json();
-
-        if (data.success) {
-            _ex.ui.toast.make('Relación finalizada correctamente', 'Ok', false);
+        async testRelationship(alumno1, alumno2) {
             
+        },
 
-            const row = document.querySelector(`tr[data-idrelacion="${id_relacion}"]`);
-            if (row) {
-                const estadoCell = row.querySelector('td:nth-child(4)'); 
-                if (estadoCell) {
-                    estadoCell.textContent = 'Inactivo';
-                }
-            }
-        } else {
-            _ex.ui.toast.make('Error al finalizar relación: ' + (data.message || 'Error desconocido'));
-        }
-    } catch {
-        _ex.ui.toast.make('Error de red al finalizar relación');
-    }
-},
-
-    async testIsActiveStudentPrompt(id_alumno) {
-        const active = await this.testIsActiveStudent(id_alumno);
-        _ex.ui.toast.make(
-            active ? 'La relación está activa.' : 'La relación no está activa.',
-            'Ok',
-            !active
-        );
-    },
-
-    async testIsActiveStudentPromptFromRelacion(buttonEl) {
-        const id = buttonEl.dataset.idalumno1;
-        
-        try {
-            const isActive = await this.testIsActiveStudent(id);
-            _ex.ui.toast.make(
-                isActive ? 'La relación está activa.' : 'La relación no está activa.',
-                'Ok',
-                !isActive
-            );
-        } catch {
-            _ex.ui.toast.make('Error al comprobar el estado de la relación.', 'Cerrar');
+        async testIsActiveStudent(id_alumno) {
+            // Add a cache-busting nonce as a separate query param
+            const nonce = Date.now() + '-' + Math.random();
+            return fetch("./components/libraries/testActiveStudent.php?q=" + encodeURIComponent(id_alumno) + "&nonce=" + nonce)
+                .then(response => response.json())
+                .then(data => {
+                    let activeStudent = false;
+                    data.forEach(group => {
+                        if (!group.fechaFin || new Date(group.fechaFin) > new Date()){
+                            activeStudent = true;
+                        }
+                    });
+                    return activeStudent;
+                });
+        },
+        endFriendRelationship(id_relacion) {
+            fetch("./components/libraries/setExperiedFriendship.php?q=" + encodeURIComponent(id_relacion))
         }
     },
-
-    async isRelationshipActive(id_alumno1, id_alumno2) {
-        try {
-            const active = await this.testIsActiveStudent(id_alumno1);
-            return active;
-        } catch (e) {
-            console.error('Error comprobando relación activa', e);
-            return false;
-        }
-    },
-
-    endFriendRelationshipConfirm(id_relacion) {
-        if (_ex?.ui?.dialog?.make) {
-            _ex.ui.dialog.make(
-                '¿Seguro que quieres finalizar esta relación?',
-                '',
-                () => this.endFriendRelationship(id_relacion),
-                'Finalizar',
-                true,
-                'Cancelar'
-            );
-        } else {
-            if (confirm('¿Seguro que quieres finalizar esta relación?')) {
-                this.endFriendRelationship(id_relacion);
-            }
-        }
-    }
-},
-
-
-
-
 
     ui: {
         dialog: {
