@@ -158,19 +158,28 @@ const _ex = {
     },
 
     async endFriendRelationship(id_relacion) {
-        try {
-            const response = await fetch(`./resources/relaciones/setExpiredFriendship.php?q=${encodeURIComponent(id_relacion)}`);
-            const data = await response.json();
+    try {
+        const response = await fetch(`./resources/relaciones/setExpiredFriendship.php?q=${encodeURIComponent(id_relacion)}`);
+        const data = await response.json();
 
-            if (data.success) {
-                _ex.ui.toast.make('Relación finalizada correctamente', 'Ok', false);
-            } else {
-                _ex.ui.toast.make('Error al finalizar relación: ' + (data.message || 'Error desconocido'));
+        if (data.success) {
+            _ex.ui.toast.make('Relación finalizada correctamente', 'Ok', false);
+            
+
+            const row = document.querySelector(`tr[data-idrelacion="${id_relacion}"]`);
+            if (row) {
+                const estadoCell = row.querySelector('td:nth-child(4)'); 
+                if (estadoCell) {
+                    estadoCell.textContent = 'Inactivo';
+                }
             }
-        } catch {
-            _ex.ui.toast.make('Error de red al finalizar relación');
+        } else {
+            _ex.ui.toast.make('Error al finalizar relación: ' + (data.message || 'Error desconocido'));
         }
-    },
+    } catch {
+        _ex.ui.toast.make('Error de red al finalizar relación');
+    }
+},
 
     async testIsActiveStudentPrompt(id_alumno) {
         const active = await this.testIsActiveStudent(id_alumno);
