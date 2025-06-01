@@ -14,4 +14,4 @@ start /wait C:\wamp64\wampmanager.exe
 echo.
 echo Iniciando aplicación...
 
-start http://localhost/bristol_alumnos/
+start http://localhost/bristolManager/
