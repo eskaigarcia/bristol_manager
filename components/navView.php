@@ -30,7 +30,7 @@
             onclick="window.location.href='relaciones.php'"
         >
         <img src="img/group-ondark.png" alt="">
-        Amigos
+        Relaciones
     </button>
 
     <button 

@@ -17,6 +17,10 @@ function getGroupDetails(id) {
 }
 
 function displayGroupDetails(group, alumnos = [], profesor = null) {
+    storage.group = group;
+    storage.alumnos = alumnos;
+    storage.profesor = profesor;
+
     let div = document.createElement('div');
     div.className = 'modal';
     div.id = 'popUpModal';
@@ -42,8 +46,7 @@ function displayGroupDetails(group, alumnos = [], profesor = null) {
                         ${buildGroupData(group, profesor)}
                     </div>
                     <div class="scrollspySection" id="GDVAlumnos">
-                        <h3>Alumnos inscritos</h3>
-                        ${buildGroupStudents(alumnos)}
+                        ${buildGroupStudents(alumnos, group)}
                     </div>
                 </div>
             </div>
@@ -118,23 +121,184 @@ function removeDetailsModal() {
     if (modal) modal.remove();
 }
 
-function buildGroupStudents(alumnos) {
-    if(alumnos.length == 0) return '<div style="margin-top:1rem;color:#888;">No hay alumnos en este grupo</div>'
+function buildGroupStudents(alumnos, group) {
+    // Only show alumnos currently enrolled (fechaFin is null or today/future)
+    const filteredAlumnos = alumnos.filter(a => {
+        if (!a.fechaFin) return true;
+        const fechaFinDate = new Date(a.fechaFin);
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        fechaFinDate.setHours(0,0,0,0);
+        return fechaFinDate >= today;
+    });
+    
+    if(filteredAlumnos.length == 0) return `<h3>Alumnos inscritos</h3>
+    <div class="emptyState-icon">
+        <img src="./img/es-group.png">
+        <div>
+            <p>No hay alumnos inscitos</p>
+            <button onclick="addStudentToGroup()">Añadir alumno</button>
+        </div>
+    </div>`;
+
     else return `
-    <table class="styledData" style="width:100%;margin-top:1rem;">
+    <div class="flex clear-between">
+        <h3>Alumnos inscritos</h3>
+        <button class="outlined" onclick="addStudentToGroup()">Añadir alumno</button>
+    </div>
+    <table class="styledData">
         <thead>
             <tr>
-                <td>Nombre</td>
-                <td>Apellidos</td>
+                <td>Alumno</td>
+                <td>Inscripción</td>
+                <td style="text-align: right;">Estado</td>
             </tr>
         </thead>
         <tbody>
-            ${alumnos.map(a => `
+            ${filteredAlumnos.map(a => `
                 <tr>
-                    <td>${a.nombre}</td>
-                    <td>${a.apellidos || ''}</td>
+                    <td>${a.apellidos}, ${a.nombre}</td>
+                    <td>${a.fechaInicio}</td>
+                    <td style="text-align: right;"><button class="mini warn inline" onclick="doubleCheckStudentDeletion(${a.id_alumno}, ${group.id_grupo})">Eliminar del grupo</button></td>
                 </tr>
             `).join('')}
         </tbody>
     </table>`
+}
+
+function doubleCheckStudentDeletion(student, group){
+    let action = function() { removeStudentFromGroup(student, group)}
+    _ex.ui.dialog.make('Eliminar del grupo', '¿Seguro desea desapuntar a este alumno de este grupo?', action, 'Eliminar', true )
+}
+
+function removeStudentFromGroup(student, group) {
+    fetch('./resources/grupos/removeStudentFromGroup.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id_alumno: student, id_grupo: group })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            removeDetailsModal();
+            getGroupDetails(group);
+            _ex.ui.toast.make('Alumno eliminado correctamente.', 'Aceptar', false);
+        } else {
+            alert(data.message || "No se pudo eliminar el alumno del grupo.");
+        }
+    })
+    .catch(err => {
+        alert("Error al eliminar alumno del grupo.");
+        console.error(err);
+    });
+}
+
+function addStudentToGroup() {
+    const display = document.querySelector('#popUpModal div');
+    display.innerHTML = `<div class="header">
+            <div>
+                <p>Añadir alumno al grupo:</p>
+                <h2>${storage.group.nombre}</h2>
+                <div class="spaced-items-sm">${buildGroupChips(storage.group)}</div>
+            </div>
+            <img onclick="removeDetailsModal()" class="iconButton" src="./img/close.png" alt="Cerrar">
+        </div>
+        
+        <div class="body">
+            <div class="editView">
+                <h3>Modificar datos personales:</h3>
+                <form id="editStudentDetails">
+                    <table class="camo inputMode">
+                        <tr>
+                            <td><label for="add_nombre">Alumno:</label></td>
+                            <td><input type="text" id="add_nombre" name="add_nombre" oninput="studentTypeAhead()"><div id="typeAhead"></div></td>
+                        </tr>
+                        <tr>
+                            <td><label for="add_fecha">Fecha de inscripcción</label></td>
+                            <td><input type="date" id="add_fecha" name="add_fecha"></td>
+                        </tr>
+                    </table>
+                    <input style="display: none;" name="add_id_alumno" type="number" id="add_id_alumno">
+                    <div class="editFooter">
+                        <button type="button" class="warn" onclick="removeDetailsModal()">Descartar cambios</button>
+                        <button type="button" onclick="processAddStudentToGroup()">Guardar cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+    document.getElementById("add_fecha").value = new Date().toISOString().split("T")[0]
+}
+
+
+function studentTypeAhead() {
+    const query = document.getElementById('add_nombre').value;
+    const suggestionBox = document.getElementById("typeAhead");
+
+    if(query.length >= 3) {
+    fetch("./resources/studentTypeAhead.php?q=" + encodeURIComponent(query))
+        .then(response => response.json())
+        .then(data => {
+            suggestionBox.innerHTML = "";
+            if (data.results.length > 0) {
+                data.results.forEach(item => {
+                    console.log(item)
+                    const div = document.createElement("div");
+                    div.textContent = item.nombre_completo;
+                    div.style.cursor = "pointer";
+                    div.addEventListener("click", () => {
+                        document.getElementById("add_nombre").value = item.nombre_completo;
+                        document.getElementById("add_id_alumno").value = item.id_alumno;
+                        suggestionBox.style.display = "none";
+                    });
+                    suggestionBox.appendChild(div);
+                });
+                suggestionBox.style.display = "block";
+            } else {
+                const div = document.createElement("div");
+                div.textContent = 'Ningún resultado';
+                div.style.cursor = "default"; // Make it non-clickable
+                suggestionBox.style.display = "block";
+                suggestionBox.appendChild(div);
+            }
+        });
+    } else {
+        suggestionBox.style.display = "none";
+    }
+}
+
+
+function processAddStudentToGroup() {
+    const id_alumno = document.getElementById('add_id_alumno').value;
+    const fechaInicio = document.getElementById('add_fecha').value;
+    const id_grupo = storage.group.id_grupo;
+
+    if (!id_alumno || !fechaInicio) {
+        alert("Por favor, complete todos los campos.");
+        return;
+    }
+
+    fetch('./resources/grupos/addStudentToGroup.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            id_alumno: id_alumno,
+            id_grupo: id_grupo,
+            fechaInicio: fechaInicio
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            removeDetailsModal();
+            getGroupDetails(id_grupo);
+            _ex.ui.toast.make('Alumno añadido correctamente.', 'Aceptar', false);
+        } else {
+            alert(data.message || "No se pudo añadir el alumno al grupo.");
+        }
+    })
+    .catch(err => {
+        alert("Error al añadir alumno al grupo.");
+        console.error(err);
+    });
 }

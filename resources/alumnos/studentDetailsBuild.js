@@ -211,13 +211,13 @@ function buildCoursesTable(groups) {
         <img src="./img/es-enroll.png">
         <div>
             <p>Ningun curso activo</p>
-            <button>Apuntar a grupo</button>
+            <button onclick="window.location.href='grupos.php'">Ir a grupos</button>
         </div>
     </div>`;
     
     let table = `<div class="flex clear-between">
         <h3>Cursos</h3>
-        <button class="outlined">Ir a cursos</button>
+        <button class="outlined" onclick="window.location.href='grupos.php'">Ir a cursos</button>
     </div>`
     table += `
     <table class="styledData">
@@ -294,13 +294,13 @@ function buildClassesTable(classes) {
         <img src="./img/es-classes.png">
         <div>
             <p>Sin clases individuales pendientes</p>
-            <button>Nueva clase</button>
+            <button onclick="window.location.href='clases.php'">Ir a clases</button>
         </div>
     </div>`;
     
     let table = `<div class="flex clear-between">
         <h3>Clases individuales</h3>
-        <button class="outlined">Nueva clase</button>
+        <button class="outlined" onclick="window.location.href='grupos.php'">Ir a clases</button>
     </div>`
     table += `
     <table class="styledData">
@@ -481,14 +481,14 @@ function buildRelations(relations, student) {
         <img src="./img/es-group.png">
         <div>
             <p>No se han encontrado amigos o hermanos</p>
-            <button>Añadir</button>
+            <button onclick="window.location.href='relaciones.php'">Ir a relaciones</button>
         </div>
     </div>`;
 
     let table = `
     <div class="flex clear-between">
         <h3>Amigos y familiares</h3>
-        <button class="outlined">Nueva relación</button>
+        <button class="outlined" onclick="window.location.href='relaciones.php'">Ir a relaciones</button>
     </div>
     <table class="styledData">
                     <thead>    

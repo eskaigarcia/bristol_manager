@@ -35,7 +35,7 @@ if (!$data_group) {
 }
 
 // Consulta de alumnos del grupo
-$query_alumnos = "SELECT a.id_alumno, a.nombre, a.apellidos
+$query_alumnos = "SELECT a.id_alumno, a.nombre, a.apellidos, ag.fechaFin, ag.fechaInicio
                   FROM alumnos a 
                   JOIN alumnosgrupos ag ON a.id_alumno = ag.id_alumno 
                   WHERE ag.id_grupo = $id";
