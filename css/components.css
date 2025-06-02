@@ -358,7 +358,7 @@ label:has(input){
   }
 }
 
-#typeAhead{
+#typeAhead, .typeAhead{
   position: absolute;
   background-color: var(--color-primary-lightest);
   border: 1px solid var(--color-primary-dark);
@@ -704,6 +704,14 @@ header{
   tr.head{
     font-weight: 700;
     text-align: center;
+  }
+
+  &.doubledMainCol{
+    td:nth-child(2){
+      text-align: left;
+      padding: 8px;
+      width: auto;
+    }
   }
 
   td{

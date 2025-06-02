@@ -25,3 +25,11 @@
 
     $ico_groupIntensivo = '<img src="./img/grupoIntensivo.png" alt="Grupo intensivo">';
     $ico_groupRecurrente = '<img src="./img/grupoRecurrente.png" alt="Grupo recurrente">';
+
+
+    // RELACIONES
+    $ico_relAmistad = '<img src="./img/group.png" alt="Amigos">';
+    $ico_relFamiliares = '<img src="./img/family.png" alt="Familiares">';
+
+    $ico_relcheck = '<img src="./img/checkTest.png" alt="Comprobar estado">';
+    $ico_relterminate = '<img src="./img/deleteWarning.png" alt="Finalizar">';
