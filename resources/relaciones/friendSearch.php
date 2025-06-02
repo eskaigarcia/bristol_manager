@@ -87,8 +87,13 @@ while ($row = mysqli_fetch_assoc($result)) {
     // Estado: activa si fechaFin es null o futura, finalizó si fechaFin es pasada
     if (is_null($row['fechaFin']) || $row['fechaFin'] === '' || $row['fechaFin'] > date('Y-m-d')) {
         $row_estado = "Activa desde " . $fechaInicioFmt;
+        $acciones = "
+            <p class='tooltip' style='cursor: pointer;' onclick='_ex.relMgr.testRelationship($row[id_relacion], $row[id_alumno1], $row[id_alumno2])'>$ico_relcheck<span>Comprobar estado de la relación</span></p>
+            <p class='tooltip' style='cursor: pointer;' onclick='_ex.relMgr.confirmFriendshipDeletion($row[id_relacion])'>$ico_relterminate<span>Terminar relación</span></p>
+        ";
     } else {
-        $row_estado = "Finalizó el " . $fechaFinFmt;
+        $row_estado = "Finalizó en " . $fechaFinFmt;
+        $acciones = "<p class='tooltip' style='cursor: pointer;' onclick='_ex.relMgr.reinstateFriendship($row[id_relacion])'>$ico_relreset<span>Reinstaurar relación</span></p>";
     }
 
     echo "<tr>
@@ -96,10 +101,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         <td>$row[nombre2]</td>
         <td style='width: 60px'>$row_type</td>
         <td style='width: 240px'>$row_estado</td>
-        <td style='width: 120px'>
-            <p class='tooltip' style='cursor: pointer;'>$ico_relcheck<span>Comprobar estado de la relación</span></p>
-            <p class='tooltip' style='cursor: pointer;'>$ico_relterminate<span>Terminar relación</span></p>
-        </td>
+        <td style='width: 120px'>$acciones</td>
     </tr>";
 
 }
