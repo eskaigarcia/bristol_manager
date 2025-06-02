@@ -39,8 +39,8 @@ $query = "
         am.id_relacion, 
         am.id_alumno1,
         am.id_alumno2,
-        a1.nombre AS nombre1, 
-        a2.nombre AS nombre2, 
+        CONCAT(a1.apellidos, ', ', a1.nombre) AS nombre1, 
+        CONCAT(a2.apellidos, ', ', a2.nombre) AS nombre2, 
         am.tipoRelacion, 
         am.fechaInicio, 
         am.fechaFin,
@@ -70,46 +70,38 @@ $count = mysqli_num_rows($result);
 echo "<h2>$count relaciones encontradas</h2>";
 
 // Tabla de resultados
-echo '<table id="searchResult">';
+echo '<table id="searchResult" class="doubledMainCol">';
 echo "<tr class='head'>
         <td>Alumno 1</td>
         <td>Alumno 2</td>
-        <td>Tipo</td>
+        <td style='width: 60px'>Tipo</td>
         <td>Estado</td>
-        <td>Desde</td>
-        <td>Hasta</td>
-        <td>Acciones</td>
+        <td style='width: 120px'>Acciones</td>
     </tr>";
 
 while ($row = mysqli_fetch_assoc($result)) {
-    $estado = $row['estado_calculado'];
-    $fechaFin = $row['fechaFin'] ? htmlspecialchars($row['fechaFin']) : '---';
+    $row_type = ($row['tipoRelacion'] == 'amigo') ? "<p class='tooltip'>$ico_relAmistad<span>Amigos</span></p>" : "<p class='tooltip'>$ico_relFamiliares<span>Familiares</span></p>";
+    // Formatear fechas a MM/YYYY
+    $fechaInicioFmt = $row['fechaInicio'] ? date('m/Y', strtotime($row['fechaInicio'])) : '';
+    $fechaFinFmt = $row['fechaFin'] ? date('m/Y', strtotime($row['fechaFin'])) : '';
+    // Estado: activa si fechaFin es null o futura, finalizó si fechaFin es pasada
+    if (is_null($row['fechaFin']) || $row['fechaFin'] === '' || $row['fechaFin'] > date('Y-m-d')) {
+        $row_estado = "Activa desde " . $fechaInicioFmt;
+    } else {
+        $row_estado = "Finalizó el " . $fechaFinFmt;
+    }
 
-    echo "<tr data-idrelacion='" . intval($row['id_relacion']) . "'>
-            <td style='width: 120px; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;' 
-                title='" . htmlspecialchars($row['nombre1']) . "'>" . 
-                htmlspecialchars($row['nombre1']) . 
-            "</td>
-            <td>" . htmlspecialchars($row['nombre2']) . "</td>
-            <td>" . htmlspecialchars($row['tipoRelacion']) . "</td>
-            <td class='estado-celda'>" . $estado . "</td>
-            <td style='white-space: nowrap;'>" . htmlspecialchars($row['fechaInicio']) . "</td>
-            <td style='white-space: nowrap;'>" . $fechaFin . "</td>
-            <td>
-                <div style='margin-bottom: 4px;'>
-                    <button onclick='relMgr.testIsActiveStudentPrompt(" . intval($row['id_alumno1']) . ")' 
-                            data-idalumno1='" . intval($row['id_alumno1']) . "' 
-                            data-idalumno2='" . intval($row['id_alumno2']) . "'>
-                        Ver estado
-                    </button>
-                </div>
-                <div>
-                    <button onclick='relMgr.endFriendRelationshipConfirm(" . intval($row['id_relacion']) . ")'>
-                        Finalizar
-                    </button>
-                </div>
-            </td>
-        </tr>";
+    echo "<tr>
+        <td>$row[nombre1]</td>
+        <td>$row[nombre2]</td>
+        <td style='width: 60px'>$row_type</td>
+        <td style='width: 240px'>$row_estado</td>
+        <td style='width: 120px'>
+            <p class='tooltip' style='cursor: pointer;'>$ico_relcheck<span>Comprobar estado de la relación</span></p>
+            <p class='tooltip' style='cursor: pointer;'>$ico_relterminate<span>Terminar relación</span></p>
+        </td>
+    </tr>";
+
 }
 
 echo '</table>';

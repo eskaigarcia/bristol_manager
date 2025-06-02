@@ -11,7 +11,7 @@
                 <h1>Amigos</h1>
                 <button onclick="createFriend()" class="cta">
                     <?php include './img/addStudent.svg'; ?>
-                    Nuevo amigo
+                    Nueva relación
                 </button>
             </header>
 
