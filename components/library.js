@@ -138,16 +138,23 @@ const _ex = {
     },
     
     relMgr: {
-        async testRelationship(alumno1, alumno2) {
-            
+        async testRelationship(relacion, alumno1, alumno2) {
+            if (await _ex.relMgr.testIsActiveStudent(alumno1)){
+                if (await _ex.relMgr.testIsActiveStudent(alumno2)){
+                    _ex.ui.toast.make('Ambos están activamente inscritos en cursos.', 'Aceptar', false);
+                    return;
+                }
+            }
+            let action = function() {_ex.relMgr.endFriendRelationship(relacion);}
+            _ex.ui.dialog.make('Relación inactiva', 'Al menos uno de los estudiantes ha abandonado los cursos, ¿Deseas finalizar la relación?', action, 'Finalizar', true, 'Mantener activa')
         },
-
         async testIsActiveStudent(id_alumno) {
             // Add a cache-busting nonce as a separate query param
             const nonce = Date.now() + '-' + Math.random();
             return fetch("./components/libraries/testActiveStudent.php?q=" + encodeURIComponent(id_alumno) + "&nonce=" + nonce)
                 .then(response => response.json())
                 .then(data => {
+                    console.log(id_alumno, data)
                     let activeStudent = false;
                     data.forEach(group => {
                         if (!group.fechaFin || new Date(group.fechaFin) > new Date()){
@@ -157,8 +164,33 @@ const _ex = {
                     return activeStudent;
                 });
         },
+        reinstateFriendship(id_relacion) {
+            let action = function() {
+                fetch("./components/libraries/reinstateFriendship.php?q=" + encodeURIComponent(id_relacion))
+                .then(response => response.json())
+                .then(data => {
+                    _ex.ui.dialog.make('Relación reiniciada correctamente', 'Refresca la página para ver los cambios', function() {location.reload()}, 'Refrescar', false, 'Ahora no')
+                })
+                .catch(error => {
+                    _ex.ui.toast.make('Error al reiniciar la relación.', 'Aceptar', true);
+                });
+            }
+            _ex.ui.dialog.make('Reinstaurar relación', 'Se deshará la eliminación de esta relación y se volverá a su estado anterior. Se reinstaurarán todos los descuentos correspondientes. ¿Estás seguro que desesas volver atrás?', action, 'Reinstaurar relación', true, 'Cancelar')
+        },
+        confirmFriendshipDeletion(id_relacion) {
+            let action = function() {_ex.relMgr.endFriendRelationship(id_relacion);}
+            _ex.ui.dialog.make('Finalizar relación', 'Esto desactivará los descuentos por "amigos simultáneamente inscritos al curso", ¿Deseas finalizar la relación?', action, 'Finalizar', true, 'Mantener activa')
+        },
+
         endFriendRelationship(id_relacion) {
-            fetch("./components/libraries/setExperiedFriendship.php?q=" + encodeURIComponent(id_relacion))
+            fetch("./components/libraries/setExpiredFriendship.php?q=" + encodeURIComponent(id_relacion))
+                .then(response => response.json())
+                .then(data => {
+                    _ex.ui.dialog.make('Relación finalizada correctamente', 'Refresca la página para ver los cambios', function() {location.reload()}, 'Refrescar', false, 'Ahora no')
+                })
+                .catch(error => {
+                    _ex.ui.toast.make('Error al finalizar la relación.', 'Aceptar', true);
+                });
         }
     },
 
@@ -303,6 +335,3 @@ const storage = {
     pendingEdits: false,
     studentData: null,
 }
-
-window.relMgr = _ex.relMgr;
-

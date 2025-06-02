@@ -31,7 +31,7 @@ if ($id_alumno <= 0) {
 }
 
 // Query to get group info for the student
-$query = "SELECT id_alumno, fechaFin FROM alumnosgrupos WHERE id_alumno = ?";
+$query = "SELECT id_alumno, fechaFin, id_alumnoGrupo FROM alumnosgrupos WHERE id_alumno = ?";
 $stmt = mysqli_prepare($connection, $query);
 if (!$stmt) {
     http_response_code(500);
