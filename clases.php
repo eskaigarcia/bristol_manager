@@ -9,10 +9,16 @@
         <main>
             <header>
                 <h1>Clases particulares</h1>
-                <button onclick="createTeacher()" class="cta">
-                    <?php include './img/addTeacher.svg'; ?>
-                    Nuevo profesor
-                </button>
+                <div class="flex gap-md">
+                    <button onclick="createVoucherPayment()" class="cta">
+                        <?php include './img/money.svg'; ?>
+                        Nuevo bono
+                    </button>
+                    <button onclick="createTeacher()" class="cta">
+                        <?php include './img/addClass.svg'; ?>
+                        Nueva clase
+                    </button>
+                </div>
             </header>
 
                 <div class="card full">
@@ -24,22 +30,6 @@
                     <label for="nombre">Alumno:</label>
                     <input type="text" id="nombre" name="nombre">
 
-                    <div class="full subGrid">
-                        <div class="full subGrid">
-                            <label for="precio_min">Precio min:</label>
-                            <input class="mini" type="number" id="precio_min" name="precio_min" step="any" value="0">
-                            
-                            <label for="precio_max">Precio max:</label>
-                            <input class="mini" type="number" id="precio_max" name="precio_max" step="any" value="200">
-                        </div>
-                        <label for="modalidad">Modalidad:</label>
-                        <select id="modalidad" name="modalidad">
-                            <option value="">Cualquier modalidad</option>
-                            <option value="presencial">Presencial</option>
-                            <option value="online">Online</option>
-                            <option value="hibrido">Híbrido</option>
-                        </select>
-                    </div>
                     <div class="full center">
                         <button type="submit" class="cta">
                             <?php include './img/search.svg' ?>
@@ -53,8 +43,7 @@
         </main>
     </div>
 
-    <script src="./resources/payroll/newTeacher.js"></script>
-    <script src="./resources/payroll/teacherStatsBuild.js"></script>
+    <script src="./resources/pagos/newVoucherPayment.js"></script>
     <script src="./resources/scrollspy.js"></script>
 </body>
 </html>

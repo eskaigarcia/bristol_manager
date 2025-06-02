@@ -182,11 +182,11 @@ const _ex = {
             _ex.ui.dialog.make('Finalizar relación', 'Esto desactivará los descuentos por "amigos simultáneamente inscritos al curso", ¿Deseas finalizar la relación?', action, 'Finalizar', true, 'Mantener activa')
         },
 
-        endFriendRelationship(id_relacion) {
+        endFriendRelationship(id_relacion, norefresh=false) {
             fetch("./components/libraries/setExpiredFriendship.php?q=" + encodeURIComponent(id_relacion))
                 .then(response => response.json())
                 .then(data => {
-                    _ex.ui.dialog.make('Relación finalizada correctamente', 'Refresca la página para ver los cambios', function() {location.reload()}, 'Refrescar', false, 'Ahora no')
+                    if(!norefresh) _ex.ui.dialog.make('Relación finalizada correctamente', 'Refresca la página para ver los cambios', function() {location.reload()}, 'Refrescar', false, 'Ahora no')
                 })
                 .catch(error => {
                     _ex.ui.toast.make('Error al finalizar la relación.', 'Aceptar', true);

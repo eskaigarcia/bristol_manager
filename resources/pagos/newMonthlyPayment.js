@@ -120,8 +120,8 @@ function createMonthlyPayment() {
                                             <option value="">-- Selecciona tipo --</option>
                                             <option value="bizum">Bizum</option>
                                             <option value="transferencia">Transferencia</option>
-                                            <option value="tarjeta">Tarjeta</option>
                                             <option value="efectivo">Efectivo</option>
+                                            <option value="otro">Otro</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -155,7 +155,7 @@ function createMonthlyPayment() {
                     </div>
                     <div class="center gap-md">
                         <button class="warn" onclick="cancelStudentInsertion()">Cancelar pago</button>
-                        <button onclick="submitNewStudent()">Guardar pago</button>
+                        <button onclick="registerPayment()">Guardar pago</button>
                     </div>
                 </div>
             </div>
@@ -334,6 +334,10 @@ const paymentPreview = {
         if (defaultPrice != finalPrice && !isNaN(finalPrice)) document.getElementById('qp_previewOPrice').innerText = (defaultPrice).toFixed(2) + '€';
         else document.getElementById('qp_previewOPrice').innerText = '';
 
+        storage.prices = {}
+        storage.prices.finalPrice = (!isNaN(finalPrice)) ? finalPrice : 0;
+        storage.prices.autoDiscount = descuento;
+        
         if (isNaN(finalPrice)) finalPrice = '__';
         else document.getElementById('qp_previewPrice').innerText = (finalPrice).toFixed(2);
     },
@@ -498,7 +502,7 @@ async function processStudentDiscounts() {
             if (test) paymentPreview.discounts.friend = true;
             console.log('Friends: ' + test);
             if(item.tipoRelacion == 'amigo' && item.fechaFin == null && !test){
-                _ex.relMgr.endFriendshipRelationship(item.id_relacion)
+                _ex.relMgr.endFriendRelationship(item.id_relacion, true)
             }
         }
     }
@@ -524,4 +528,59 @@ function undoAmonestacion() {
         .then( _ex.ui.toast.make('Amonestación retirada correctamente', 'Aceptar', false))
         .then(paymentPreview.esAmonestado = false)
         .then(paymentPreview.renderAll());
+}
+
+async function registerPayment() {
+    // Collect form data
+    const id_alumno = document.getElementById('qp_id_alumno').value;
+    // Get selected months and annotate with correct year
+    const courseValue = document.getElementById('qp_course').value;
+    const [year1, year2] = courseValue.split('/').map(Number);
+    const mesesPagados = Array.from(document.querySelectorAll('#monthSelection input[type="checkbox"]:checked')).map(cb => {
+        const mes = Number(cb.value);
+        const anio = (mes >= 8) ? year1 : year2;
+        return `${mes.toString().padStart(2, '0')}/${anio}`;
+    });
+    const fechaPago = document.getElementById('qp_fecha').value;
+    const metodoPago = document.getElementById('qp_tipo').value;
+    const precioTotal = storage.prices.finalPrice;
+    const descuentoCalculado = storage.prices.autoDiscount;
+    const descuentoExtra = document.getElementById('qp_descuento_extra').value || 0;
+    const conceptoDescuento = document.getElementById('qp_concepto').value;
+
+    // Basic validation
+    if (!id_alumno || !mesesPagados.length || !fechaPago || !metodoPago) {
+        _ex.ui.toast.make('Por favor, rellena todos los campos obligatorios.', 'Aceptar', false);
+        return;
+    }
+
+    // Prepare payload
+    const payload = {
+        id_alumno: id_alumno,
+        tipoPago: 'mensualidad',
+        mesesPagados: mesesPagados,
+        fechaPago: fechaPago,
+        metodoPago: metodoPago,
+        precioTotal: precioTotal * 100,
+        descuentoCalculado: descuentoCalculado * 100,
+        descuentoExtra: descuentoExtra * 100,
+        conceptoDescuento: conceptoDescuento
+    };
+
+    try {
+        const response = await fetch('./resources/pagos/insertPayment.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        if (result.success) {
+            _ex.ui.toast.make('Pago registrado correctamente', 'Aceptar', false);
+            removeDetailsModal();
+        } else {
+            _ex.ui.toast.make('Error al registrar el pago: ' + (result.message || 'Error desconocido'), 'Aceptar', false);
+        }
+    } catch (e) {
+        _ex.ui.toast.make('Error de red al registrar el pago.', 'Aceptar', false);
+    }
 }
