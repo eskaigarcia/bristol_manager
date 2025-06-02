@@ -643,7 +643,7 @@ header{
 }
 
 /* Search bar */
-#searchBar {
+#searchBar, .searchBar{
   padding: 1rem 1rem 0; 
 
   display: grid; 

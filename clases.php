@@ -8,7 +8,7 @@
         <?php include './components/navView.php'; ?>
         <main>
             <header>
-                <h1>Clases particulares</h1>
+                <h1>Clases particulares y bonos</h1>
                 <div class="flex gap-md">
                     <button onclick="createVoucherPayment()" class="cta">
                         <?php include './img/money.svg'; ?>
@@ -21,25 +21,46 @@
                 </div>
             </header>
 
-                <div class="card full">
-                <h2>Buscar grupos</h2>
-                <form action='<?php echo $_SERVER["PHP_SELF"]?>' method="get" id="searchBar">
-                    <label for="profesor">Profesor:</label>
-                    <select id="profesor" name="profesor"></select>
-                    
-                    <label for="nombre">Alumno:</label>
-                    <input type="text" id="nombre" name="nombre">
+                <div class="card double">
+                    <h2>Buscar grupos</h2>
+                    <form action='<?php echo $_SERVER["PHP_SELF"]?>' method="get" id="searchBar">
+                        <label for="profesor">Profesor:</label>
+                        <select id="profesor" name="profesor"></select>
+                        
+                        <label for="nombre">Alumno:</label>
+                        <input type="text" id="nombre" name="nombre">
 
-                    <div class="full center">
-                        <button type="submit" class="cta">
-                            <?php include './img/search.svg' ?>
-                            Buscar
-                        </button>
-                    </div>
-                </form>
+                        <div class="full center">
+                            <button type="submit" class="cta">
+                                <?php include './img/search.svg' ?>
+                                Buscar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card double">
+                    <h2>Buscar bonos</h2>
+                    <form action='<?php echo $_SERVER["PHP_SELF"]?>' method="get" id="searchBarVoucher" class="searchBar">                        
+                        <label for="alumno">Alumno:</label>
+                        <input type="text" id="alumno" name="alumno">
+
+                        <div class="full center">
+                            <button type="submit" class="cta">
+                                <?php include './img/search.svg' ?>
+                                Buscar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            <div class="card double">
+                <?php include 'resources/clases/classSearch.php' ?>
+            </div>
+            <div class="card double">
+                <?php include 'resources/clases/voucherSearch.php' ?>
             </div>
 
-            <div class="card full"><!-- php include 'resources/payroll/teachersearch.php' ?--></div>
         </main>
     </div>
 
