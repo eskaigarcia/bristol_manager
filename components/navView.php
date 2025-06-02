@@ -48,13 +48,5 @@
         <img src="img/pagos-ondark.png" alt="">
         Pagos
     </button>
-    
-    <button 
-        class="align_left <?= basename(path: $_SERVER['PHP_SELF']) === 'mantenimiento.php' ? 'active' : '' ?>"
-        onclick="window.location.href='mantenimiento.php'"
-    >
-    <img src="img/backup-ondark.png" alt="">
-    Copias de Seguridad
-</button>
 
 </div>
