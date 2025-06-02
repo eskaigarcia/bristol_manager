@@ -1,16 +1,17 @@
 <?php
 include __DIR__ . '/resources/dbConnect.php';
 
-$backupDir = __DIR__ . '\\backups';
+// Asegurar que la carpeta de backups existe
+$backupDir = __DIR__ . '/backups';
 
 if (!is_dir($backupDir)) {
     mkdir($backupDir, 0777, true);
 }
 
 $filename = 'backup_' . date('Y-m-d_H-i-s') . '.sql';
-$filepath = $backupDir . '\\' . $filename;
+$filepath = $backupDir . '/' . $filename;
 
-$mysqldumpPath = '"C:\\xamppp\\mysql\\bin\\mysqldump.exe"'; // revisa ruta
+$mysqldumpPath = '"C:\\xamppp\\mysql\\bin\\mysqldump.exe"'; 
 
 $dbUser = escapeshellarg($db_user);
 $dbPass = escapeshellarg($db_pass);
