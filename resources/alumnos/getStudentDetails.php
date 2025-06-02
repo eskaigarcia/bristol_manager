@@ -8,9 +8,8 @@ $id = $_GET['id'];
 // Set of database queries to perform
     $query_emgContact = "SELECT id_contacto, nombre, relacion, telefono FROM contactosemergencia WHERE id_alumno = $id";
     $query_guardian = "SELECT nombre, apellidos, telefono, dni, email, direccion, cp, localidad, iban FROM responsables WHERE id_alumno = $id";
-    $query_groups = "SELECT g.nombre, g.modalidad, g.precio -- TODO: ADD DATES (Pending Joshua)
-                    FROM alumnosgrupos t JOIN grupos g ON t.id_grupo = g.id_grupo WHERE t.id_alumno = $id AND t.fechaFin IS NULL";
-    $query_payments = "SELECT g.nombre, m.fecha, p.fechaPago, p.metodoPago, p.precioTotal, p.descuentoCalculado, p.descuentoPersonal FROM pagos p JOIN mensualidades m ON p.id_mensualidad = m.id_mensualidad JOIN grupos g ON m.id_grupo = g.id_grupo WHERE p.id_alumno = $id;";
+    $query_groups = "SELECT g.nombre, g.modalidad, g.precio FROM alumnosgrupos t JOIN grupos g ON t.id_grupo = g.id_grupo WHERE t.id_alumno = $id AND t.fechaFin IS NULL";
+    $query_payments = "SELECT p.tipoPago, p.fechaPago, p.metodoPago, p.precioTotal, p.descuentoCalculado, p.descuentoExtra, p.conceptoDescuento, p.mesesPagados, p.descripcion FROM pagos p WHERE p.id_alumno = $id;";
     $query_relations = "SELECT r.fechaInicio, r.tipoRelacion, r.fechaFin, a1.nombre AS a1Nombre, a1.apellidos AS a1Apellidos, a1.id_alumno AS a1ID, a2.nombre AS a2Nombre, a2.apellidos AS a2Apellidos, a1.id_alumno AS a2ID FROM relaciones r JOIN alumnos a1 ON r.id_alumno1 = a1.id_alumno JOIN alumnos a2 ON r.id_alumno2 = a2.id_alumno WHERE r.id_alumno1 = $id OR r.id_alumno2 = $id";
     $query_student = "SELECT id_alumno,  apellidos,  nombre,  telefono,  dni,  email,  esAdulto, esAmonestado,  direccion, cp, localidad, iban, comentariosMedicos, fechaInclusion, notasRapidas FROM alumnos WHERE id_alumno = $id";
     $query_vouchers = "SELECT id_bono, cantidadClases, esTransferido, caducidad, fechaPago FROM bonos WHERE id_alumno = $id";

@@ -95,7 +95,7 @@ function createVoucherPayment() {
                         </div>
                     </div>
                     <div class="center gap-md">
-                        <button class="warn" onclick="cancelStudentInsertion()">Cancelar pago</button>
+                        <button class="warn" onclick="removeDetailsModal()">Cancelar pago</button>
                         <button onclick="registerPaymentVoucher()">Guardar pago y bono</button>
                     </div>
                 </div>
@@ -187,6 +187,7 @@ async function registerPaymentVoucher() {
     const precioTotal = storage.prices.finalPrice;
     const descuentoExtra = document.getElementById('qp_descuento_extra').value || 0;
     const conceptoDescuento = document.getElementById('qp_concepto').value;
+    const descripcion = 'Bono de ' + storage.prices.amt + ' clases individuales';
 
     // Basic validation
     if (!id_alumno || !fechaPago || !metodoPago) {
@@ -197,6 +198,7 @@ async function registerPaymentVoucher() {
     // Prepare payload
     const payload = {
         id_alumno: id_alumno,
+        descripcion: descripcion,
         tipoPago: 'bono',
         fechaPago: fechaPago,
         metodoPago: metodoPago,

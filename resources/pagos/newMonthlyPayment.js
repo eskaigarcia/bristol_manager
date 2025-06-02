@@ -14,7 +14,7 @@ function createMonthlyPayment() {
         <div>
             <div class="header">
                 <div>
-                    <h2>Nuevo cobro</h2>
+                    <h2>Nuevo cobro de mensualidad</h2>
                 </div>
                 <img onclick="removeDetailsModal()" class="iconButton" src="./img/close.png" alt="Cerrar">
             </div>
@@ -154,7 +154,7 @@ function createMonthlyPayment() {
                         </div>
                     </div>
                     <div class="center gap-md">
-                        <button class="warn" onclick="cancelStudentInsertion()">Cancelar pago</button>
+                        <button class="warn" onclick="removeDetailsModal()">Cancelar pago</button>
                         <button onclick="registerPayment()">Guardar pago</button>
                     </div>
                 </div>
@@ -547,6 +547,7 @@ async function registerPayment() {
     const descuentoCalculado = storage.prices.autoDiscount;
     const descuentoExtra = document.getElementById('qp_descuento_extra').value || 0;
     const conceptoDescuento = document.getElementById('qp_concepto').value;
+    const descripcion = document.getElementById('qp_previewGroup').innerText;
 
     // Basic validation
     if (!id_alumno || !mesesPagados.length || !fechaPago || !metodoPago) {
@@ -559,6 +560,7 @@ async function registerPayment() {
         id_alumno: id_alumno,
         tipoPago: 'mensualidad',
         mesesPagados: mesesPagados,
+        descripcion: descripcion,
         fechaPago: fechaPago,
         metodoPago: metodoPago,
         precioTotal: precioTotal * 100,

@@ -252,13 +252,13 @@ function buildVouchersTable(vouchers) {
         <img src="./img/es-bonos.png">
         <div>
             <p>Sin bonos</p>
-            <button>Nuevo bono</button>
+            <button onclick="window.location.href='clases.php'">Ir a clases y bonos</button>
         </div>
     </div>`;
     
     let table = `<div class="flex clear-between">
         <h3>Bonos</h3>
-        <button class="outlined">Nuevo bono</button>
+        <button class="outlined" onclick="window.location.href='clases.php'">Ir a clases y bonos</button>
     </div>`;
 
     table += `
@@ -333,41 +333,59 @@ function buildPaymentsTable(payments) {
         <img src="./img/es-payments.png">
         <div>
             <p>Ningun pago registrado o pendiente</p>
-            <button>Relizar un cobro</button>
+            <button onclick="window.location.href='pagos.php'">Ir a pagos</button>
         </div>
     </div>`;
 
     let table = `
     <div class="flex clear-between">
         <h3>Historial de pagos</h3>
-        <button class="outlined">Nuevo cobro</button>
+        <button class="outlined" onclick="window.location.href='pagos.php'">Ir a pagos</button>
     </div>
     <table class="styledData">
         <thead>    
             <tr>
-                <td>Estado</td>
-                <td>Curso</td>
-                <td>Mensualidad</td>
-                <td>Fecha del pago</td>
-                <td>Método</td>
-                <td>Total</td>
+                <td>Elemento</td>
+                <td>Descripción y meses</td>
+                <td>Metodo y fecha</td>
+                <td>Precio</td>
+                <td>Descuentos incl.</td>
             </tr>
         </thead>`;
                     
     // FOR EACH PAYMENT
-    // table += <tr><td>Curso</td><td>Fecha</td><td>Precio</td><td>Método</td></tr>
     for (i in payments) {
-        payments[i].precioPagado = payments[i].precioTotal - payments[i].descuentoCalculado - payments[i].descuentoPersonal;
+        let meses = '';
+        if (payments[i].mesesPagados != null) {
+            try {
+                const arr = JSON.parse(payments[i].mesesPagados);
+                if (Array.isArray(arr)) {
+                    meses = `, por los meses ${arr.join(', ')}`;
+                } else {
+                    meses = `, por los meses ${payments[i].mesesPagados}`;
+                }
+            } catch (e) {
+                meses = `, por los meses ${payments[i].mesesPagados}`;
+            }
+        }
+
+        let descuentos = 'ninguno'
+        if (payments[i].descuentoCalculado > 0) {
+            descuentos = `<strong>${_ex.format.money(payments[i].descuentoCalculado)}</strong> (auto)`;
+        }
+        if (payments[i].descuentoExtra > 0) {
+            descuentos += (descuentos !== 'ninguno' ? '<br>' : '');
+            descuentos += `<strong>${_ex.format.money(payments[i].descuentoExtra)}</strong> (${payments[i].conceptoDescuento || ''})`;
+        }
 
         table += `
         <tr>
-            <td>Pagado</td>
-            <td>${payments[i].nombre}</td>
-            <td>${_ex.format.date(payments[i].fecha, false)}</td>
-            <td>${_ex.format.date(payments[i].fechaPago)}</td>
-            <td>${payments[i].metodoPago}</td>
-            <td>${_ex.format.money(payments[i].precioPagado)}</td>
-        </tr>`
+            <td>${payments[i].tipoPago}</td>
+            <td><strong>${payments[i].descripcion}</strong>${meses}</td>
+            <td><strong>${payments[i].metodoPago}</strong>: ${_ex.format.date(payments[i].fechaPago)}</td>
+            <td><strong>${(payments[i].precioTotal / 100).toFixed(2)}€</strong></td>
+            <td>${descuentos}</td>
+        </tr>`;
     }
 
     table += '</table>';

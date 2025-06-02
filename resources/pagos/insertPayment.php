@@ -12,7 +12,8 @@ if (!$data) {
 
 // Sanitize and assign variables
 $id_alumno = isset($data['id_alumno']) ? intval($data['id_alumno']) : null;
-$tipoPago = 'mensualidad';
+$tipoPago = !empty(trim($data['tipoPago'] ?? '')) ? trim($data['tipoPago']) : '';
+$descripcion = !empty(trim($data['descripcion'] ?? '')) ? trim($data['descripcion']) : '';
 $mesesPagados = isset($data['mesesPagados']) && is_array($data['mesesPagados']) ? json_encode($data['mesesPagados']) : null;
 $fechaPago = !empty(trim($data['fechaPago'] ?? '')) ? trim($data['fechaPago']) : null;
 $metodoPago = !empty(trim($data['metodoPago'] ?? '')) ? trim($data['metodoPago']) : null;
@@ -24,16 +25,17 @@ $conceptoDescuento = !empty(trim($data['conceptoDescuento'] ?? '')) ? trim($data
 try {
     $stmt = $connection->prepare(
         "INSERT INTO pagos 
-            (id_alumno, tipoPago, mesesPagados, fechaPago, metodoPago, precioTotal, descuentoCalculado, descuentoExtra, conceptoDescuento)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            (id_alumno, tipoPago, mesesPagados, descripcion, fechaPago, metodoPago, precioTotal, descuentoCalculado, descuentoExtra, conceptoDescuento)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
     );
     if (!$stmt) throw new Exception($connection->error);
 
     $stmt->bind_param(
-        'issssddds',
+        'isssssddds',
         $id_alumno,
         $tipoPago,
         $mesesPagados,
+        $descripcion,
         $fechaPago,
         $metodoPago,
         $precioTotal,
