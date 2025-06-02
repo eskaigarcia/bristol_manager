@@ -9,7 +9,7 @@
         <?php include './components/navView.php'; ?>
 
         <main>
-            <h1>Copias de Seguridad MySQL</h1>
+            <h1>Copia de Seguridad</h1>
 
             <form action="backup.php" method="post">
                 <button type="submit" class="cta">Hacer copia de seguridad</button>
