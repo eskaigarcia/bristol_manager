@@ -213,18 +213,61 @@ async function registerPaymentVoucher() {
         });
         const result = await response.json();
         if (result.success) {
-            _ex.ui.toast.make('Pago registrado correctamente', 'Aceptar', false);
-            removeDetailsModal();
+            registerVoucher()
         } else {
             _ex.ui.toast.make('Error al registrar el pago: ' + (result.message || 'Error desconocido'), 'Aceptar', false);
         }
     } catch (e) {
         _ex.ui.toast.make('Error de red al registrar el pago.', 'Aceptar', false);
     }
-
-    registerVoucher()
 }
 
 async function registerVoucher() {
-    return
+    const id_alumno = document.getElementById('qp_id_alumno').value;
+    const cantidadClases = document.getElementById('qp_amt').value;
+    const fechaPago = document.getElementById('qp_fecha').value;
+    const metodoPago = document.getElementById('qp_tipo').value;
+    const precioTotal = storage.prices.finalPrice;
+
+    // Calculate caducidad (expiry date): 1 year from payment date
+    let caducidad = '';
+    if (fechaPago) {
+        const d = new Date(fechaPago);
+        d.setFullYear(d.getFullYear() + 1);
+        // Set caducidad to the closest upcoming 31st of July (academic year end)
+        let year = d.getMonth() > 6 ? d.getFullYear() + 1 : d.getFullYear();
+        caducidad = `${year}-07-31`;
+    }
+
+    // Basic validation
+    if (!id_alumno || !cantidadClases || !fechaPago || !metodoPago || !precioTotal) {
+        _ex.ui.toast.make('Faltan datos para registrar el bono.', 'Aceptar', false);
+        return;
+    }
+
+    const payload = {
+        id_alumno: id_alumno,
+        cantidadClases: cantidadClases,
+        caducidad: caducidad,
+        precioTotal: precioTotal * 100,
+        fechaPago: fechaPago,
+        metodoPago: metodoPago
+    };
+
+    try {
+        const response = await fetch('./resources/pagos/registerVoucher.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        if (result.success) {
+            _ex.ui.toast.make('Bono registrado correctamente', 'Aceptar', false);
+            removeDetailsModal();
+        } else {
+            _ex.ui.toast.make('Error al registrar el bono: ' + (result.message || 'Error desconocido'), 'Aceptar', false);
+        }
+    } catch (e) {
+        _ex.ui.toast.make('Error de red al registrar el bono.', 'Aceptar', false);
+    }
 }
