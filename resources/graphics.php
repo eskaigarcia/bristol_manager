@@ -34,3 +34,6 @@
     $ico_relcheck = '<img src="./img/checkTest.png" alt="Comprobar estado">';
     $ico_relterminate = '<img src="./img/deleteWarning.png" alt="Finalizar">';
     $ico_relreset = '<img src="./img/rollback.png" alt="Reinstaurar">';
+
+    // OTHER
+    $ico_valid = '<img src="./img/valid.png" alt="Válido">';

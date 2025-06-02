@@ -31,7 +31,11 @@
                         <label for="a_tel">Teléfono:</label>
                         <input type="text" id="a_tel" name="a_tel">
                     </div>
-                    <div class="full center">
+                    <div class="full center gap-md">
+                        <button type="submit" class="cta">
+                            <?php include './img/search.svg' ?>
+                            Limpiar búsqueda
+                        </button>
                         <button type="submit" class="cta">
                             <?php include './img/search.svg' ?>
                             Buscar

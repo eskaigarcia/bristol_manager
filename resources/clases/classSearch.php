@@ -3,16 +3,24 @@
 // Get search parameters
 $profesor = $_GET["profesor"] ?? '';
 $nombre = $_GET["nombre"] ?? '';
+$fechaDesde = $_GET["fechaDesde"] ?? '';
+$fechaHasta = $_GET["fechaHasta"] ?? '';
 
 function parseClassQuery(): array {
-    global $profesor, $nombre;
+    global $profesor, $nombre, $fechaDesde, $fechaHasta;
 
     $conditions = [];
     if ($profesor != '') {
-        $conditions[] = "p.id_profesor = '$profesor'";
+        $conditions[] = "p.nombre LIKE '%$profesor%'";
     }
     if ($nombre != '') {
-        $conditions[] = "(a.nombre LIKE '%$nombre%' OR a.apellidos LIKE '%$nombre%')";
+        $conditions[] = "(a.nombre LIKE '%$nombre%' OR a.apellidos LIKE '%$nombre%' OR CONCAT(a.nombre, ' ', a.apellidos) LIKE '%$nombre%' OR CONCAT(a.apellidos, ' ', a.nombre) LIKE '%$nombre%')";
+    }
+    if ($fechaDesde != '') {
+        $conditions[] = "c.fechaHora >= '" . $fechaDesde . " 00:00:00'";
+    }
+    if ($fechaHasta != '') {
+        $conditions[] = "c.fechaHora <= '" . $fechaHasta . " 23:59:59'";
     }
     $where = count($conditions) > 0 ? 'WHERE ' . implode(' AND ', $conditions) : '';
 
@@ -64,26 +72,28 @@ function doClassSearch(): void {
 
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         // Format fechaHora as 18:09 9/4/25
-        $fechaHoraRaw = $row['fechaHora'];
+        $fechaHoraRaw = $row['fechaHora'] ?? '';
         $fechaHora = '';
         if ($fechaHoraRaw) {
             $dt = DateTime::createFromFormat('Y-m-d H:i:s', $fechaHoraRaw);
             if ($dt) {
                 $fechaHora = $dt->format('H:i j/n/y');
             } else {
-                $fechaHora = htmlspecialchars($fechaHoraRaw);
+                $fechaHora = htmlspecialchars((string)$fechaHoraRaw);
             }
         }
-        $profesor = htmlspecialchars($row['profesor_nombre']);
-        $alumno = htmlspecialchars($row['alumno_apellidos'] . ', ' . $row['alumno_nombre']);
-        $asignatura = htmlspecialchars($row['asignatura']);
-        $modalidad = htmlspecialchars($row['modalidad']);
-        $duracion = htmlspecialchars($row['duracion']);
+        $profesor = htmlspecialchars((string)($row['profesor_nombre'] ?? ''));
+        $alumno_apellidos = $row['alumno_apellidos'] ?? '';
+        $alumno_nombre = $row['alumno_nombre'] ?? '';
+        $alumno = htmlspecialchars(trim($alumno_apellidos . ', ' . $alumno_nombre));
+        $asignatura = htmlspecialchars((string)($row['asignatura'] ?? 'Asignatura no definida'));
+        $modalidad = htmlspecialchars((string)($row['modalidad'] ?? ''));
+        $duracion = htmlspecialchars((string)($row['duracion'] ?? ''));
 
         $row_modalidad = '';
-        if ($row['modalidad'] === 'online') {
+        if (($row['modalidad'] ?? '') === 'online') {
             $row_modalidad = "<p class='tooltip' style='padding: 0'>$ico_modeOnline<span>Clase online</span></p>";
-        } elseif ($row['modalidad'] === 'presencial') {
+        } elseif (($row['modalidad'] ?? '') === 'presencial') {
             $row_modalidad = "<p class='tooltip' style='padding: 0'>$ico_modePresential<span>Clase presencial</span></p>";
         } else {
             $row_modalidad = "<p class='tooltip' style='padding: 0'>$ico_modeHybrid<span>Clase híbrida</span></p>";

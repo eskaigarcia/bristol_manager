@@ -35,7 +35,11 @@
                         <option value="0" <?php echo ($_GET['activo'] ?? '') == '0' ? 'selected' : ''; ?>>Inactivo</option>
                     </select>
 
-                    <div class="full center">
+                    <div class="full center gap-md">
+                        <button type="submit" class="cta">
+                            <?php include './img/search.svg' ?>
+                            Limpiar búsqueda
+                        </button>
                         <button type="submit" class="cta">
                             <?php include './img/search.svg' ?>
                             Buscar

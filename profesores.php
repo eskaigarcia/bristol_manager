@@ -20,7 +20,11 @@
                     <form id="searchBar" method="POST">
                         <label for="prof_nombre">Profesor:</label>
                         <input type="text" id="prof_nombre" name="prof_nombre">
-                        <div class="full center">
+                        <div class="full center gap-md">
+                            <button type="submit" class="cta">
+                                <?php include './img/search.svg' ?>
+                                Limpiar búsqueda
+                            </button>
                             <button type="submit" class="cta">
                                 <?php include './img/search.svg' ?>
                                 Buscar
