@@ -154,7 +154,6 @@ const _ex = {
             return fetch("./components/libraries/testActiveStudent.php?q=" + encodeURIComponent(id_alumno) + "&nonce=" + nonce)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(id_alumno, data)
                     let activeStudent = false;
                     data.forEach(group => {
                         if (!group.fechaFin || new Date(group.fechaFin) > new Date()){

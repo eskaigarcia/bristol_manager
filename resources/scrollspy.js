@@ -1,7 +1,6 @@
     function startScrollSpy() {
         const view = document.querySelector('#popUpModal .body #modalBodyView')
         view.addEventListener('scroll', activateMenuItems);
-        console.log(view)
 
         let menuItems = document.querySelectorAll('.tabs-scrollspy a');
         menuItems[0].classList.add('active')

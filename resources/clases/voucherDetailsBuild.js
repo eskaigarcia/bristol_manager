@@ -9,7 +9,6 @@ function getVoucherDetails(id_bono) {
 }
 
 function displayVoucherDetails(data) {
-    console.log(data)
     let div = document.createElement('div');
     div.className = 'modal';
     div.id = 'popUpModal';
@@ -196,7 +195,6 @@ function performVoucherTransfer() {
         })
         .catch(error => {
             alert('Error de red al transferir el bono');
-            console.error(error);
         });
         dialog.remove();
     };
@@ -206,7 +204,6 @@ function performVoucherTransfer() {
 function transferTypeAhead() {
     const query = document.getElementById('studentNameInput').value;
     const suggestionBox = document.getElementById("typeAhead");
-    console.log('aaaa?')
     if(query.length >= 3) {
     fetch("./resources/studentTypeAhead.php?q=" + encodeURIComponent(query))
         .then(response => response.json())
@@ -214,7 +211,6 @@ function transferTypeAhead() {
             suggestionBox.innerHTML = "";
             if (data.results.length > 0) {
                 data.results.forEach(item => {
-                    console.log(item)
                     const div = document.createElement("div");
                     div.textContent = item.nombre_completo;
                     div.style.cursor = "pointer";

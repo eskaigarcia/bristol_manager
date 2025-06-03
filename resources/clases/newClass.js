@@ -115,7 +115,6 @@ function classTypeAhead() {
             suggestionBox.innerHTML = "";
             if (data.results.length > 0) {
                 data.results.forEach(item => {
-                    console.log(item)
                     const div = document.createElement("div");
                     div.textContent = item.nombre_completo;
                     div.style.cursor = "pointer";
@@ -153,7 +152,6 @@ function getStudentVouchers(id_alumno) {
     fetch(`./resources/clases/getStudentVouchers.php?id=${encodeURIComponent(id_alumno)}`)
         .then(response => response.json())
         .then(data => {
-            console.log(data)
             storage.classArray = {}
             if (Array.isArray(data) && data.length > 0) {
                 data.forEach(voucher => {

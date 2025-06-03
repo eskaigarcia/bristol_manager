@@ -399,11 +399,9 @@ const saveEdits = {
         data.id = storage.activeStudent; // Add the student ID to the data object
         data.contact = id_contact;
 
-        console.log(id_contact)
 
         let direction = (id_contact == undefined) ? './resources/alumnos/newEmgContact.php' : './resources/alumnos/updateEmgContact.php';
         
-        console.log(direction);
         
         fetch(direction, {
             method: 'POST',
@@ -436,7 +434,6 @@ const saveEdits = {
         storage.pendingEdits = false;
 
         // Debug: log the payload being sent
-        console.log('Deleting emergency contact, sending:', { id_contact });
 
         fetch('./resources/alumnos/deleteEmgContact.php', {
             method: 'POST',
@@ -502,7 +499,6 @@ const saveEdits = {
         storage.pendingEdits = false;
 
         // Debug: log the payload being sent
-        console.log('Deleting emergency contact, sending:', { id_alumno });
 
         fetch('./resources/alumnos/deleteGuardian.php', {
             method: 'POST',

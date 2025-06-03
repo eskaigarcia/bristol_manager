@@ -9,7 +9,6 @@ function getStudentDetails(id) {
 }
 
 function displayStudentDetails(student) {
-    console.log(student) // debugging the object
 
     // Update active student in a global variable
     storage.activeStudent = student.alumno.id_alumno;

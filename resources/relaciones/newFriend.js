@@ -73,7 +73,6 @@ function typeAheadA() {
             suggestionBox.innerHTML = "";
             if (data.results.length > 0) {
                 data.results.forEach(item => {
-                    console.log(item)
                     const div = document.createElement("div");
                     div.textContent = item.nombre_completo;
                     div.style.cursor = "pointer";
@@ -109,7 +108,6 @@ function typeAheadB() {
             suggestionBox.innerHTML = "";
             if (data.results.length > 0) {
                 data.results.forEach(item => {
-                    console.log(item)
                     const div = document.createElement("div");
                     div.textContent = item.nombre_completo;
                     div.style.cursor = "pointer";

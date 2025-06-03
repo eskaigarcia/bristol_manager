@@ -144,13 +144,6 @@ function createMonthlyPayment() {
                                 <p class="qp_previewHighlight"><span id="qp_previewName">___</span> paga <span id="qp_previewOPrice"></span><span id="qp_previewPrice">___</span>€</p>
                                 <p>por '<span id="qp_previewGroup">___</span>' <span id="qp_previewMonths">___</span>.</p>
                             </div>
-                            <div>
-                                Cursos en los que estoy activo
-                                Clases futuras si las tengo
-                                Pagos recientes o pendientes
-                                Descuentos previos y correspondientesç
-                                No está inscrita en ningún grupo: inscribir en grupo en su lugar o vender bono
-                            </div>
                         </div>
                     </div>
                     <div class="center gap-md">
@@ -176,7 +169,6 @@ function studentTypeAhead() {
             suggestionBox.innerHTML = "";
             if (data.results.length > 0) {
                 data.results.forEach(item => {
-                    console.log(item)
                     const div = document.createElement("div");
                     div.textContent = item.nombre_completo;
                     div.style.cursor = "pointer";
@@ -490,17 +482,14 @@ async function processStudentDiscounts() {
         let id1 = item.id_alumno1;
         let id2 = item.id_alumno2;
         let otherStudent = (paymentPreview.currentStudent == id1) ? id2 : id1;
-        console.log('Student: ' + otherStudent + ' ' + item.tipoRelacion + ' ' + item.fechaFin);
 
         if(item.tipoRelacion == 'familiar') {
             let test = await _ex.relMgr.testIsActiveStudent(otherStudent);
             if (test) paymentPreview.discounts.family = true;
-            console.log('Family: ' + test);
         }   
         if(item.tipoRelacion == 'amigo' && (item.fechaFin == null || new Date(item.fechaFin) > new Date())) {
             let test = await _ex.relMgr.testIsActiveStudent(otherStudent);
             if (test) paymentPreview.discounts.friend = true;
-            console.log('Friends: ' + test);
             if(item.tipoRelacion == 'amigo' && item.fechaFin == null && !test){
                 _ex.relMgr.endFriendRelationship(item.id_relacion, true)
             }

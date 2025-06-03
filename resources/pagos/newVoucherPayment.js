@@ -49,7 +49,7 @@ function createVoucherPayment() {
                                         <label for="qp_descuento_extra">Descuento extra:</label>
                                     </td>
                                     <td>
-                                        <input type="number" id="qp_descuento_extra" name="qp_descuento_extra" min="0" step="0.5" oninput="voucherPreview.renderPrice()">
+                                        <input type="number" id="qp_descuento_extra" name="qp_descuento_extra" min="0" step="0.5" oninput="">
                                     </td>
                                 </tr>
                                 <tr>
@@ -125,7 +125,6 @@ function studentTypeAheadVoucher() {
             suggestionBox.innerHTML = "";
             if (data.results.length > 0) {
                 data.results.forEach(item => {
-                    console.log(item)
                     const div = document.createElement("div");
                     div.textContent = item.nombre_completo;
                     div.style.cursor = "pointer";

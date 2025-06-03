@@ -14,7 +14,6 @@ function getTeacherStats(id) {
 }
 
 function displayTeacherStats(data) { 
-    console.log(data)
     let div = document.createElement('div');
     div.className = 'modal';
     div.id = 'popUpModal';
