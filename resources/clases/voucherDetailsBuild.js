@@ -47,9 +47,11 @@ function displayVoucherDetails(data) {
 function buildVoucherStats(data) {
     const clasesLibres = data.bono.cantidadClases - data.clases.length;
 
+    storage.currentDataObject = data;
+
     let transferButton = ''
     if(data.bono.esTransferido == 0 && clasesLibres > 0){
-        transferButton = `<button class="mini inline" style="margin-left: 1rem;" onclick="performVoucherTransfer(${data.bono.id_bono}, ${data.bono.id_alumno})">Transferir bono</button>`
+        transferButton = `<button class="mini inline" style="margin-left: 1rem;" onclick="performVoucherTransfer()">Transferir bono</button>`
     }
 
     return `
@@ -64,8 +66,8 @@ function buildVoucherStats(data) {
                     <td>${clasesLibres}</td>
                 </tr>
                 <tr>
-                    <td>¿Transferido?</td>
-                    <td>${data.bono.esTransferido == 1 ? 'Sí' : 'No'} ${transferButton}</td>
+                    <td>Transferible</td>
+                    <td>${data.bono.esTransferido == 1 ? 'No' : 'Sí'} ${transferButton}</td>
                 </tr>
                 <tr>
                     <td>Fecha de compra</td>
@@ -137,4 +139,102 @@ function buildListOfClases(classList){
     });
     table += `</tbody></table>`;
     return table;
+}
+
+function performVoucherTransfer() {
+    const data = storage.currentDataObject;
+    // Remove any existing transfer dialog
+    const existingDialog = document.getElementById('voucherTransferDialog');
+    if (existingDialog) existingDialog.remove();
+
+    // Create dialog container
+    const dialog = document.createElement('div');
+    dialog.id = 'voucherTransferDialog';
+    dialog.className = 'modal';
+    dialog.innerHTML = `
+        <div style="background: #fff; padding: 2rem; border-radius: 8px; max-height: 400px; max-width: 400px; position: relative;">
+            <h3>Transferir bono</h3>
+            <input type="text" id="id_studentNameInput" style="display: none;">
+            <label for="studentNameInput">Nombre del alumno:</label>
+            <input type="text" id="studentNameInput" style="width: 100%; margin: 1rem 0;" autofocus oninput="transferTypeAhead()">
+            <div id="typeAhead" style="transform: translate(0, 200%);"></div>
+            <div class="gap-md" style="text-align: right; display: flex;">
+                <button id="cancelTransferBtn" class="mini" style="margin-right: 1rem;">Cancelar</button>
+                <button id="confirmTransferBtn" class="mini primary">Transferir</button>
+            </div>
+        </div>
+    `;
+
+    // Append dialog to body
+    document.body.appendChild(dialog);
+
+    // Add event listeners
+    document.getElementById('cancelTransferBtn').onclick = () => dialog.remove();
+    document.getElementById('confirmTransferBtn').onclick = () => {
+        const studentId = document.getElementById('id_studentNameInput').value;
+        const classesLeft = data.bono.cantidadClases - data.clases.length;
+        if (!studentId) {
+            alert('Por favor, selecciona un alumno válido de la lista.');
+            return;
+        }
+        fetch('./resources/clases/transferVoucher.php', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+            id_bono: data.bono.id_bono,
+            id_alumno: studentId,
+            clases_restantes: classesLeft
+            })
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (!result.success) {
+            alert('Error al transferir el bono: ' + (result.message || 'Error desconocido'));
+            }
+        })
+        .catch(error => {
+            alert('Error de red al transferir el bono');
+            console.error(error);
+        });
+        dialog.remove();
+    };
+}
+
+
+function transferTypeAhead() {
+    const query = document.getElementById('studentNameInput').value;
+    const suggestionBox = document.getElementById("typeAhead");
+    console.log('aaaa?')
+    if(query.length >= 3) {
+    fetch("./resources/studentTypeAhead.php?q=" + encodeURIComponent(query))
+        .then(response => response.json())
+        .then(data => {
+            suggestionBox.innerHTML = "";
+            if (data.results.length > 0) {
+                data.results.forEach(item => {
+                    console.log(item)
+                    const div = document.createElement("div");
+                    div.textContent = item.nombre_completo;
+                    div.style.cursor = "pointer";
+                    div.addEventListener("click", () => {
+                        document.getElementById("studentNameInput").value = item.nombre_completo;
+                        document.getElementById("id_studentNameInput").value = item.id_alumno;
+                        suggestionBox.style.display = "none";
+                    });
+                    suggestionBox.appendChild(div);
+                });
+                suggestionBox.style.display = "block";
+            } else {
+                const div = document.createElement("div");
+                div.textContent = 'Ningún resultado';
+                div.style.cursor = "default"; // Make it non-clickable
+                suggestionBox.style.display = "block";
+                suggestionBox.appendChild(div);
+            }
+        });
+    } else {
+        suggestionBox.style.display = "none";
+    }
 }
