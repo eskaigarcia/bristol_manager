@@ -46,7 +46,7 @@ function displayStudentDetails(student) {
                         ${buildVouchersTable(student.vouchers)}
                     </div>
                     <div class="scrollspySection" id="SDVClases">
-                        ${buildClassesTable(student)}
+                        ${buildClassesTable(student.classes)}
                     </div>
                     <div class="scrollspySection" id="SDVPayments">
                         ${buildPaymentsTable(student.payments)}
@@ -288,7 +288,7 @@ function buildVouchersTable(vouchers) {
 }
 
 function buildClassesTable(classes) {
-    if (classes == null || classes.length === 0 || 0 == 0) return `
+    if (classes == null || classes.length === 0) return `
     <h3>Clases individuales</h3>
     <div class="emptyState-icon">
         <img src="./img/es-classes.png">
@@ -300,24 +300,28 @@ function buildClassesTable(classes) {
     
     let table = `<div class="flex clear-between">
         <h3>Clases individuales</h3>
-        <button class="outlined" onclick="window.location.href='grupos.php'">Ir a clases</button>
+        <button class="outlined" onclick="window.location.href='clases.php'">Ir a clases</button>
     </div>`
     table += `
     <table class="styledData">
         <thead>
             <tr>
+                <td>Asignatura</td>
                 <td>Profesor</td>
-                <td>Temática</td>
+                <td>Fecha y Hora</td>
+                <td>Duración</td>
                 <td>Modalidad</td>
-                <td>Inicio</td>
-                <td>Fin</td>
             </tr>
         </thead>`;
 
-    for (i in classes) {
+    for (let clase of classes) {
         table += `
         <tr>
-            
+            <td>${clase.asignatura}</td>
+            <td>${clase.profesor}</td>
+            <td>${_ex.format.dateTime(clase.fechaHora)}</td>
+            <td>${clase.duracion}min</td>
+            <td>${clase.modalidad}</td>
         </tr>`
     }
 

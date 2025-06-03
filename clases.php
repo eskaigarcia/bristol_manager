@@ -14,7 +14,7 @@
                         <?php include './img/money.svg'; ?>
                         Nuevo bono
                     </button>
-                    <button onclick="createTeacher()" class="cta">
+                    <button onclick="createClass()" class="cta">
                         <?php include './img/addClass.svg'; ?>
                         Nueva clase
                     </button>
@@ -77,8 +77,10 @@
 
         </main>
     </div>
-
+    
+    <script src="./resources/pagos/newVoucherPayment.js"></script>
     <script src="./resources/clases/voucherDetailsBuild.js"></script>
+    <script src="./resources/clases/newClass.js"></script>
     <script src="./resources/scrollspy.js"></script>
 </body>
 </html>
