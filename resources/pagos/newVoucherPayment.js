@@ -30,7 +30,7 @@ function createVoucherPayment() {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label for="qp_amt">Cantidad de clases:</label>
+                                        <label for="qp_amt">Cantidad de clases (horas):</label>
                                     </td>
                                     <td>
                                         <input type="number" id="qp_amt" name="qp_amt" min="1" oninput="voucherPreview.renderPrice()">
@@ -38,10 +38,18 @@ function createVoucherPayment() {
                                 </tr>
                                 <tr>
                                     <td>
+                                        <label for="qp_precio_por_clase">Precio por hora:</label>
+                                    </td>
+                                    <td>
+                                        <input type="number" id="qp_precio_por_clase" name="qp_precio_por_clase" min="0" step="1" oninput="voucherPreview.renderPrice()">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
                                         <label for="qp_descuento_extra">Descuento extra:</label>
                                     </td>
                                     <td>
-                                        <input type="number" id="qp_descuento_extra" name="qp_descuento_extra" min="0" step="0.5" oninput="paymentPreview.renderAll()">
+                                        <input type="number" id="qp_descuento_extra" name="qp_descuento_extra" min="0" step="0.5" oninput="voucherPreview.renderPrice()">
                                     </td>
                                 </tr>
                                 <tr>
@@ -145,11 +153,6 @@ function studentTypeAheadVoucher() {
 const voucherPreview = {
     currentStudent: 0,
 
-    renderAll() {
-        paymentPreview.renderName();
-        paymentPreview.renderPrice();
-    },
-    
     renderName() {
         let name = document.getElementById('qp_alumno').value;
         if (name == '') name = '___';
@@ -162,18 +165,30 @@ const voucherPreview = {
 
     renderPrice() {
         const amt = document.getElementById('qp_amt').value;
+        const customprice = document.getElementById('qp_precio_por_clase').value
+
+        storage.prices = {}
+        storage.prices.amt = amt
+        
+        if(customprice != '') {
+            const basePrice = (amt * customprice);
+            const discount = document.getElementById('qp_descuento_extra').value;
+            const finalPrice = basePrice - discount;
+            storage.prices.finalPrice = finalPrice
+            document.getElementById('qp_previewPrice').innerText = finalPrice.toFixed(2);
+            document.getElementById('qp_previewAmt').innerText = amt;
+            return
+        }
+        
         const blocks = parseInt(amt/5);
         const extras = parseInt(amt%5);
         const basePrice = (blocks * 80) + (extras * 18);
-
+        
         const discount = document.getElementById('qp_descuento_extra').value;
         const finalPrice = basePrice - discount;
         document.getElementById('qp_previewPrice').innerText = finalPrice.toFixed(2);
         document.getElementById('qp_previewAmt').innerText = amt;
-
-        storage.prices = {}
         storage.prices.finalPrice = finalPrice
-        storage.prices.amt = amt
     },
 
 }
