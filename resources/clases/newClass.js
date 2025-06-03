@@ -60,9 +60,25 @@ function createClass() {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><label for="nc_fecha" id="creacion" name="creacion">Hora de la clase<span class="requiredMark">*</span>:</td>
+                                        <td><label for="nc_fecha">Hora de la clase<span class="requiredMark">*</span>:</td>
                                         <td>
                                             <input type="datetime-local" id="nc_fecha" name="nc_fecha">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                        <label for="nc_batch">
+                                            Cantidad de clases 
+                                            <span 
+                                                title="Puedes crear de golpe varias clases para este mismo día de la semana en las semanas próximas. Al dejarlo vacío se creará solo una clase, al introducir un número se creará una clase en cada semana próxima por tantas semanas como se indique en esta casilla"
+                                            >
+                                                <u style="cursor:pointer;">
+                                                    (?)
+                                                </u>
+                                            </span>:
+                                        </td>
+                                        <td>
+                                            <input type="number" id="nc_batch" name="nc_batch">
                                         </td>
                                     </tr>
                                 </table>
@@ -138,11 +154,13 @@ function getStudentVouchers(id_alumno) {
         .then(response => response.json())
         .then(data => {
             console.log(data)
+            storage.classArray = {}
             if (Array.isArray(data) && data.length > 0) {
                 data.forEach(voucher => {
                     const option = document.createElement('option');
                     option.value = voucher.id_bono;
                     option.textContent = `Bono de ${voucher.cantidadClases} clases con ${voucher.clasesLibres} clases restantes`;
+                    storage.classArray[`voucher${voucher.id_bono}`] = voucher.clasesLibres;
                     select.appendChild(option);
                 });
             } else {
@@ -218,7 +236,44 @@ function validateClass() {
     }
 
     // All required fields are filled, proceed to save
-    saveClassToDatabase();
+    generateClasses();
+}
+
+function generateClasses() {
+    let amt = parseInt(document.getElementById('nc_batch').value, 10);
+    let id_bono = document.getElementById('nc_bono').value;
+    if (isNaN(amt) || amt == '' || amt < 1) amt = 1;
+
+    if (amt > 1) {
+        clasesLibres = storage.classArray[`voucher${id_bono}`]
+        if (amt > clasesLibres) {
+            _ex.ui.toast.make('No puedes crear más clases de las que quedan en el bono seleccionado.');
+            return;
+        } else {
+            // Get the original date from the input
+            let fechaInput = document.getElementById('nc_fecha');
+            let originalDate = new Date(fechaInput.value);
+
+            for (let i = 0; i < amt; i++) {
+                // Set the input value to the current date for this iteration
+                let currentDate = new Date(originalDate);
+                currentDate.setDate(originalDate.getDate() + i * 7);
+                // Format to "YYYY-MM-DDTHH:MM"
+                const pad = n => n.toString().padStart(2, '0');
+                let formatted = `${currentDate.getFullYear()}-${pad(currentDate.getMonth() + 1)}-${pad(currentDate.getDate())}T${pad(currentDate.getHours())}:${pad(currentDate.getMinutes())}`;
+                fechaInput.value = formatted;
+                saveClassToDatabase();
+            }
+            _ex.ui.toast.make('Clases guardadas correctamente', 'Aceptar', false);
+            storage.pendingEdits = false;
+            removeDetailsModal();
+        } 
+    } else {    
+        saveClassToDatabase();
+        _ex.ui.toast.make('Clase guardada correctamente', 'Aceptar', false);
+        storage.pendingEdits = false;
+        removeDetailsModal();
+    }
 }
 
 function saveClassToDatabase() {
@@ -248,9 +303,7 @@ function saveClassToDatabase() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            _ex.ui.toast.make('Clase guardada correctamente', 'Aceptar', false);
-            storage.pendingEdits = false;
-            removeDetailsModal();
+            return
         } else {
             _ex.ui.toast.make('Error al guardar la clase: ' + (data.message || ''));
         }
