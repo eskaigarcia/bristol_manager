@@ -3,7 +3,7 @@
     $db_name = 'bristol_manager';
     $db_user = 'root';
     $db_pass = '';
-    $sql_file = __DIR__ . '/database v2.1.sql';
+    $sql_file = __DIR__ . '/bManager3.0.sql';
 
     // Connect to MySQL server (no database yet)
     $connection = mysqli_connect($db_host, $db_user, $db_pass);
