@@ -1,5 +1,4 @@
 function createClass() {
-    storage.pendingEdits = true;
     let div = document.createElement('div');
     div.className = 'modal';
     div.id = 'popUpModal';

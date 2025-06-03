@@ -41,6 +41,12 @@ echo.
 echo ATENCIÓN: No cambies la ubicación de la instalación.
 echo Acepta la instalación con sus valores predeterminados.
 echo.
+echo ATENCIÓN: El instalador pondrá su barra de color amarillo
+echo y realizará dos preguntas, RESPONDE NO a ambas ellas.
+echo.
+echo Al finalizar te mostrará una imagen de un menú, no
+echo es nada importante, puedes continuar.
+echo.
 echo Este paso puede llevar unos minutos.
 start /wait wampserver3.3.7_x64.exe
 
@@ -57,7 +63,8 @@ echo Step 4 of 4 ==== Install databases
 echo Ejecutando los servicios necesarios...
 start C:\wamp64\wampmanager.exe
 echo.
-echo Pulsa cualquier tecla para continuar cuando WAMP esté listo...
+echo Pulsa cualquier tecla para continuar cuando WAMP esté listo.
+echo Puedes considerar que WAMP está listo cuando su ventana desaparezca.
 timeout 90 > nul
 
 echo.
