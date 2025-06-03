@@ -32,12 +32,12 @@
                         </div>
                     </form>
                 </div>
-            <div class="card full"><?php include 'resources/payroll/teachersearch.php' ?></div>
+            <div class="card full"><?php include 'resources/profesores/teachersearch.php' ?></div>
         </main>
     </div>
 
-    <script src="./resources/payroll/newTeacher.js"></script>
-    <script src="./resources/payroll/teacherStatsBuild.js"></script>
+    <script src="./resources/profesores/newTeacher.js"></script>
+    <script src="./resources/profesores/teacherStatsBuild.js"></script>
     <script src="./resources/scrollspy.js"></script>
 </body>
 </html>

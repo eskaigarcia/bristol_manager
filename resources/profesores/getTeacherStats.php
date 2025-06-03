@@ -61,7 +61,8 @@ $groups = array_values($groups);
 // Obtener clases particulares de este mes con nombre de alumno
 $query_particulares = "
     SELECT 
-        cp.id_clase, cp.FechaHora, b.id_alumno, a.nombre AS alumno_nombre, a.apellidos
+        cp.id_clase, cp.FechaHora, b.id_alumno, a.nombre AS alumno_nombre, a.apellidos,
+        cp.asignatura, cp.modalidad, cp.duracion
     FROM clasesparticulares cp
     LEFT JOIN bonos b ON cp.id_bono = b.id_bono
     LEFT JOIN alumnos a ON b.id_alumno = a.id_alumno
@@ -79,7 +80,10 @@ while ($row = mysqli_fetch_assoc($result_particulares)) {
         'FechaHora' => $row['FechaHora'],
         'id_alumno' => $row['id_alumno'],
         'nombre' => $row['alumno_nombre'],
-        'apellidos' => $row['apellidos']
+        'apellidos' => $row['apellidos'],
+        'asignatura' => $row['asignatura'],
+        'modalidad' => $row['modalidad'],
+        'duracion' => $row['duracion']
     ];
 }
 

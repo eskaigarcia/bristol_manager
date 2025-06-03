@@ -68,8 +68,12 @@ function buildVoucherStats(data) {
                     <td>${data.bono.esTransferido == 1 ? 'Sí' : 'No'} ${transferButton}</td>
                 </tr>
                 <tr>
+                    <td>Fecha de compra</td>
+                    <td>${_ex.format.date(data.bono.fechaPago)}</td>
+                </tr>
+                <tr>
                     <td>Caducidad</td>
-                    <td>${data.bono.caducidad}</td>
+                    <td>${_ex.format.date(data.bono.caducidad)}</td>
                 </tr>
                 <tr>
                     <td>Precio total</td>

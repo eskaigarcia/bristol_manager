@@ -1,5 +1,5 @@
 function getTeacherStats(id) {
-    fetch(`./resources/payroll/getTeacherStats.php?id=${id}`)
+    fetch(`./resources/profesores/getTeacherStats.php?id=${id}`)
         .then(response => {
             if (!response.ok) throw new Error("No se pudieron cargar los detalles del grupo");
             return response.json();
@@ -19,6 +19,14 @@ function displayTeacherStats(data) {
     div.className = 'modal';
     div.id = 'popUpModal';
 
+    data.counters = {}
+    data.counters.recurring = 0;
+    data.counters.intensivos = 0;
+    for (group of data.grupos) {
+        if (group.esIntensivo == 0) data.counters.recurring++
+        else data.counters.intensivos++
+    }
+
     div.innerHTML = `
         <div>
             <div class="header">
@@ -36,15 +44,16 @@ function displayTeacherStats(data) {
                 ${doTabBar_teacherStats()}
                 <div id="modalBodyView">
                     <div class="scrollspySection" id="TDVGroups">
-                        <h3>Grupos recurrentes</h3>
+                        <h3>${data.counters.recurring} grupos recurrentes activos este mes</h3>
                         ${buildTeacherStats_groups(data)}
                     </div>
                     <div class="scrollspySection" id="TDVIntensives">
-                        <h3>Cursos intensivos</h3>
+                        <h3>${data.counters.intensivos} cursos intensivos activos este mes</h3>
                         ${buildTeacherStats_intensivos(data)}
                     </div>
                     <div class="scrollspySection" id="TDVIndividuals">
-                        <h3>Clases individuales</h3>
+                        <h3>${data.particulares.length} clases individuales este mes</h3>
+                        ${buildTeacherStats_particulares(data.particulares)}
                     </div>
                 </div>
             </div>
@@ -56,7 +65,7 @@ function displayTeacherStats(data) {
 
 // Función que crea las "chips" de información del grupo
 function buildTeacherChips(data) {
-    if (data.grupos.length > 0 && data.particulares.length > 0) return '<span class="chip">Profesor activo</span>'
+    if (data.grupos.length > 0 || data.particulares.length > 0) return '<span class="chip">Profesor activo</span>'
     else return '<span class="chip warn">Profesor inactivo</span>'
 }
 
@@ -100,6 +109,8 @@ function buildTeacherStats_groups(data) {
             })
         }
     });
+
+    if (groupButtons.length == 0) return '<p>Ningún grupo activo</p>'
 
     const container = document.createElement('div');
     container.className = 'TP_listExplorer';
@@ -187,6 +198,9 @@ function buildTeacherStats_intensivos(data) {
         }
     });
 
+    if (groupButtons.length == 0) return '<p>Ningún grupo activo</p>'
+
+
     const container = document.createElement('div');
     container.className = 'TP_listExplorer';
 
@@ -254,4 +268,41 @@ function updateDisplayedList_intensivos(index) {
         div.classList.remove('shown')
     });
     document.getElementById(`intensivoItem_${index}`).classList.add('shown')
+}
+
+function buildTeacherStats_particulares(clases) {
+    if (clases.length == 0) return '<p>Ninguna clase particular registrada este mes.</p>'
+    
+    let table = `<table class="styledData">
+        <tr>
+            <td><strong>Alumno</strong></td>
+            <td><strong>Asignatura</strong></td>
+            <td><strong>Fecha</strong></td>
+            <td><strong>Duración</strong></td>
+            <td><strong>Modalidad</strong></td>
+        </tr>`
+
+    for (let clase of clases) {
+        // Format date as dd/mm hh:mm
+        let dateObj = new Date(clase.FechaHora.replace(' ', 'T'));
+        let day = String(dateObj.getDate()).padStart(2, '0');
+        let month = String(dateObj.getMonth() + 1).padStart(2, '0');
+        let hours = String(dateObj.getHours()).padStart(2, '0');
+        let minutes = String(dateObj.getMinutes()).padStart(2, '0');
+        let formattedDate = `${day}/${month} ${hours}:${minutes}`;
+
+        table += `
+        <tr>
+            <td>${clase.apellidos}, ${clase.nombre}</td>
+            <td>${clase.asignatura || 'No definida'}</td>
+            <td>${formattedDate}</td>
+            <td>${clase.duracion}min</td>
+            <td>${clase.modalidad}</td>
+        </tr>`
+
+    }
+
+    table += '</table>'
+
+    return table;
 }

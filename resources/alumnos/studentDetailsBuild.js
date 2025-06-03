@@ -265,7 +265,7 @@ function buildVouchersTable(vouchers) {
     <table class="styledData">
         <thead>
             <tr>
-                <td>Clases disponibles</td>
+                <td>Clases disponibles (totales)</td>
                 <td>Transferible</td>
                 <td>Fecha de compra</td>
                 <td>Caducidad</td>
@@ -275,7 +275,7 @@ function buildVouchersTable(vouchers) {
     for (i in vouchers) {
         table += `
         <tr>
-            <td>${parseInt(vouchers[i].cantidadClases) - parseInt(vouchers[i].used_classes)}/${vouchers[i].cantidadClases}</td>
+            <td><strong>${parseInt(vouchers[i].cantidadClases) - parseInt(vouchers[i].usedClases)}</strong> (${vouchers[i].cantidadClases})</td>
             <td>${(vouchers[i].esTransferido == 0) ? 'Si' : 'No'}</td>
             <td>${_ex.format.date(vouchers[i].fechaPago)}</td>
             <td>${_ex.format.date(vouchers[i].caducidad)}</td>

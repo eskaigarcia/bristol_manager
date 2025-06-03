@@ -24,6 +24,7 @@ $query = "
         b.id_bono, 
         b.cantidadClases,
         b.caducidad,
+        b.fechaPago,
         (b.cantidadClases - (
             SELECT COUNT(*) 
             FROM clasesparticulares cp 

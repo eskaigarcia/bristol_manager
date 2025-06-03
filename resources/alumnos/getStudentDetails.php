@@ -52,25 +52,18 @@ $data_student = mysqli_fetch_assoc(result: $result_student);
     while ($row = mysqli_fetch_assoc($result_clasesparticulares)) { $data_clasesparticulares[] = $row; }
 
 // Additional processing of vouchers for used count
-    $data_usedVouchers = [];
-    foreach ($data_vouchers as $voucher) {
-        $id_bono = $voucher['id_bono'];
-        $query_usedVouchers = "SELECT b.id_bono, COUNT(c.id_clase) AS used_classes 
-                            FROM bonos b 
-                            LEFT JOIN clasesparticulares c ON b.id_bono = c.id_bono 
-                            WHERE b.id_bono = $id_bono 
-                            GROUP BY b.id_bono";
-        $result_usedVouchers = mysqli_query(mysql: $connection, query: $query_usedVouchers);
-        $usedVoucherData = mysqli_fetch_assoc(result: $result_usedVouchers);
-        foreach ($data_vouchers as &$voucher) {
-            if ($voucher['id_bono'] == $id_bono) {
-                $voucher['used_classes'] = $usedVoucherData['used_classes'] ?? 0;
-                break;
-            }
-        }
-    }
-
-    $data['usedVouchers'] = $data_usedVouchers;
+foreach ($data_vouchers as &$voucher) {
+    $id_bono = $voucher['id_bono'];
+    $query_usedVouchers = "SELECT COUNT(c.id_clase) AS usedClases 
+                        FROM bonos b 
+                        LEFT JOIN clasesparticulares c ON b.id_bono = c.id_bono 
+                        WHERE b.id_bono = $id_bono 
+                        GROUP BY b.id_bono";
+    $result_usedVouchers = mysqli_query($connection, $query_usedVouchers);
+    $usedVoucherData = mysqli_fetch_assoc($result_usedVouchers);
+    $voucher['usedClases'] = $usedVoucherData['usedClases'] ?? 0;
+}
+unset($voucher); // break reference
 
 // End connection
     mysqli_close(mysql: $connection);
